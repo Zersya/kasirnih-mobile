@@ -1,0 +1,12 @@
+{
+    "widgets": {
+        "field": {
+            "msg_empty": "Field {} cannot empty"
+        }
+    },
+    "auth_screen": {
+        "welcome": "Welcome",
+        "login_desc": "Login to continue",
+        "register_desc": "Fill the from & create your account"
+    }
+}

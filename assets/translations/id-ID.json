@@ -1,0 +1,19 @@
+{
+    "error": {
+        "no_connection": "Tidak ada jaringan"
+    },
+    "widgets": {
+        "field": {
+            "msg_empty": "Kolom {} tidak boleh kosong"
+        }
+    },
+    "auth_screen": {
+        "welcome": "Selamat Datang",
+        "login_desc": "Masuk untuk melanjutkan",
+        "register_desc": "Isi formulir & buat akun kamu",
+        "msg_usr_success_registered": "Berhasil mendaftar, Selamat datang {}",
+        "msg_usr_error_registered": "{} pengguna sudah ada, coba yang lain",
+        "msg_usr_success_login": "Berhasil login, Selamat datang {}",
+        "msg_username_error_login": "Username {} tidak ditemukan, coba yang lain"
+    }
+}
