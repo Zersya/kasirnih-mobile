@@ -3,7 +3,7 @@ part of 'store_form_bloc.dart';
 class StoreFormRepository {
   final Firestore _firestore = Firestore.instance;
 
-  Future<Store> loadStore()async{
+  Future<Store> loadStore() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
 
@@ -39,17 +39,20 @@ class StoreFormRepository {
         .collection('stores')
         .getDocuments();
     final ref = doc.documents.first.reference;
-
     final result = await _firestore.runTransaction((transaction) async {
-      final freshsnap = await transaction.get(ref);
+      final freshsnap =
+          await transaction.get(ref).catchError((err) => throw err);
       await transaction.update(freshsnap.reference, event.store.toMap());
+    }).catchError((err) {
+      toastError(err.message);
+      return null;
     });
-    if (result != null) {
-      toastSuccess(tr('store_registration_screen.failed_update_store'));
 
+    if (result != null) {
+      toastSuccess(tr('store_registration_screen.success_update_store'));
+      return true;
+    } else {
       return false;
     }
-    toastSuccess(tr('store_registration_screen.success_update_store'));
-    return true;
   }
 }
