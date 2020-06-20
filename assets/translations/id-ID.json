@@ -15,5 +15,18 @@
         "msg_usr_error_registered": "{} pengguna sudah ada, coba yang lain",
         "msg_usr_success_login": "Berhasil login, Selamat datang {}",
         "msg_username_error_login": "Username {} tidak ditemukan, coba yang lain"
+    },
+    "dashboard_screen": {
+        "hi": "Hai, {}",
+        "no_profile_store": "Belum ada profil toko disini",
+        "register_your_store": "Daftarkan tokomu disini"
+    },
+    "store_registration_screen": {
+        "store_register": "Daftar Toko",
+        "store_name": "Nama Toko",
+        "store_phone": "Telepon Toko",
+        "store_address": "Alamat Toko",
+        "store_owner_name": "Nama Pemilk Toko",
+        "store_owner_phone": "Telepon Pemilik Toko"
     }
 }

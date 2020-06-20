@@ -7,8 +7,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:ks_bike_mobile/main.dart';
+import 'package:ks_bike_mobile/utils/key.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

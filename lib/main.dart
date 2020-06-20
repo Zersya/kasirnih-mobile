@@ -6,7 +6,7 @@ import 'package:ks_bike_mobile/modules/auth/auth_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('id', 'ID')],
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     primary: const Color(0xFF035AA6),
     secondary: const Color(0xFF18a0fb),
     surface: Colors.white,
-    background: Color(0xffDADBDF),
+    background: Colors.white,
     error: const Color(0xffb00020),
     onPrimary: Colors.black87,
     onSecondary: Colors.black87,
@@ -33,12 +33,8 @@ class MyApp extends StatelessWidget {
   );
 
   static final TextTheme _textTheme = TextTheme(
-    headline5: GoogleFonts.poppins(fontSize: 21, fontWeight: FontWeight.bold),
-    headline6: GoogleFonts.poppins(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      color: colorSchemeLight.primary,
-    ),
+    headline5: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
+    headline6: GoogleFonts.poppins(fontSize: 20),
     subtitle1: GoogleFonts.poppins(fontSize: 14),
     subtitle2: GoogleFonts.poppins(color: Colors.grey[500]),
     bodyText1:

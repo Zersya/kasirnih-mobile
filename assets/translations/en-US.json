@@ -1,4 +1,7 @@
 {
+    "error": {
+        "no_connection": "No Connection"
+    },
     "widgets": {
         "field": {
             "msg_empty": "Field {} cannot empty"
@@ -7,6 +10,23 @@
     "auth_screen": {
         "welcome": "Welcome",
         "login_desc": "Login to continue",
-        "register_desc": "Fill the from & create your account"
+        "register_desc": "Fill the from & create your account",
+        "msg_usr_success_registered": "Register Success, Welcome {}",
+        "msg_usr_error_registered": "User {} already exists, try another one",
+        "msg_usr_success_login": "Login Success, Welcome {}",
+        "msg_username_error_login": "Username {} not found, try another one"
+    },
+    "dashboard_screen":{
+        "hi": "Hi, {}",
+        "no_profile_store": "No store profile",
+        "register_your_store": "Register your store here"
+    },
+    "store_registration_screen": {
+        "store_register": "Store Register",
+        "store_name": "Store Name",
+        "store_phone": "Store Phone",
+        "store_address": "Store Address",
+        "store_owner_name": "Store Owner Name",
+        "store_owner_phone": "Store Owner Phone"
     }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
+import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,6 +52,8 @@ class _AuthScreenState extends State<AuthScreen>
     tabController = TabController(initialIndex: 0, length: 2, vsync: this);
 
     if (kDebugMode) {
+      usernameLoginC.text = 'abidin';
+      passwordLoginC.text = '1234567';
       usernameRegisterC.text = 'abidin';
       passwordRegisterC.text = '1234567';
       emailC.text = "abidin@mail.com";
@@ -76,19 +79,12 @@ class _AuthScreenState extends State<AuthScreen>
         bloc: authBloc,
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.of(context).pushReplacementNamed(RouterHelper.kRouteHome);
+            Navigator.of(context).pushReplacementNamed(RouterHelper.kRouteHome, arguments: usernameLoginC.text);
           }
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            return Container(
-              color: Colors.black45,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return CustomLoading();
           } else {
             return SizedBox();
           }

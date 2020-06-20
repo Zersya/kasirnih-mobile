@@ -6,25 +6,19 @@ class AuthRepository {
 
   Future<AuthResult> register(AuthEventRegister event) async {
     try {
-      final companies = await _firestore
-          .collection('companies')
-          .where("code", isEqualTo: MyApp.kCompanyCode)
-          .getDocuments();
-      final companiesDoc = companies.documents;
-
-      final snapshotUsername = await companiesDoc.first.reference
+      final snapshotUsername = await _firestore
           .collection('users')
           .where('username', isEqualTo: event.username)
           .snapshots()
           .first;
 
-      final snapshotEmail = await companiesDoc.first.reference
+      final snapshotEmail = await _firestore
           .collection('users')
           .where('email', isEqualTo: event.email)
           .snapshots()
           .first;
 
-      final snapshotPhone = await companiesDoc.first.reference
+      final snapshotPhone = await _firestore
           .collection('users')
           .where('phone', isEqualTo: event.phone)
           .snapshots()
@@ -46,20 +40,19 @@ class AuthRepository {
         return null;
       }
 
-      return await _registerUser2Firestore(event, companiesDoc);
+      return await _registerUser2Firestore(event);
     } on SocketException {
       toastError(tr('error.no_connection'));
       return null;
     }
   }
 
-  Future<AuthResult> _registerUser2Firestore(
-      AuthEventRegister event, List<DocumentSnapshot> companiesDoc) async {
+  Future<AuthResult> _registerUser2Firestore(AuthEventRegister event) async {
     try {
       final result = await _auth.createUserWithEmailAndPassword(
           email: event.email, password: event.password);
 
-      await companiesDoc.first.reference.collection('users').add({
+      final doc = await _firestore.collection('users').add({
         'email': event.email,
         'phone': event.phone,
         'username': event.username,
@@ -68,6 +61,9 @@ class AuthRepository {
 
       toastSuccess(
           tr('auth_screen.msg_usr_success_registered', args: [event.username]));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(kUserDocIdKey, doc.documentID);
+
       return result;
     } on PlatformException catch (err) {
       toastError(err.message);
@@ -77,17 +73,10 @@ class AuthRepository {
 
   Future<AuthResult> login(AuthEventLogin event) async {
     try {
-      final companies = await _firestore
-          .collection('companies')
-          .where("code", isEqualTo: MyApp.kCompanyCode)
-          .getDocuments();
-      final companiesDoc = companies.documents;
-
-      final snapshotEmail = await companiesDoc.first.reference
+      final snapshotEmail = await _firestore
           .collection('users')
           .where('username', isEqualTo: event.username)
-          .snapshots()
-          .first;
+          .getDocuments();
 
       final hasEmail = snapshotEmail.documents.isNotEmpty;
 
@@ -98,7 +87,10 @@ class AuthRepository {
       }
 
       return await _loginUser2Firestore(
-          event, snapshotEmail.documents.first.data['email']);
+        event,
+        snapshotEmail.documents.first.data['email'],
+        snapshotEmail.documents.first.documentID,
+      );
     } on SocketException {
       toastError(tr('error.no_connection'));
       return null;
@@ -106,13 +98,17 @@ class AuthRepository {
   }
 
   Future<AuthResult> _loginUser2Firestore(
-      AuthEventLogin event, String email) async {
+      AuthEventLogin event, String email, String docId) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: event.password);
 
       toastSuccess(
           tr('auth_screen.msg_usr_success_login', args: [event.username]));
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(kUserDocIdKey, docId);
+
       return result;
     } on PlatformException catch (err) {
       toastError(err.message);
