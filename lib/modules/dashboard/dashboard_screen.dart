@@ -26,27 +26,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('dashboard_screen.hi',
-                style: Theme.of(context).textTheme.headline6)
-            .tr(args: [widget.username.capitalize()]),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: BlocBuilder<DashboardBloc, DashboardState>(
-          bloc: _dashboardBloc,
-          builder: (context, state) {
-            final bool isHasStore = state.props[0];
-            if (state is DashboardLoading) {
-              return CustomLoading(withBackground: false,);
-            }
-            else if (isHasStore) {
-              return _bodyHasStore(context);
-            }
+    return Column(
+      children: <Widget>[
+        AppBar(
+          title: Text('dashboard_screen.hi',
+                  style: Theme.of(context).textTheme.headline6)
+              .tr(args: [widget.username.capitalize()]),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+        BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: _dashboardBloc,
+            builder: (context, state) {
+              final bool isHasStore = state.props[0];
+              if (state is DashboardLoading) {
+                return CustomLoading(withBackground: false);
+              } else if (isHasStore) {
+                return _bodyHasStore(context);
+              }
 
-            return _bodyEmptyStore(context);
-          }),
+              return _bodyEmptyStore(context);
+            }),
+      ],
     );
   }
 
@@ -82,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context)
-                          .pushNamed(RouterHelper.kRouteStoreRegistration);
+                          .pushNamed(RouterHelper.kRouteStoreFormState);
                     },
                     child: Text(
                       'dashboard_screen.register_your_store',

@@ -22,11 +22,16 @@
         "register_your_store": "Register your store here"
     },
     "store_registration_screen": {
-        "store_register": "Store Register",
+        "store_register": "Register Store",
+        "store_update": "Update Store",
         "store_name": "Store Name",
         "store_phone": "Store Phone",
         "store_address": "Store Address",
         "store_owner_name": "Store Owner Name",
-        "store_owner_phone": "Store Owner Phone"
+        "store_owner_phone": "Store Owner Phone",
+        "success_register_store": "Success Register Store",
+        "success_update_store": "Success Update Store",
+        "failed_update_store": "Failed Update Store"
+
     }
 }

@@ -23,10 +23,15 @@
     },
     "store_registration_screen": {
         "store_register": "Daftar Toko",
+        "store_update": "Ubah Toko",
         "store_name": "Nama Toko",
         "store_phone": "Telepon Toko",
         "store_address": "Alamat Toko",
         "store_owner_name": "Nama Pemilk Toko",
-        "store_owner_phone": "Telepon Pemilik Toko"
+        "store_owner_phone": "Telepon Pemilik Toko",
+        "success_register_store": "Berhasil Daftar Toko",
+        "success_update_store": "Berhasil Ubah Toko",
+        "failed_update_store": "Gagal Ubah Toko"
+
     }
 }

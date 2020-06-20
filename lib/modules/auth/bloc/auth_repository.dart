@@ -60,7 +60,7 @@ class AuthRepository {
       });
 
       toastSuccess(
-          tr('auth_screen.msg_usr_success_registered', args: [event.username]));
+          tr('auth_screen.msg_usr_success_registered', args: [event.username.capitalize()]));
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(kUserDocIdKey, doc.documentID);
 
@@ -82,7 +82,7 @@ class AuthRepository {
 
       if (!hasEmail) {
         toastError(
-            tr('auth_screen.msg_username_error_login', args: [event.username]));
+            tr('auth_screen.msg_username_error_login', args: [event.username.capitalize()]));
         return null;
       }
 
@@ -104,7 +104,7 @@ class AuthRepository {
           email: email, password: event.password);
 
       toastSuccess(
-          tr('auth_screen.msg_usr_success_login', args: [event.username]));
+          tr('auth_screen.msg_usr_success_login', args: [event.username.capitalize()]));
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(kUserDocIdKey, docId);

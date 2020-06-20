@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:ks_bike_mobile/utils/key.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
