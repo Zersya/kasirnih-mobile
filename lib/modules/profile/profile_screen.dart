@@ -15,6 +15,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            AppBar(
+              title: Text('Pengaturan Profil'),
+              centerTitle: true,
+            ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Ubah Profil'),
@@ -28,6 +32,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {
                 Navigator.of(context)
                     .pushNamed(RouterHelper.kRouteStoreFormState);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.mail),
+              title: Text('Tambah Sarana Baru'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(RouterHelper.kRouteNewItemFacilities);
               },
             ),
           ],

@@ -42,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home), title: Text('Beranda')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.collections), title: Text('Stok Barang')),
+                    icon: Icon(Icons.add_box), title: Text('Stok Barang')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.account_balance_wallet), title: Text('Lap. Keuangan')),
+                    icon: Icon(Icons.trending_up), title: Text('Lap. Keuangan')),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), title: Text('Profil')),
               ],

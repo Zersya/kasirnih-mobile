@@ -6,8 +6,8 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key key,
     @required this.label,
-    @required this.node,
     @required this.controller,
+    this.node,
     this.onTap,
     this.isObsecure = false,
     this.onVisibleTap,

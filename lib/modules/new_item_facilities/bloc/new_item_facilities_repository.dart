@@ -1,58 +1,63 @@
-part of 'store_form_bloc.dart';
+part of 'new_item_facilities_bloc.dart';
 
-class StoreFormRepository {
+class NewItemFacilitiesRepository {
   final Firestore _firestore = Firestore.instance;
 
-  Future<Store> loadStore() async {
+  Future<List<NewItemFacilities>> loadListNewFacilities() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
         .document(userKey)
-        .collection('stores')
+        .collection('new_item_facilities')
         .getDocuments();
 
-    if (doc.documents.isNotEmpty) {
-      Store store = Store.fromMap(doc.documents.first.data);
-      return store;
-    } else {
-      return null;
-    }
+    List<NewItemFacilities> listName =
+        doc.documents.map((e) => NewItemFacilities.fromMap(e.data)).toList();
+    return listName;
   }
 
-  Future<bool> registerStore(StoreFormRegister event) async {
+  Future<bool> addNewFacilities(NewItemFacilitiesAdd event) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
 
     final doc = await _firestore.collection('users').document(userKey);
+    final collection = doc.collection('new_item_facilities');
 
-    await doc.collection('stores').add(event.store.toMap());
-    toastSuccess(tr('store_registration_screen.success_register_store'));
+    final NewItemFacilities item = NewItemFacilities(
+        collection.document().documentID, event.itemName, false);
+
+    await collection.document(item.docId).setData(item.toMap());
+    toastSuccess(
+        tr('new_item_facilities_screen.success_add_new_item_facilities'));
     return true;
   }
 
-  Future<bool> updateStore(StoreFormUpdate event) async {
+  Future<bool> updateValue(NewItemFacilitiesChangeValue event) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
         .document(userKey)
-        .collection('stores')
+        .collection('new_item_facilities')
         .getDocuments();
-    final ref = doc.documents.first.reference;
+
+    final ref = doc.documents
+        .firstWhere((element) => event.item.docId == element.documentID)
+        .reference;
+
     final result = await _firestore.runTransaction((transaction) async {
       final freshsnap =
           await transaction.get(ref).catchError((err) => throw err);
-      await transaction.update(freshsnap.reference, event.store.toMap());
+      await transaction.update(freshsnap.reference, event.item.toMap());
     }).catchError((err) {
       toastError(err.message);
       return null;
     });
 
     if (result != null) {
-      toastSuccess(tr('store_registration_screen.success_update_store'));
       return true;
     } else {
       return false;

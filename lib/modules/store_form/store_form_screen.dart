@@ -81,12 +81,13 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
         listener: (context, state) {
           if (state is StoreFormStateInitial) {
             final Store store = state.props[1];
-
-            _storeNameC.text = store.storeName;
-            _storePhoneC.text = store.storePhone;
-            _storeAddressC.text = store.storeAddress;
-            _storeOwnerNameC.text = store.storeOwnerName;
-            _storeOwnerPhoneC.text = store.storeOwnerPhone;
+            if (store != null) {
+              _storeNameC.text = store.storeName;
+              _storePhoneC.text = store.storePhone;
+              _storeAddressC.text = store.storeAddress;
+              _storeOwnerNameC.text = store.storeOwnerName;
+              _storeOwnerPhoneC.text = store.storeOwnerPhone;
+            }
           } else if (state is StoreFormStateSuccess) {
             Navigator.of(context).pop();
           }

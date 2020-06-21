@@ -33,5 +33,13 @@
         "success_update_store": "Success Update Store",
         "failed_update_store": "Failed Update Store"
 
+    },
+    "new_item_facilities_screen": {
+        "new_item_facilities": "New Item Facilities",
+        "list_new_item_facilities": "List New Item Facilities",
+        "item_name": "Item Name",
+        "add_new_item_facilitis": "Add New Item Facilities",
+        "see_all": "See All",
+        "success_add_new_item_facilities": "Success Add New Item Facilities"
     }
 }

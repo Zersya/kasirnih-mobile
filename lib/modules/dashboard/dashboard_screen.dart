@@ -45,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 return _bodyHasStore(context);
               }
 
-              return _bodyEmptyStore(context);
+              return Expanded(child: _bodyEmptyStore(context));
             }),
       ],
     );
@@ -81,9 +81,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     style: Theme.of(context).textTheme.subtitle1,
                   ).tr(),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
+                    onTap: () async {
+                      await Navigator.of(context)
                           .pushNamed(RouterHelper.kRouteStoreFormState);
+                      _dashboardBloc.add(DashboardHasStore());
                     },
                     child: Text(
                       'dashboard_screen.register_your_store',

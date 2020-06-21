@@ -33,5 +33,13 @@
         "success_update_store": "Berhasil Ubah Toko",
         "failed_update_store": "Gagal Ubah Toko"
 
+    },
+    "new_item_facilities_screen": {
+        "new_item_facilities": "Sarana Barang Baru",
+        "list_new_item_facilities": "Daftar Sarana Barang Baru",
+        "item_name": "Nama Barang",
+        "add_new_item_facilitis": "Tambah Sarana Barang Baru",
+        "see_all": "Lihat Semua",
+        "success_add_new_item_facilities": "Berhasil menambah sarana"
     }
 }
