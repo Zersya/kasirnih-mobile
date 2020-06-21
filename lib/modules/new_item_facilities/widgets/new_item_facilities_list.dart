@@ -14,7 +14,7 @@ class NewItemFacilitiesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-          child: BlocBuilder<NewItemFacilitiesBloc, NewItemFacilitiesState>(
+      child: BlocBuilder<NewItemFacilitiesBloc, NewItemFacilitiesState>(
           bloc: _bloc,
           builder: (context, state) {
             final List<NewItemFacilities> listItem = state.props[1];
@@ -27,18 +27,21 @@ class NewItemFacilitiesList extends StatelessWidget {
                 itemCount: listItem.length > 10 ? 10 : listItem.length,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    onTap: () => onTap(listItem[index]),
                     leading: Checkbox(
                       value: listItem[index].isBought,
-                      onChanged: (value) {
-                        final item = listItem[index];
-                        item.isBought = value;
-                        _bloc.add(NewItemFacilitiesChangeValue(item));
-                      },
+                      onChanged: (value) => onTap(listItem[index]),
                     ),
                     title: Text(listItem[index].name),
                   );
                 });
           }),
     );
+  }
+
+  void onTap(NewItemFacilities oldItem) {
+    final item = oldItem;
+    item.isBought = !oldItem.isBought;
+    _bloc.add(NewItemFacilitiesChangeValue(item));
   }
 }
