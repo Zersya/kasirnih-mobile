@@ -5,11 +5,13 @@ class NewItemFacilitiesList extends StatelessWidget {
     Key key,
     @required NewItemFacilitiesBloc bloc,
     this.shrinkWrap = true,
+    this.itemLengthFollow = false,
   })  : _bloc = bloc,
         super(key: key);
 
   final NewItemFacilitiesBloc _bloc;
   final bool shrinkWrap;
+  final bool itemLengthFollow;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +21,16 @@ class NewItemFacilitiesList extends StatelessWidget {
           builder: (context, state) {
             final List<NewItemFacilities> listItem = state.props[1];
             if (listItem.isEmpty) {
-              return Center(child: Text('Tidak Ada Daftar Beli'));
+              return Center(
+                  child:
+                      Text('new_item_facilities_screen.no_list_bought').tr());
             }
             return ListView.builder(
                 shrinkWrap: shrinkWrap,
                 physics: ScrollPhysics(),
-                itemCount: listItem.length > 10 ? 10 : listItem.length,
+                itemCount: itemLengthFollow
+                    ? listItem.length
+                    : listItem.length > 10 ? 10 : listItem.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () => onTap(listItem[index]),

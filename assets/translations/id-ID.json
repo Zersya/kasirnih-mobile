@@ -40,6 +40,7 @@
         "item_name": "Nama Barang",
         "add_new_item_facilitis": "Tambah Sarana Barang Baru",
         "see_all": "Lihat Semua",
-        "success_add_new_item_facilities": "Berhasil menambah sarana"
+        "success_add_new_item_facilities": "Berhasil menambah sarana",
+        "no_list_bought": "Tidak Ada Daftar Beli"
     }
 }

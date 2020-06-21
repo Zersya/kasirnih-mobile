@@ -14,7 +14,11 @@ class NewItemFacilitiesListScreen extends StatelessWidget {
         children: <Widget>[
           Hero(
             tag: bloc,
-            child: NewItemFacilitiesList(bloc: bloc, shrinkWrap: false),
+            child: NewItemFacilitiesList(
+              bloc: bloc,
+              shrinkWrap: false,
+              itemLengthFollow: true,
+            ),
           ),
           _loading(context),
         ],
