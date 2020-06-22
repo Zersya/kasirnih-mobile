@@ -20,18 +20,28 @@ class RaisedButtonGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Gradient defaultGradient = gradient;
+    if (gradient == null) {
+      defaultGradient = LinearGradient(
+        colors: <Color>[
+          Theme.of(context).colorScheme.primary,
+          Theme.of(context).colorScheme.secondary,
+        ],
+      );
+    }
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: borderRadius,
-        gradient: gradient, boxShadow: [
-        BoxShadow(
-          color: Colors.grey[500],
-          offset: Offset(0.0, 1.5),
-          blurRadius: 1.5,
-        ),
-      ]),
+          borderRadius: borderRadius,
+          gradient: defaultGradient,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[500],
+              offset: Offset(0.0, 1.5),
+              blurRadius: 1.5,
+            ),
+          ]),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
