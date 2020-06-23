@@ -30,6 +30,7 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical:8.0),
       child: TextFormField(
         onTap: onTap,
+        readOnly: onTap != null,
         obscureText: isObsecure,
         focusNode: node,
         controller: controller,

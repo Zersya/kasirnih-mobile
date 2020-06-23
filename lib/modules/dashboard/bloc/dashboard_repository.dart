@@ -13,8 +13,10 @@ class DashboardRepository {
         .collection('stores');
 
     final docs = await collection.getDocuments();
-
-    return docs.documents.isNotEmpty;
+    final isHasStore = docs.documents.isNotEmpty;
+    if (isHasStore) {
+      await prefs.setString(kDefaultStore, docs.documents.first.documentID);
+    }
+    return isHasStore;
   }
-
 }

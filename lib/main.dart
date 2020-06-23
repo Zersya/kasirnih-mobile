@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
     surface: Colors.white,
     background: Colors.white,
     error: const Color(0xffb00020),
-    onPrimary: Colors.black87,
-    onSecondary: Colors.black87,
+    onPrimary: Colors.white,
+    onSecondary: Colors.white,
     onSurface: Colors.black87,
     brightness: Brightness.light,
   );

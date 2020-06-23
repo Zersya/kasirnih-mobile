@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/modules/invoice_debt/bloc/invoice_debt_bloc.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
@@ -23,6 +28,8 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   final _supplierForm = GlobalKey<FormState>();
 
   final InvoiceDebtBloc _bloc = InvoiceDebtBloc();
+
+  final picker = ImagePicker();
 
   @override
   void initState() {
@@ -50,9 +57,11 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
         bloc: _bloc,
         listener: (context, state) {
           if (state is InvoiceDebtInitial) {
-          } else if (state is InvoiceDebtSuccess) {
+          } else if (state is InvoiceDebtSuccessSupplier) {
             _supplierName.clear();
             _bloc.add(InvoiceDebtLoad());
+          } else if (state is InvoiceDebtSuccessInvoice) {
+            Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
@@ -88,19 +97,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: Theme.of(context).primaryColor),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: FlatButton(
-                        child: Text('Pilih foto tagihan'),
-                        onPressed: () {},
-                      ),
-                    ),
+                    child: getImage(context),
                   ),
                 ),
               ),
@@ -122,17 +119,21 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                             return LinearProgressIndicator();
                           }
                           final List<Supplier> listSupplier = state.props[1];
+                          final Supplier value = state.props[3];
 
-                          return DropdownButton(
+                          return DropdownButton<Supplier>(
                               isExpanded: true,
                               hint: Text('Pilih Suplier'),
+                              value: value,
                               items: listSupplier
                                   .map((e) => DropdownMenuItem(
                                         child: Text(e.name),
-                                        value: e.docId,
+                                        value: e,
                                       ))
                                   .toList(),
-                              onChanged: (value) {});
+                              onChanged: (value) {
+                                _bloc.add(InvoiceDebtChooseSupplier(value));
+                              });
                         }),
                   ),
                   FlatButton(
@@ -144,13 +145,28 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                 ],
               ),
               SizedBox(height: 8.0),
-              CustomTextField(
-                controller: _dueDateC,
-                label: 'Tanggal Jatuh Tempo',
-              ),
+              BlocConsumer<InvoiceDebtBloc, InvoiceDebtState>(
+                  bloc: _bloc,
+                  listener: (context, state) {
+                    final DateTime dt = state.props[4];
+                    if (dt != null) {
+                      _dueDateC.text = DateFormat.yMMMMEEEEd('id').format(dt);
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomTextField(
+                      controller: _dueDateC,
+                      label: 'Tanggal Jatuh Tempo',
+                      onTap: () {
+                        _selectDate(context, state.props[4]);
+                      },
+                    );
+                  }),
               SizedBox(height: 8.0),
               CustomTextField(
                 controller: _totalDebtC,
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                 label: 'Total Hutang',
               ),
               SizedBox(height: 16.0),
@@ -175,9 +191,94 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
     );
   }
 
-  _submitInvoice() {}
+  Future<Null> _selectDate(BuildContext context, DateTime selectedDate) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate ?? DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      _bloc.add(InvoiceDebtChooseDate(picked));
+    }
+  }
+
+  Widget getImage(BuildContext context) {
+    return BlocBuilder<InvoiceDebtBloc, InvoiceDebtState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          final String imagePath = state.props[2];
+          if (imagePath != null) {
+            return Image.file(File(imagePath));
+          }
+          return Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: FlatButton(
+              child: Text('Pilih foto tagihan'),
+              onPressed: () {
+                _dialogChooseImage(context);
+              },
+            ),
+          );
+        });
+  }
+
+  _submitInvoice() {
+    _bloc.add(
+        InvoiceDebtAddInvoice(_invoiceNameC.text, int.parse(_totalDebtC.text)));
+  }
+
   _submitSupplier() {
     _bloc.add(InvoiceDebtAddSupplier(_supplierName.text));
+  }
+
+  _getImage(ImageSource source) async {
+    final pickedFile = await picker.getImage(source: source, imageQuality: 70);
+
+    _bloc.add(InvoiceDebtGetImage(pickedFile.path));
+  }
+
+  _dialogChooseImage(context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(
+                  height: 8.0,
+                ),
+                Text(
+                  'Pilih Sumber Gambar',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                ListTile(
+                  title: Text('Kamera'),
+                  onTap: () {
+                    _getImage(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                    title: Text('Gallery'),
+                    onTap: () {
+                      _getImage(ImageSource.gallery);
+                      Navigator.of(context).pop();
+                    }),
+              ],
+            ),
+          );
+        });
   }
 
   _dialogAddSupplier(context) {
