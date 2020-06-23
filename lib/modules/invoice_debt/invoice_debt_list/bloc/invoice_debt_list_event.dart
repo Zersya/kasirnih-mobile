@@ -9,3 +9,11 @@ abstract class InvoiceDebtListEvent extends Equatable {
 }
 
 class InvoiceDebtListLoadInvoice extends InvoiceDebtListEvent {}
+
+class InvoiceDebtListUpdateHasPaid extends InvoiceDebtListEvent {
+  final String docId;
+  final int totalDebt;
+  final bool isPaid;
+
+  InvoiceDebtListUpdateHasPaid(this.docId, this.isPaid, this.totalDebt);
+}

@@ -71,21 +71,21 @@ class InvoiceDebtFormRepository {
       );
 
       await collection.document(invoice.docId).setData(invoice.toMap());
-
-      final result = await _firestore.runTransaction((transaction) async {
-        final ref = doc.collection('stores').document(storeKey);
-        final freshsnap =
-            await transaction.get(ref).catchError((err) => throw err);
-        final currentTotal = freshsnap.data['total_invoice_debt'] ?? 0;
-        await transaction.update(freshsnap.reference,
-            {'total_invoice_debt': currentTotal + invoice.totalDebt});
-      }).catchError((err) {
+      try {
+        final result = await _firestore.runTransaction((transaction) async {
+          final ref = doc.collection('stores').document(storeKey);
+          final freshsnap =
+              await transaction.get(ref).catchError((err) => throw err);
+          final currentTotal = freshsnap.data['total_invoice_debt'] ?? 0;
+          await transaction.update(freshsnap.reference,
+              {'total_invoice_debt': currentTotal + invoice.totalDebt});
+        });
+        toastSuccess('Sukses menambahkan Tagihan Hutang');
+        return true;
+      } catch (err) {
         toastError(err.message);
         return null;
-      });
-
-      toastSuccess('Sukses menambahkan Tagihan Hutang');
-      return true;
+      }
     } on SocketException {
       toastError('No Connection');
       return false;

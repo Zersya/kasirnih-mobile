@@ -66,8 +66,13 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
   }
 
   Widget _body(BuildContext context) {
-    return BlocBuilder<InvoiceDebtListBloc, InvoiceDebtListState>(
+    return BlocConsumer<InvoiceDebtListBloc, InvoiceDebtListState>(
         bloc: _bloc,
+        listener: (context, state) {
+          if (state is InvoiceDebtListSuccessUpdate) {
+            _bloc.add(InvoiceDebtListLoadInvoice());
+          }
+        },
         builder: (context, state) {
           final List<Invoice> listItem = state.props[1];
           if (listItem.isEmpty) {
@@ -116,7 +121,9 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                 Container(
                   width: 250,
                   height: 250,
-                  child: SimpleChart.withSampleData(),
+                  child: SimpleChart.withRealData(listItem.where((element) => !element.isPaid)
+                      .map((e) => InvoiceDebtChart(e.supplierName, e.totalDebt))
+                      .toList()),
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -151,14 +158,48 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                                 width: double.infinity,
                               ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(DateFormat.yMMMMEEEEd('id').format(dt)),
-                                  Text(invoice.invoiceName),
-                                  Text(currencyFormatter
-                                      .format(invoice.totalDebt)),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        DateFormat.yMMMMEEEEd('id').format(dt),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2
+                                            .copyWith(
+                                                color: invoice.isPaid
+                                                    ? Colors.green
+                                                    : Colors.red),
+                                      ),
+                                      Text(invoice.invoiceName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle2),
+                                      Text(
+                                          currencyFormatter
+                                              .format(invoice.totalDebt),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      _showBottomSheet(context, invoice, state);
+                                    },
+                                    child: Icon(
+                                      Icons.more_vert,
+                                      size: 34,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -167,6 +208,23 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                       );
                     })
               ],
+            ),
+          );
+        });
+  }
+
+  _showBottomSheet(context, Invoice invoice, InvoiceDebtListState state) {
+    showBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: ListTile(
+              title: Text('Tandai Tagihan Terbayar'),
+              onTap: () {
+                _bloc.add(InvoiceDebtListUpdateHasPaid(
+                    invoice.docId, !invoice.isPaid, invoice.totalDebt));
+                Navigator.of(context).pop();
+              },
             ),
           );
         });

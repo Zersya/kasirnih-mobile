@@ -23,3 +23,12 @@ class InvoiceDebtListLoading extends InvoiceDebtListState {
 
   InvoiceDebtListLoading(this.version, this.listInvoice, this.total) : super(propss: [version, listInvoice, total]);
 }
+
+
+class InvoiceDebtListSuccessUpdate extends InvoiceDebtListState {
+  final int version;
+  final List<Invoice> listInvoice;
+  final int total;
+
+  InvoiceDebtListSuccessUpdate(this.version, this.listInvoice, this.total) : super(propss: [version, listInvoice, total]);
+}

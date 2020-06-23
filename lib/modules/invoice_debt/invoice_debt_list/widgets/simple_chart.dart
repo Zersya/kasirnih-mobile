@@ -15,6 +15,13 @@ class SimpleChart extends StatelessWidget {
     );
   }
 
+  factory SimpleChart.withRealData(List<InvoiceDebtChart> list){
+    return SimpleChart(
+      _realData(list),
+      animate: !kDebugMode,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return charts.PieChart(
@@ -24,6 +31,20 @@ class SimpleChart extends StatelessWidget {
           charts.ArcLabelDecorator(
               labelPosition: charts.ArcLabelPosition.auto)
         ]));
+  }
+
+  /// Create series list with one series
+  static List<charts.Series<InvoiceDebtChart, String>> _realData(List<InvoiceDebtChart> list) {
+    final data = list;
+
+    return [
+      charts.Series<InvoiceDebtChart, String>(
+        id: 'Sales',
+        domainFn: (InvoiceDebtChart sales, _) => sales.name,
+        measureFn: (InvoiceDebtChart sales, _) => sales.sales,
+        data: data,
+      )
+    ];
   }
 
   /// Create series list with one series
