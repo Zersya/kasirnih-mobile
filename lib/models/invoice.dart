@@ -1,4 +1,3 @@
-import 'package:ks_bike_mobile/models/supplier.dart';
 
 class Invoice {
   final String docId;
@@ -6,11 +5,13 @@ class Invoice {
   final String urlImage;
   final int dueDate;
   final int totalDebt;
+  final String supplierName;
+  final bool isPaid;
   int createdAt;
   String refSupplier;
 
   Invoice(
-      this.docId, this.invoiceName, this.urlImage, this.dueDate, this.totalDebt,
+      this.docId, this.invoiceName, this.urlImage, this.dueDate, this.totalDebt, this.supplierName, this.isPaid,
       {this.createdAt, this.refSupplier});
 
   factory Invoice.fromMap(Map<String, dynamic> map) => Invoice(
@@ -19,7 +20,10 @@ class Invoice {
         map['url_image'],
         map['due_date'],
         map['total_debt'],
+        map['supplier_name'],
+        map['is_paid'],
         createdAt: map['created_at'],
+        refSupplier: map['supplier_name'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -29,6 +33,8 @@ class Invoice {
         'due_date': this.dueDate,
         'total_debt': this.totalDebt,
         'created_at': this.createdAt,
+        'is_paid': this.isPaid,
+        'supplier_name': this.supplierName,
         'refSupplier': this.refSupplier,
       };
 }

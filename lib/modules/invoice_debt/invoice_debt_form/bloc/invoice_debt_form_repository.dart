@@ -1,6 +1,6 @@
-part of 'invoice_debt_bloc.dart';
+part of 'invoice_debt_form_bloc.dart';
 
-class InvoiceDebtRepository {
+class InvoiceDebtFormRepository {
   final Firestore _firestore = Firestore.instance;
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: kStorageBucket);
@@ -20,7 +20,7 @@ class InvoiceDebtRepository {
     return list;
   }
 
-  Future<bool> addSupplier(InvoiceDebtAddSupplier event) async {
+  Future<bool> addSupplier(InvoiceDebtFormAddSupplier event) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
 
@@ -41,7 +41,7 @@ class InvoiceDebtRepository {
   }
 
   Future<bool> addInvoice(
-      InvoiceDebtAddInvoice event, InvoiceDebtState state) async {
+      InvoiceDebtFormAddInvoice event, InvoiceDebtFormState state) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final userKey = prefs.getString(kUserDocIdKey);
@@ -64,11 +64,26 @@ class InvoiceDebtRepository {
         imageUrl,
         dueDate.millisecondsSinceEpoch,
         event.totalDebt,
+        supplierDocId.name,
+        false,
         refSupplier: docSupplier.path,
         createdAt: timestamp,
       );
 
       await collection.document(invoice.docId).setData(invoice.toMap());
+
+      final result = await _firestore.runTransaction((transaction) async {
+        final ref = doc.collection('stores').document(storeKey);
+        final freshsnap =
+            await transaction.get(ref).catchError((err) => throw err);
+        final currentTotal = freshsnap.data['total_invoice_debt'] ?? 0;
+        await transaction.update(freshsnap.reference,
+            {'total_invoice_debt': currentTotal + invoice.totalDebt});
+      }).catchError((err) {
+        toastError(err.message);
+        return null;
+      });
+
       toastSuccess('Sukses menambahkan Tagihan Hutang');
       return true;
     } on SocketException {

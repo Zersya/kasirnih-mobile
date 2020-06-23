@@ -6,10 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ks_bike_mobile/models/supplier.dart';
-import 'package:ks_bike_mobile/modules/invoice_debt/bloc/invoice_debt_bloc.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+
+import 'bloc/invoice_debt_form_bloc.dart';
 
 class InvoiceDebtFormScreen extends StatefulWidget {
   InvoiceDebtFormScreen({Key key}) : super(key: key);
@@ -27,14 +28,14 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _supplierForm = GlobalKey<FormState>();
 
-  final InvoiceDebtBloc _bloc = InvoiceDebtBloc();
+  final InvoiceDebtFormBloc _bloc = InvoiceDebtFormBloc();
 
   final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    _bloc.add(InvoiceDebtLoad());
+    _bloc.add(InvoiceDebtFormLoadSupplier());
   }
 
   @override
@@ -53,19 +54,19 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   }
 
   Widget _loading(context) {
-    return BlocConsumer<InvoiceDebtBloc, InvoiceDebtState>(
+    return BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
         bloc: _bloc,
         listener: (context, state) {
-          if (state is InvoiceDebtInitial) {
-          } else if (state is InvoiceDebtSuccessSupplier) {
+          if (state is InvoiceDebtFormInitial) {
+          } else if (state is InvoiceDebtFormSuccessSupplier) {
             _supplierName.clear();
-            _bloc.add(InvoiceDebtLoad());
-          } else if (state is InvoiceDebtSuccessInvoice) {
+            _bloc.add(InvoiceDebtFormLoadSupplier());
+          } else if (state is InvoiceDebtFormSuccessInvoice) {
             Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
-          if (state is InvoiceDebtLoading) {
+          if (state is InvoiceDebtFormLoading) {
             return CustomLoading();
           } else {
             return SizedBox();
@@ -112,10 +113,10 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: BlocBuilder<InvoiceDebtBloc, InvoiceDebtState>(
+                    child: BlocBuilder<InvoiceDebtFormBloc, InvoiceDebtFormState>(
                         bloc: _bloc,
                         builder: (context, state) {
-                          if (state is InvoiceDebtLoading) {
+                          if (state is InvoiceDebtFormLoading) {
                             return LinearProgressIndicator();
                           }
                           final List<Supplier> listSupplier = state.props[1];
@@ -132,7 +133,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                _bloc.add(InvoiceDebtChooseSupplier(value));
+                                _bloc.add(InvoiceDebtFormChooseSupplier(value));
                               });
                         }),
                   ),
@@ -145,7 +146,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                 ],
               ),
               SizedBox(height: 8.0),
-              BlocConsumer<InvoiceDebtBloc, InvoiceDebtState>(
+              BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
                   bloc: _bloc,
                   listener: (context, state) {
                     final DateTime dt = state.props[4];
@@ -198,12 +199,12 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
         firstDate: DateTime.now(),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
-      _bloc.add(InvoiceDebtChooseDate(picked));
+      _bloc.add(InvoiceDebtFormChooseDate(picked));
     }
   }
 
   Widget getImage(BuildContext context) {
-    return BlocBuilder<InvoiceDebtBloc, InvoiceDebtState>(
+    return BlocBuilder<InvoiceDebtFormBloc, InvoiceDebtFormState>(
         bloc: _bloc,
         builder: (context, state) {
           final String imagePath = state.props[2];
@@ -229,17 +230,17 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
 
   _submitInvoice() {
     _bloc.add(
-        InvoiceDebtAddInvoice(_invoiceNameC.text, int.parse(_totalDebtC.text)));
+        InvoiceDebtFormAddInvoice(_invoiceNameC.text, int.parse(_totalDebtC.text)));
   }
 
   _submitSupplier() {
-    _bloc.add(InvoiceDebtAddSupplier(_supplierName.text));
+    _bloc.add(InvoiceDebtFormAddSupplier(_supplierName.text));
   }
 
   _getImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source, imageQuality: 70);
 
-    _bloc.add(InvoiceDebtGetImage(pickedFile.path));
+    _bloc.add(InvoiceDebtFormGetImage(pickedFile.path));
   }
 
   _dialogChooseImage(context) {

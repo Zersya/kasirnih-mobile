@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ks_bike_mobile/modules/auth/auth_screen.dart';
 import 'package:ks_bike_mobile/modules/home/home_screen.dart';
-import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form_screen.dart';
-import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_screen.dart';
+import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form/invoice_debt_form_screen.dart';
+import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_list/invoice_debt_list_screen.dart';
 import 'package:ks_bike_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
 import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
 import 'package:ks_bike_mobile/modules/store_form/store_form_screen.dart';
@@ -34,7 +34,7 @@ class RouterHelper {
         return MaterialPageRoute(
             builder: (_) => NewItemFacilitiesListScreen(settings.arguments));
       case kRouteInvoiceDebt:
-        return MaterialPageRoute(builder: (_) => InvoiceDebtScreen());
+        return MaterialPageRoute(builder: (_) => InvoiceDebtListScreen());
 
       case kRouteInvoiceDebtForm:
         return MaterialPageRoute(builder: (_) => InvoiceDebtFormScreen());
