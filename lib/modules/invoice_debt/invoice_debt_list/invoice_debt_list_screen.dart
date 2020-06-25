@@ -6,6 +6,7 @@ import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/invoice.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'bloc/invoice_debt_list_bloc.dart';
 import 'widgets/simple_chart.dart';
@@ -30,7 +31,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tagihan Hutang'),
+        title: Text('invoice_debt_screen.invoice_debt').tr(),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -76,7 +77,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
         builder: (context, state) {
           final List<Invoice> listItem = state.props[1];
           if (listItem.isEmpty) {
-            return Center(child: Text('Tidak ada data'));
+            return Center(child: Text('messages.no_data').tr());
           }
           return SingleChildScrollView(
             child: Column(
@@ -97,14 +98,14 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                           alignment: WrapAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Total Tagihan Hutang',
+                              'invoice_debt_screen.total_invoice_debt',
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1
                                   .copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
-                            ),
+                            ).tr(),
                             Text(currencyFormatter.format(state.props[2]),
                                 style: Theme.of(context)
                                     .textTheme
@@ -147,7 +148,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                               SizedBox(
                                 height: 150,
                                 child: Center(
-                                  child: Text('Tidak ada gambar'),
+                                  child: Text('messages.no_image').tr(),
                                 ),
                               ),
                             if (invoice.urlImage.isNotEmpty)
@@ -219,7 +220,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
         builder: (context) {
           return Container(
             child: ListTile(
-              title: Text('Tandai Tagihan Terbayar'),
+              title: Text('invoice_debt_screen.mark_as_invoice_paid').tr(),
               onTap: () {
                 _bloc.add(InvoiceDebtListUpdateHasPaid(
                     invoice.docId, !invoice.isPaid, invoice.totalDebt));

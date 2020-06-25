@@ -1,8 +1,13 @@
 {
+    "messages": {
+        "no_data": "No Data",
+        "no_image": "No Image"
+    },
     "error": {
         "no_connection": "No Connection"
     },
     "widgets": {
+        "choose_image_source": "Choose Image Source",
         "field": {
             "msg_empty": "Field {} cannot empty"
         }
@@ -43,5 +48,19 @@
         "success_add_new_item_facilities": "Success Add New Item Facilities",
         "no_list_bought": "No List Bought"
 
+    },
+    "invoice_debt_screen": {
+        "invoice_debt": "Invoice Debt",
+        "total_invoice_debt": "Total Invoice Debt",
+        "mark_as_invoice_paid": "Mark as Paid Invoice",
+        "add_invoice_debt": "Add Invoice Debt",
+        "upload_photo_invoice": "Upload Photo Invoice",
+        "choose_image_invoice":"Choose Image Invoice",
+        "invoice_name": "Invoice Name",
+        "choose_supplier": "Choose Supplier",
+        "due_date": "Due Date",
+        "total_debt": "Total Debt",
+        "add_supplier": "Add Supplier",
+        "supplier_name": "Supplier Name"
     }
 }

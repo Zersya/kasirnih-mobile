@@ -42,7 +42,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tambah Tagihan Hutang'),
+        title: Text('invoice_debt_screen.add_invoice_debt'),
       ),
       body: Stack(
         children: <Widget>[
@@ -84,12 +84,12 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Unggah Foto Tagihan',
+                'invoice_debt_screen.upload_photo_invoice',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
                     .copyWith(fontWeight: FontWeight.bold),
-              ),
+              ).tr(),
               SizedBox(
                 height: 8.0,
               ),
@@ -107,13 +107,14 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
               ),
               CustomTextField(
                 controller: _invoiceNameC,
-                label: 'Nama Tagihan',
+                label: tr('invoice_debt_screen.invoice_name'),
               ),
               SizedBox(height: 8.0),
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: BlocBuilder<InvoiceDebtFormBloc, InvoiceDebtFormState>(
+                    child: BlocBuilder<InvoiceDebtFormBloc,
+                            InvoiceDebtFormState>(
                         bloc: _bloc,
                         builder: (context, state) {
                           if (state is InvoiceDebtFormLoading) {
@@ -124,7 +125,8 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
 
                           return DropdownButton<Supplier>(
                               isExpanded: true,
-                              hint: Text('Pilih Suplier'),
+                              hint: Text('invoice_debt_screen.choose_supplier')
+                                  .tr(),
                               value: value,
                               items: listSupplier
                                   .map((e) => DropdownMenuItem(
@@ -157,7 +159,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                   builder: (context, state) {
                     return CustomTextField(
                       controller: _dueDateC,
-                      label: 'Tanggal Jatuh Tempo',
+                      label: tr('invoice_debt_screen.due_date'),
                       onTap: () {
                         _selectDate(context, state.props[4]);
                       },
@@ -168,7 +170,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                 controller: _totalDebtC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                label: 'Total Hutang',
+                label: tr('invoice_debt_screen.total_debt'),
               ),
               SizedBox(height: 16.0),
               RaisedButtonGradient(
@@ -176,9 +178,9 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                   height: 43,
                   borderRadius: BorderRadius.circular(4),
                   child: Text(
-                    'Tambah Tagihan',
+                    'invoice_debt_screen.add_invoice_debt',
                     style: Theme.of(context).textTheme.button,
-                  ),
+                  ).tr(),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       FocusScope.of(context).unfocus();
@@ -219,7 +221,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: FlatButton(
-              child: Text('Pilih foto tagihan'),
+              child: Text('invoice_debt_screen.choose_image_invoice').tr(),
               onPressed: () {
                 _dialogChooseImage(context);
               },
@@ -229,8 +231,8 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   }
 
   _submitInvoice() {
-    _bloc.add(
-        InvoiceDebtFormAddInvoice(_invoiceNameC.text, int.parse(_totalDebtC.text)));
+    _bloc.add(InvoiceDebtFormAddInvoice(
+        _invoiceNameC.text, int.parse(_totalDebtC.text)));
   }
 
   _submitSupplier() {
@@ -257,9 +259,9 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                   height: 8.0,
                 ),
                 Text(
-                  'Pilih Sumber Gambar',
+                  'widgets.choose_image_source',
                   style: Theme.of(context).textTheme.subtitle1,
-                ),
+                ).tr(),
                 SizedBox(
                   height: 16.0,
                 ),
@@ -298,23 +300,23 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                     height: 8.0,
                   ),
                   Text(
-                    'Tambah Supplier',
+                    'invoice_debt_screen.add_supplier',
                     style: Theme.of(context).textTheme.subtitle1,
-                  ),
+                  ).tr(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
                       controller: _supplierName,
-                      label: 'Nama Supplier',
+                      label: tr('invoice_debt_screen.supplier_name'),
                     ),
                   ),
                   RaisedButtonGradient(
                       width: double.infinity,
                       height: 43,
                       child: Text(
-                        'Tambah Supplier',
+                        'invoice_debt_screen.add_supplier',
                         style: Theme.of(context).textTheme.button,
-                      ),
+                      ).tr(),
                       onPressed: () {
                         if (_supplierForm.currentState.validate()) {
                           FocusScope.of(_supplierForm.currentContext).unfocus();

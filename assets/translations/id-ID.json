@@ -1,8 +1,13 @@
 {
+    "messages": {
+        "no_data": "Tidak ada data",
+        "no_image": "Tidak ada gambar"
+    },
     "error": {
         "no_connection": "Tidak ada jaringan"
     },
     "widgets": {
+        "choose_image_source": "Pilih Sumber Gambar",
         "field": {
             "msg_empty": "Kolom {} tidak boleh kosong"
         }
@@ -32,7 +37,6 @@
         "success_register_store": "Berhasil Daftar Toko",
         "success_update_store": "Berhasil Ubah Toko",
         "failed_update_store": "Gagal Ubah Toko"
-
     },
     "new_item_facilities_screen": {
         "new_item_facilities": "Sarana Barang Baru",
@@ -42,5 +46,19 @@
         "see_all": "Lihat Semua",
         "success_add_new_item_facilities": "Berhasil menambah sarana",
         "no_list_bought": "Tidak Ada Daftar Beli"
+    },
+    "invoice_debt_screen": {
+        "invoice_debt": "Tagihan Hutang",
+        "total_invoice_debt": "Total Tagihan Hutang",
+        "mark_as_invoice_paid": "Tandai sebagai tagihan terbayar",
+        "add_invoice_debt": "Tambah Tagihan Hutang",
+        "upload_photo_invoice": "Upload Foto Tagihan",
+        "choose_image_invoice":"Pilih Foto Tagihan",
+        "invoice_name": "Nama Invoice",
+        "choose_supplier": "Pilih Supplier",
+        "due_date": "Tanggal Jatuh Tempo",
+        "total_debt": "Total Hutang",
+        "add_supplier": "Tambah Suplier",
+        "supplier_name": "Nama Suplier"
     }
 }
