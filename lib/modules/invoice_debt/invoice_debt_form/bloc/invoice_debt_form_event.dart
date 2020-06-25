@@ -24,9 +24,9 @@ class InvoiceDebtFormAddInvoice extends InvoiceDebtFormEvent {
 }
 
 class InvoiceDebtFormChooseSupplier extends InvoiceDebtFormEvent {
-  final Supplier supplier;
+  final int indexSupplier;
 
-  InvoiceDebtFormChooseSupplier(this.supplier);
+  InvoiceDebtFormChooseSupplier(this.indexSupplier);
 }
 
 class InvoiceDebtFormChooseDate extends InvoiceDebtFormEvent {

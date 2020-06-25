@@ -23,7 +23,7 @@ class Invoice {
         map['supplier_name'],
         map['is_paid'],
         createdAt: map['created_at'],
-        refSupplier: map['supplier_name'],
+        refSupplier: map['ref_supplier'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -35,6 +35,6 @@ class Invoice {
         'created_at': this.createdAt,
         'is_paid': this.isPaid,
         'supplier_name': this.supplierName,
-        'refSupplier': this.refSupplier,
+        'ref_supplier': this.refSupplier,
       };
 }

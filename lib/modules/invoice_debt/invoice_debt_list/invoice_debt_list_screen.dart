@@ -79,6 +79,11 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
           if (listItem.isEmpty) {
             return Center(child: Text('messages.no_data').tr());
           }
+          List<InvoiceDebtChart> listDebtChart = listItem
+              .where((element) => !element.isPaid)
+              .map((e) => InvoiceDebtChart(e.supplierName, e.totalDebt))
+              .toList();
+
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -122,9 +127,9 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                 Container(
                   width: 250,
                   height: 250,
-                  child: SimpleChart.withRealData(listItem.where((element) => !element.isPaid)
-                      .map((e) => InvoiceDebtChart(e.supplierName, e.totalDebt))
-                      .toList()),
+                  child: listDebtChart.isEmpty
+                      ? Center(child: Text('invoice_debt_screen.no_debt').tr())
+                      : SimpleChart.withRealData(listDebtChart),
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -220,7 +225,10 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
         builder: (context) {
           return Container(
             child: ListTile(
-              title: Text('invoice_debt_screen.mark_as_invoice_paid').tr(),
+              title: Text(invoice.isPaid
+                      ? 'invoice_debt_screen.mark_as_invoice_not_paid'
+                      : 'invoice_debt_screen.mark_as_invoice_paid')
+                  .tr(),
               onTap: () {
                 _bloc.add(InvoiceDebtListUpdateHasPaid(
                     invoice.docId, !invoice.isPaid, invoice.totalDebt));

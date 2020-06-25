@@ -1,48 +1,47 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ks_bike_mobile/models/supplier.dart';
+import 'package:ks_bike_mobile/models/category.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
 
-import 'bloc/invoice_debt_form_bloc.dart';
+import 'bloc/form_stock_bloc.dart';
 
-class InvoiceDebtFormScreen extends StatefulWidget {
-  InvoiceDebtFormScreen({Key key}) : super(key: key);
+class FormStockScreen extends StatefulWidget {
+  FormStockScreen({Key key}) : super(key: key);
 
   @override
-  _InvoiceDebtFormScreenState createState() => _InvoiceDebtFormScreenState();
+  _FormStockScreenState createState() => _FormStockScreenState();
 }
 
-class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
-  final TextEditingController _invoiceNameC = TextEditingController();
-  final TextEditingController _totalDebtC = TextEditingController();
-  final TextEditingController _dueDateC = TextEditingController();
-  final TextEditingController _supplierName = TextEditingController();
+class _FormStockScreenState extends State<FormStockScreen> {
+  final TextEditingController _itemNameC = TextEditingController();
+  final TextEditingController _totalStockC = TextEditingController();
+  final TextEditingController _buyPrice = TextEditingController();
+  final TextEditingController _sellPrice = TextEditingController();
+  final TextEditingController _categoryName = TextEditingController();
 
+  final FormStockBloc _bloc = FormStockBloc();
   final _formKey = GlobalKey<FormState>();
-  final _supplierForm = GlobalKey<FormState>();
-
-  final InvoiceDebtFormBloc _bloc = InvoiceDebtFormBloc();
-
+  final _categoryForm = GlobalKey<FormState>();
   final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    _bloc.add(InvoiceDebtFormLoadSupplier());
+    _bloc.add(FormStockLoadCategory());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('invoice_debt_screen.add_invoice_debt').tr(),
+        title: Text('form_stock_screen.add_stock').tr(),
       ),
       body: Stack(
         children: <Widget>[
@@ -54,19 +53,19 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   }
 
   Widget _loading(context) {
-    return BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
+    return BlocConsumer<FormStockBloc, FormStockState>(
         bloc: _bloc,
         listener: (context, state) {
-          if (state is InvoiceDebtFormInitial) {
-          } else if (state is InvoiceDebtFormSuccessSupplier) {
-            _supplierName.clear();
-            _bloc.add(InvoiceDebtFormLoadSupplier());
-          } else if (state is InvoiceDebtFormSuccessInvoice) {
+          if (state is FormStockInitial) {
+          } else if (state is FormStockSuccessCategory) {
+            _categoryName.clear();
+            _bloc.add(FormStockLoadCategory());
+          } else if (state is FormStockSuccessItem) {
             Navigator.of(context).pop();
           }
         },
         builder: (context, state) {
-          if (state is InvoiceDebtFormLoading) {
+          if (state is FormStockLoading) {
             return CustomLoading();
           } else {
             return SizedBox();
@@ -84,7 +83,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'invoice_debt_screen.upload_photo_invoice',
+                'form_stock_screen.upload_photo_item',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
@@ -106,75 +105,70 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                 height: 16.0,
               ),
               CustomTextField(
-                controller: _invoiceNameC,
-                label: tr('invoice_debt_screen.invoice_name'),
+                controller: _itemNameC,
+                label: tr('form_stock_screen.item_name'),
               ),
               SizedBox(height: 8.0),
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: BlocBuilder<InvoiceDebtFormBloc,
-                            InvoiceDebtFormState>(
+                    child: BlocBuilder<FormStockBloc, FormStockState>(
                         bloc: _bloc,
                         builder: (context, state) {
-                          if (state is InvoiceDebtFormLoading) {
+                          if (state is FormStockLoading) {
                             return LinearProgressIndicator();
                           }
-                          final List<Supplier> listSupplier = state.props[1];
+                          final List<Category> listCategory = state.props[1];
                           final int value = state.props[3];
 
-                          if (listSupplier.isEmpty) {
+                          if (listCategory.isEmpty) {
                             return Text('messages.no_data').tr();
                           }
 
                           return DropdownButton<int>(
                               isExpanded: true,
-                              hint: Text('invoice_debt_screen.choose_supplier')
+                              hint: Text('form_stock_screen.choose_category')
                                   .tr(),
                               value: value,
-                              items: listSupplier
+                              items: listCategory
                                   .map((e) => DropdownMenuItem(
                                         child: Text(e.name),
-                                        value: listSupplier.indexOf(e),
+                                        value: listCategory.indexOf(e),
                                       ))
                                   .toList(),
                               onChanged: (value) {
-                                _bloc.add(InvoiceDebtFormChooseSupplier(value));
+                                _bloc.add(FormStockChooseCategory(value));
                               });
                         }),
                   ),
                   FlatButton(
                     child: Icon(Icons.add),
                     onPressed: () {
-                      _dialogAddSupplier(context);
+                      _dialogAddCategory(context);
                     },
                   ),
                 ],
               ),
               SizedBox(height: 8.0),
-              BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
-                  bloc: _bloc,
-                  listener: (context, state) {
-                    final DateTime dt = state.props[4];
-                    if (dt != null) {
-                      _dueDateC.text = DateFormat.yMMMMEEEEd('id').format(dt);
-                    }
-                  },
-                  builder: (context, state) {
-                    return CustomTextField(
-                      controller: _dueDateC,
-                      label: tr('invoice_debt_screen.due_date'),
-                      onTap: () {
-                        _selectDate(context, state.props[4]);
-                      },
-                    );
-                  }),
-              SizedBox(height: 8.0),
               CustomTextField(
-                controller: _totalDebtC,
+                controller: _totalStockC,
                 keyboardType: TextInputType.number,
                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                label: tr('invoice_debt_screen.total_debt'),
+                label: tr('form_stock_screen.total_stock'),
+              ),
+              SizedBox(height: 8.0),
+              CustomTextField(
+                controller: _buyPrice,
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                label: tr('form_stock_screen.buy_price'),
+              ),
+              SizedBox(height: 8.0),
+              CustomTextField(
+                controller: _sellPrice,
+                keyboardType: TextInputType.number,
+                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                label: tr('form_stock_screen.sell_price'),
               ),
               SizedBox(height: 16.0),
               RaisedButtonGradient(
@@ -182,13 +176,13 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                   height: 43,
                   borderRadius: BorderRadius.circular(4),
                   child: Text(
-                    'invoice_debt_screen.add_invoice_debt',
+                    'form_stock_screen.save_item',
                     style: Theme.of(context).textTheme.button,
                   ).tr(),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       FocusScope.of(context).unfocus();
-                      _submitInvoice();
+                      _submitFormStock();
                     }
                   }),
             ],
@@ -198,19 +192,8 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
     );
   }
 
-  Future<Null> _selectDate(BuildContext context, DateTime selectedDate) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate ?? DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
-      _bloc.add(InvoiceDebtFormChooseDate(picked));
-    }
-  }
-
   Widget buildImage(BuildContext context) {
-    return BlocBuilder<InvoiceDebtFormBloc, InvoiceDebtFormState>(
+    return BlocBuilder<FormStockBloc, FormStockState>(
         bloc: _bloc,
         builder: (context, state) {
           final String imagePath = state.props[2];
@@ -225,7 +208,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: FlatButton(
-              child: Text('invoice_debt_screen.choose_image_invoice').tr(),
+              child: Text('form_stock_screen.choose_image_item').tr(),
               onPressed: () {
                 _dialogChooseImage(context);
               },
@@ -234,19 +217,17 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
         });
   }
 
-  _submitInvoice() {
-    _bloc.add(InvoiceDebtFormAddInvoice(
-        _invoiceNameC.text, int.parse(_totalDebtC.text)));
+  _submitFormStock() {
+    _bloc.add(FormStockAddItem(_itemNameC.text, int.parse(_totalStockC.text), int.parse(_buyPrice.text), int.parse(_sellPrice.text)));
   }
 
-  _submitSupplier() {
-    _bloc.add(InvoiceDebtFormAddSupplier(_supplierName.text));
+  _submitCategory() {
+    _bloc.add(FormStockAddCategory(_categoryName.text));
   }
 
   _getImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source, imageQuality: 70);
-
-    _bloc.add(InvoiceDebtFormGetImage(pickedFile.path));
+    _bloc.add(FormStockGetImage(pickedFile.path));
   }
 
   _dialogChooseImage(context) {
@@ -288,7 +269,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
         });
   }
 
-  _dialogAddSupplier(context) {
+  _dialogAddCategory(context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -296,7 +277,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             child: Form(
-              key: _supplierForm,
+              key: _categoryForm,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -304,29 +285,29 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                     height: 8.0,
                   ),
                   Text(
-                    'invoice_debt_screen.add_supplier',
+                    'form_stock_screen.add_category',
                     style: Theme.of(context).textTheme.subtitle1,
                   ).tr(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
-                      controller: _supplierName,
-                      label: tr('invoice_debt_screen.supplier_name'),
+                      controller: _categoryName,
+                      label: tr('form_stock_screen.category_name'),
                     ),
                   ),
                   RaisedButtonGradient(
                       width: double.infinity,
                       height: 43,
                       child: Text(
-                        'invoice_debt_screen.add_supplier',
+                        'form_stock_screen.add_category',
                         style: Theme.of(context).textTheme.button,
                       ).tr(),
                       onPressed: () {
-                        if (_supplierForm.currentState.validate()) {
-                          FocusScope.of(_supplierForm.currentContext).unfocus();
+                        if (_categoryForm.currentState.validate()) {
+                          FocusScope.of(_categoryForm.currentContext).unfocus();
                           Navigator.of(context).pop();
 
-                          _submitSupplier();
+                          _submitCategory();
                         }
                       }),
                 ],

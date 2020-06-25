@@ -51,14 +51,29 @@
         "invoice_debt": "Tagihan Hutang",
         "total_invoice_debt": "Total Tagihan Hutang",
         "mark_as_invoice_paid": "Tandai sebagai tagihan terbayar",
+        "mark_as_invoice_not_paid": "Tandai sebagai tagihan belum bayar",
         "add_invoice_debt": "Tambah Tagihan Hutang",
+        "no_debt":"Tidak ada hutang",
         "upload_photo_invoice": "Upload Foto Tagihan",
-        "choose_image_invoice":"Pilih Foto Tagihan",
+        "choose_image_invoice": "Pilih Foto Tagihan",
         "invoice_name": "Nama Invoice",
         "choose_supplier": "Pilih Supplier",
         "due_date": "Tanggal Jatuh Tempo",
         "total_debt": "Total Hutang",
         "add_supplier": "Tambah Suplier",
         "supplier_name": "Nama Suplier"
+    },
+    "form_stock_screen": {
+        "add_stock": "Tambah Stock",
+        "upload_photo_item": "Unggah Foto Barang",
+        "item_name": "Nama Barang",
+        "choose_category": "Pilih Kategori",
+        "total_stock": "Jumlah Stok",
+        "buy_price": "Harga Beli",
+        "sell_price": "Harga Jual",
+        "save_item": "Simpan Barang",
+        "choose_image_item": "Pilih Foto Barang",
+        "add_category": "Tambah Kategori",
+        "category_name": "Nama Kategori"
     }
 }

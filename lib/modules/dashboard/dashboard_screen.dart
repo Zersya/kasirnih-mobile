@@ -17,7 +17,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardBloc _dashboardBloc = DashboardBloc();
-
+  final TextEditingController _fieldSearch = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -52,7 +52,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _bodyHasStore(BuildContext context) {
-    return Text('Has Store');
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            controller: _fieldSearch,
+            decoration: InputDecoration(
+                hintText: 'Cari Barang', suffixIcon: Icon(Icons.search)),
+          ),
+          SizedBox(height: 16.0,),
+          ChoiceChip(label: Text('test'), selected: true)
+        ],
+      ),
+    );
   }
 
   Column _bodyEmptyStore(BuildContext context) {

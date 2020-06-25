@@ -6,6 +6,7 @@ import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_list/invoice_de
 import 'package:ks_bike_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
 import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
 import 'package:ks_bike_mobile/modules/store_form/store_form_screen.dart';
+import 'package:ks_bike_mobile/modules/manage_stock/form_stock/form_stock_screen.dart';
 
 class RouterHelper {
   static const String kRouteAuth = '/login';
@@ -16,6 +17,7 @@ class RouterHelper {
   static const String kRouteNewItemFacilitiesList = '/new_item_facilities/list';
   static const String kRouteInvoiceDebt = '/invoice_debt';
   static const String kRouteInvoiceDebtForm = '/invoice_debt/form';
+  static const String kRouteStockForm = '/stock/form';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -38,6 +40,9 @@ class RouterHelper {
 
       case kRouteInvoiceDebtForm:
         return MaterialPageRoute(builder: (_) => InvoiceDebtFormScreen());
+
+      case kRouteStockForm:
+        return MaterialPageRoute(builder: (_) => FormStockScreen());
       default:
         return MaterialPageRoute(builder: (_) => AuthScreen());
     }

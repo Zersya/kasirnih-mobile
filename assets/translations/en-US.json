@@ -62,5 +62,18 @@
         "total_debt": "Total Debt",
         "add_supplier": "Add Supplier",
         "supplier_name": "Supplier Name"
+    },
+    "form_stock_screen": {
+        "add_stock": "Add Stock",
+        "upload_photo_item": "Upload Photo Item",
+        "item_name": "Item Name",
+        "choose_category": "Choose Category",
+        "total_stock": "Total Stock",
+        "buy_price": "Buy Price",
+        "sell_price": "Sell Price",
+        "save_item": "Save Item",
+        "choose_image_item": "Choose Image Item",
+        "add_category": "Add Category",
+        "category_name": "Category Name"
     }
 }

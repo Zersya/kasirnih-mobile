@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/dashboard/dashboard_screen.dart';
 import 'package:ks_bike_mobile/modules/profile/profile_screen.dart';
+import 'package:ks_bike_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _screens.add(DashboardScreen(widget.username));
-    _screens.add(Text('Stock'));
+    _screens.add(ListStockScreen());
     _screens.add(Text('Lap Trans'));
     _screens.add(ProfileScreen());
   }
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.add_box), title: Text('Stok Barang')),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.trending_up), title: Text('Lap. Keuangan')),
+                    icon: Icon(Icons.trending_up), title: Text('Lap. Transaksi')),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person), title: Text('Profil')),
               ],

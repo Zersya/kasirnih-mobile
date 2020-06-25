@@ -12,55 +12,55 @@ class InvoiceDebtFormInitial extends InvoiceDebtFormState {
   final int version;
   final List<Supplier> listSupplier;
   final String imagePath;
-  final Supplier supplier;
+  final int indexSupplier;
   final DateTime selectedDate;
 
   InvoiceDebtFormInitial(
       {this.version = 0,
       this.listSupplier = const [],
       this.imagePath,
-      this.supplier,
+      this.indexSupplier,
       this.selectedDate})
       : super(
-            propss: [version, listSupplier, imagePath, supplier, selectedDate]);
+            propss: [version, listSupplier, imagePath, indexSupplier, selectedDate]);
 }
 
 class InvoiceDebtFormSuccessSupplier extends InvoiceDebtFormState {
   final int version;
   final List<Supplier> listSupplier;
   final String imagePath;
-  final Supplier supplier;
+  final int indexSupplier;
   final DateTime selectedDate;
 
   InvoiceDebtFormSuccessSupplier(this.version, this.listSupplier, this.imagePath,
-      this.supplier, this.selectedDate)
+      this.indexSupplier, this.selectedDate)
       : super(
-            propss: [version, listSupplier, imagePath, supplier, selectedDate]);
+            propss: [version, listSupplier, imagePath, indexSupplier, selectedDate]);
 }
 
 class InvoiceDebtFormSuccessInvoice extends InvoiceDebtFormState {
   final int version;
   final List<Supplier> listSupplier;
   final String imagePath;
-  final Supplier supplier;
+  final int indexSupplier;
   final DateTime selectedDate;
 
   InvoiceDebtFormSuccessInvoice(this.version, this.listSupplier, this.imagePath,
-      this.supplier, this.selectedDate)
+      this.indexSupplier, this.selectedDate)
       : super(
-            propss: [version, listSupplier, imagePath, supplier, selectedDate]);
+            propss: [version, listSupplier, imagePath, indexSupplier, selectedDate]);
 }
 
 class InvoiceDebtFormLoading extends InvoiceDebtFormState {
   final int version;
   final List<Supplier> listSupplier;
   final String imagePath;
-  final Supplier supplier;
+  final int indexSupplier;
   final DateTime selectedDate;
 
   InvoiceDebtFormLoading(this.version, this.listSupplier, this.imagePath,
-      this.supplier, this.selectedDate)
+      this.indexSupplier, this.selectedDate)
       : super(
-            propss: [version, listSupplier, imagePath, supplier, selectedDate]);
+            propss: [version, listSupplier, imagePath, indexSupplier, selectedDate]);
 }
 
