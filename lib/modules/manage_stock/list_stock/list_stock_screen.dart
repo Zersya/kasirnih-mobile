@@ -18,6 +18,7 @@ class _ListStockScreenState extends State<ListStockScreen>
     with TickerProviderStateMixin {
   final TextEditingController _fieldSearch = TextEditingController();
   final ListStockBloc _bloc = ListStockBloc();
+  PersistentBottomSheetController controller;
 
   TabController _tabController;
 
@@ -25,7 +26,11 @@ class _ListStockScreenState extends State<ListStockScreen>
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, vsync: this, length: 3);
-    _bloc.add(ListStockLoad());
+    _bloc.add(ListStockLoad(0));
+
+    _tabController.addListener(() {
+      _bloc.add(ListStockLoad(_tabController.index));
+    });
   }
 
   @override
@@ -54,6 +59,16 @@ class _ListStockScreenState extends State<ListStockScreen>
                           ),
                           child: TextField(
                             controller: _fieldSearch,
+                            onTap: () {
+                              if (controller != null) {
+                                controller.close();
+                                controller = null;
+                              }
+                            },
+                            onSubmitted: (value) {
+                              _bloc.add(ListStockSearch(value));
+                              controller = buildShowBottomSheet(context);
+                            },
                             decoration: InputDecoration(
                               hintText: 'Cari Barang',
                               prefixIcon: Icon(Icons.search),
@@ -106,14 +121,52 @@ class _ListStockScreenState extends State<ListStockScreen>
 
                       return ListItems(streamItems: streamItems);
                     }),
-                Text('B'),
-                Text('C')
+                BlocConsumer<ListStockBloc, ListStockState>(
+                    bloc: _bloc,
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      final streamItems = state.props[2];
+
+                      return ListItems(streamItems: streamItems);
+                    }),
+                BlocConsumer<ListStockBloc, ListStockState>(
+                    bloc: _bloc,
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      final streamItems = state.props[3];
+
+                      return ListItems(streamItems: streamItems);
+                    }),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  PersistentBottomSheetController buildShowBottomSheet(BuildContext context) {
+    return showBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),
+        ),
+        builder: (context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.70,
+            child: BlocConsumer<ListStockBloc, ListStockState>(
+                bloc: _bloc,
+                listener: (context, state) {},
+                builder: (context, state) {
+                  final streamItems = state.props[4];
+
+                  return ListItems(streamItems: streamItems);
+                }),
+          );
+        });
   }
 }
 
@@ -136,9 +189,11 @@ class ListItems extends StatelessWidget {
           if (items.isEmpty) {
             return Center(child: Text('messages.no_data').tr());
           }
+          items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
           return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
+                final bool stockEmpty = items[index].totalStock == 0;
                 return InkWell(
                   onTap: () {
                     buildShowDialog(context);
@@ -164,11 +219,17 @@ class ListItems extends StatelessWidget {
                                   style: Theme.of(context).textTheme.subtitle1),
                               SizedBox(height: 16.0),
                               Text(
-                                'Stok masih ada ${items[index].totalStock}',
+                                stockEmpty
+                                    ? 'Barang Habis'
+                                    : 'Stok masih ada ${items[index].totalStock}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle2
-                                    .copyWith(fontWeight: FontWeight.bold),
+                                    .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: stockEmpty
+                                            ? Colors.red
+                                            : Colors.grey),
                               ),
                               SizedBox(height: 4.0),
                               Text(
