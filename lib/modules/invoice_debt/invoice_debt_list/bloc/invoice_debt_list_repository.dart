@@ -48,7 +48,7 @@ class InvoiceDebtListRepository {
       final invoices = await stores.document(storeKey).collection('invoices');
 
       try {
-        final result = await _firestore.runTransaction((transaction) async {
+        await _firestore.runTransaction((transaction) async {
           final refStore = stores.document(storeKey);
           final refInvoice = invoices.document(event.docId);
 

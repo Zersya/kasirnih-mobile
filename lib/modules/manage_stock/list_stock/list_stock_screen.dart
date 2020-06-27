@@ -37,7 +37,7 @@ class _ListStockScreenState extends State<ListStockScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Stok Barang'),
+        title: Text('list_stock_screen.list_stock_item').tr(),
       ),
       body: Column(
         children: <Widget>[
@@ -69,10 +69,15 @@ class _ListStockScreenState extends State<ListStockScreen>
                               _bloc.add(ListStockSearch(value));
                               controller = buildShowBottomSheet(context);
                             },
+                            textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
-                              hintText: 'Cari Barang',
+                              hintText: tr('list_stock_screen.search_item'),
                               prefixIcon: Icon(Icons.search),
-                              suffixIcon: Icon(Icons.close),
+                              suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    _fieldSearch.clear();
+                                  },
+                                  child: Icon(Icons.close)),
                               border: InputBorder.none,
                             ),
                           ),
@@ -95,15 +100,9 @@ class _ListStockScreenState extends State<ListStockScreen>
                   controller: _tabController,
                   labelColor: Color(0xFF8E8E93),
                   tabs: <Widget>[
-                    Tab(
-                      text: 'Tersedia',
-                    ),
-                    Tab(
-                      text: 'Terjual Hari Ini',
-                    ),
-                    Tab(
-                      text: 'Habis',
-                    )
+                    Tab(text: tr('list_stock_screen.available')),
+                    Tab(text: tr('list_stock_screen.sold_today')),
+                    Tab(text: tr('list_stock_screen.not_available'))
                   ],
                 ),
               ],
@@ -196,7 +195,7 @@ class ListItems extends StatelessWidget {
                 final bool stockEmpty = items[index].totalStock == 0;
                 return InkWell(
                   onTap: () {
-                    buildShowDialog(context);
+                    buildShowDialog(context, items[index]);
                   },
                   child: Card(
                     margin:
@@ -220,8 +219,8 @@ class ListItems extends StatelessWidget {
                               SizedBox(height: 16.0),
                               Text(
                                 stockEmpty
-                                    ? 'Barang Habis'
-                                    : 'Stok masih ada ${items[index].totalStock}',
+                                    ? tr('list_stock_screen.item_not_available')
+                                    : '${tr('list_stock_screen.stock_available')} ${items[index].totalStock}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle2
@@ -250,7 +249,7 @@ class ListItems extends StatelessWidget {
         });
   }
 
-  Future buildShowDialog(BuildContext context) {
+  Future buildShowDialog(BuildContext context, Item item) {
     return showDialog(
         context: context,
         child: Dialog(
@@ -266,9 +265,9 @@ class ListItems extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Detail Barang',
+                      'list_stock_screen.detail_item',
                       style: Theme.of(context).textTheme.subtitle1,
-                    ),
+                    ).tr(),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
@@ -279,17 +278,17 @@ class ListItems extends StatelessWidget {
                 ),
                 Divider(height: 16.0),
                 Text(
-                  'Modal : Rp. 4.995.000',
+                  '${tr('list_stock_screen.buy_price')} : ${currencyFormatter.format(item.buyPrice)}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  'Kategori : Sepedah Dewasa',
+                  '${tr('list_stock_screen.category')} : ${item.categoryName}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 SizedBox(height: 4.0),
                 Text(
-                  'Supplier : Xtreme Bike Cirebon',
+                  '${tr('list_stock_screen.supplier')} : ${item.supplierName}',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
               ],

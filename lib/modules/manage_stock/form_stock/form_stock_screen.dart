@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ks_bike_mobile/models/category.dart';
+import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
@@ -25,16 +26,18 @@ class _FormStockScreenState extends State<FormStockScreen> {
   final TextEditingController _buyPrice = TextEditingController();
   final TextEditingController _sellPrice = TextEditingController();
   final TextEditingController _categoryName = TextEditingController();
+  final TextEditingController _supplierName = TextEditingController();
 
   final FormStockBloc _bloc = FormStockBloc();
   final _formKey = GlobalKey<FormState>();
-  final _categoryForm = GlobalKey<FormState>();
+  final _dialogForm = GlobalKey<FormState>();
   final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     _bloc.add(FormStockLoadCategory());
+    _bloc.add(FormStockLoadSupplier());
   }
 
   @override
@@ -60,6 +63,9 @@ class _FormStockScreenState extends State<FormStockScreen> {
           } else if (state is FormStockSuccessCategory) {
             _categoryName.clear();
             _bloc.add(FormStockLoadCategory());
+          } else if (state is FormStockSuccessSupplier) {
+            _supplierName.clear();
+            _bloc.add(FormStockLoadSupplier());
           } else if (state is FormStockSuccessItem) {
             Navigator.of(context).pop();
           }
@@ -144,7 +150,69 @@ class _FormStockScreenState extends State<FormStockScreen> {
                   FlatButton(
                     child: Icon(Icons.add),
                     onPressed: () {
-                      _dialogAddCategory(context);
+                      _dialogAdd(
+                          context,
+                          _categoryName,
+                          'form_stock_screen.add_category',
+                          'form_stock_screen.category_name', () {
+                        if (_dialogForm.currentState.validate()) {
+                          FocusScope.of(_dialogForm.currentContext).unfocus();
+                          Navigator.of(context).pop();
+
+                          _submitCategory();
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: BlocBuilder<FormStockBloc, FormStockState>(
+                        bloc: _bloc,
+                        builder: (context, state) {
+                          if (state is FormStockLoading) {
+                            return LinearProgressIndicator();
+                          }
+                          final List<Supplier> listCategory = state.props[5];
+                          final int value = state.props[4];
+
+                          if (listCategory.isEmpty) {
+                            return Text('messages.no_data').tr();
+                          }
+
+                          return DropdownButton<int>(
+                              isExpanded: true,
+                              hint: Text('form_stock_screen.choose_supplier')
+                                  .tr(),
+                              value: value,
+                              items: listCategory
+                                  .map((e) => DropdownMenuItem(
+                                        child: Text(e.name),
+                                        value: listCategory.indexOf(e),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                _bloc.add(FormStockChooseSupplier(value));
+                              });
+                        }),
+                  ),
+                  FlatButton(
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      _dialogAdd(
+                          context,
+                          _supplierName,
+                          'form_stock_screen.add_supplier',
+                          'form_stock_screen.supplier_name', () {
+                        if (_dialogForm.currentState.validate()) {
+                          FocusScope.of(_dialogForm.currentContext).unfocus();
+                          Navigator.of(context).pop();
+
+                          _submitSupplier();
+                        }
+                      });
                     },
                   ),
                 ],
@@ -218,11 +286,16 @@ class _FormStockScreenState extends State<FormStockScreen> {
   }
 
   _submitFormStock() {
-    _bloc.add(FormStockAddItem(_itemNameC.text, int.parse(_totalStockC.text), int.parse(_buyPrice.text), int.parse(_sellPrice.text)));
+    _bloc.add(FormStockAddItem(_itemNameC.text, int.parse(_totalStockC.text),
+        int.parse(_buyPrice.text), int.parse(_sellPrice.text)));
   }
 
   _submitCategory() {
     _bloc.add(FormStockAddCategory(_categoryName.text));
+  }
+
+  _submitSupplier() {
+    _bloc.add(FormStockAddSupplier(_supplierName.text));
   }
 
   _getImage(ImageSource source) async {
@@ -269,7 +342,8 @@ class _FormStockScreenState extends State<FormStockScreen> {
         });
   }
 
-  _dialogAddCategory(context) {
+  _dialogAdd(
+      context, controller, String title, String labelField, Function onSubmit) {
     showDialog(
         context: context,
         builder: (context) {
@@ -277,7 +351,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             child: Form(
-              key: _categoryForm,
+              key: _dialogForm,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -285,31 +359,24 @@ class _FormStockScreenState extends State<FormStockScreen> {
                     height: 8.0,
                   ),
                   Text(
-                    'form_stock_screen.add_category',
+                    title,
                     style: Theme.of(context).textTheme.subtitle1,
                   ).tr(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
-                      controller: _categoryName,
-                      label: tr('form_stock_screen.category_name'),
+                      controller: controller,
+                      label: tr(labelField),
                     ),
                   ),
                   RaisedButtonGradient(
                       width: double.infinity,
                       height: 43,
                       child: Text(
-                        'form_stock_screen.add_category',
+                        title,
                         style: Theme.of(context).textTheme.button,
                       ).tr(),
-                      onPressed: () {
-                        if (_categoryForm.currentState.validate()) {
-                          FocusScope.of(_categoryForm.currentContext).unfocus();
-                          Navigator.of(context).pop();
-
-                          _submitCategory();
-                        }
-                      }),
+                      onPressed: onSubmit),
                 ],
               ),
             ),

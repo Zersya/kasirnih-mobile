@@ -74,7 +74,7 @@ class InvoiceDebtFormRepository {
 
       await collection.document(invoice.docId).setData(invoice.toMap());
       try {
-        final result = await _firestore.runTransaction((transaction) async {
+        await _firestore.runTransaction((transaction) async {
           final ref = doc.collection('stores').document(storeKey);
           final freshsnap =
               await transaction.get(ref).catchError((err) => throw err);

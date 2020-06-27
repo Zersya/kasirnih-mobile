@@ -48,7 +48,7 @@ class InvoiceDebtListBloc
 
   Stream<InvoiceDebtListState> updateHasPaidInvoice(
       InvoiceDebtListUpdateHasPaid event, InvoiceDebtListState state) async* {
-    bool result = await _repo.updateHasPaidInvoice(event, state);
+    await _repo.updateHasPaidInvoice(event, state);
 
     final int version = state.props[0];
     yield InvoiceDebtListSuccessUpdate(

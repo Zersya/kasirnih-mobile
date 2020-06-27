@@ -53,8 +53,10 @@
         "invoice_debt": "Invoice Debt",
         "total_invoice_debt": "Total Invoice Debt",
         "mark_as_invoice_paid": "Mark as Paid Invoice",
+        "mark_as_invoice_not_paid": "Mark as Invoice not Paid",
         "add_invoice_debt": "Add Invoice Debt",
         "upload_photo_invoice": "Upload Photo Invoice",
+        "no_debt":"No Debt",
         "choose_image_invoice":"Choose Image Invoice",
         "invoice_name": "Invoice Name",
         "choose_supplier": "Choose Supplier",
@@ -68,12 +70,28 @@
         "upload_photo_item": "Upload Photo Item",
         "item_name": "Item Name",
         "choose_category": "Choose Category",
+        "choose_supplier": "Choose Supplier",
         "total_stock": "Total Stock",
         "buy_price": "Buy Price",
         "sell_price": "Sell Price",
         "save_item": "Save Item",
         "choose_image_item": "Choose Image Item",
         "add_category": "Add Category",
-        "category_name": "Category Name"
+        "category_name": "Category Name",
+        "add_supplier": "Add Supplier",
+        "supplier_name": "Supplier Name"
+    },
+    "list_stock_screen": {
+        "list_stock_item":"List Stock Item",
+        "search_item":"Search Item",
+        "available":"Available",
+        "sold_today":"Sold Today",
+        "not_available":"Not Available",
+        "item_not_available":"Item not Available",
+        "stock_available":"Stock available",
+        "detail_item":"Detail Item",
+        "buy_price":"Buy Price",
+        "category":"Category",
+        "supplier":"Supplier"
     }
 }

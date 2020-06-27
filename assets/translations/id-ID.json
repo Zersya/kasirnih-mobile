@@ -68,12 +68,28 @@
         "upload_photo_item": "Unggah Foto Barang",
         "item_name": "Nama Barang",
         "choose_category": "Pilih Kategori",
+        "choose_supplier": "Pilih Suplier",
         "total_stock": "Jumlah Stok",
         "buy_price": "Harga Beli",
         "sell_price": "Harga Jual",
         "save_item": "Simpan Barang",
         "choose_image_item": "Pilih Foto Barang",
         "add_category": "Tambah Kategori",
-        "category_name": "Nama Kategori"
+        "category_name": "Nama Kategori",
+        "add_supplier": "Tambah Kategori",
+        "supplier_name": "Nama Kategori"
+    },
+    "list_stock_screen": {
+        "list_stock_item":"Daftar Stok Barang",
+        "search_item":"Cari Barang",
+        "available":"Tersedia",
+        "sold_today":"Terjual Hari ini",
+        "not_available":"Habis",
+        "item_not_available":"Barang Habis",
+        "stock_available":"Stok masih ada",
+        "detail_item":"Detail barang",
+        "buy_price":"Harga Beli",
+        "category":"Kategori",
+        "supplier":"Suplier"
     }
 }

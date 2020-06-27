@@ -6,11 +6,15 @@ class NewItemFacilitiesRepository {
   Future<List<NewItemFacilities>> loadListNewFacilities() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
         .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('new_item_facilities')
+        .orderBy('created_at', descending: true)
         .getDocuments();
 
     List<NewItemFacilities> listName =
@@ -21,12 +25,19 @@ class NewItemFacilitiesRepository {
   Future<bool> addNewFacilities(NewItemFacilitiesAdd event) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
+    final doc = await _firestore
+        .collection('users')
+        .document(userKey)
+        .collection('stores')
+        .document(storeKey);
     final collection = doc.collection('new_item_facilities');
 
+    final createdAt = DateTime.now().millisecondsSinceEpoch;
+
     final NewItemFacilities item = NewItemFacilities(
-        collection.document().documentID, event.itemName, false);
+        collection.document().documentID, event.itemName, createdAt, false);
 
     await collection.document(item.docId).setData(item.toMap());
     toastSuccess(
@@ -37,10 +48,13 @@ class NewItemFacilitiesRepository {
   Future<bool> updateValue(NewItemFacilitiesChangeValue event) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
         .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('new_item_facilities')
         .getDocuments();
 

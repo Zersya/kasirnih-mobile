@@ -41,34 +41,79 @@ class FormStockRepository {
     return true;
   }
 
+  Future<List<Supplier>> loadSupplier() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userKey = prefs.getString(kUserDocIdKey);
+
+    final doc = await _firestore
+        .collection('users')
+        .document(userKey)
+        .collection('suppliers')
+        .orderBy('created_at', descending: true)
+        .getDocuments();
+
+    List<Supplier> list =
+        doc.documents.map((e) => Supplier.fromMap(e.data)).toList();
+    return list;
+  }
+
+  Future<bool> addSupplier(FormStockAddSupplier event) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userKey = prefs.getString(kUserDocIdKey);
+
+    final doc = await _firestore.collection('users').document(userKey);
+    final collection = doc.collection('suppliers');
+
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    final Supplier item = Supplier(
+      collection.document().documentID,
+      event.supplierName,
+      createdAt: timestamp,
+    );
+
+    await collection.document(item.docId).setData(item.toMap());
+    toastSuccess('Sukses menambahkan supplier');
+    return true;
+  }
+
   Future<bool> addItem(FormStockAddItem event, FormStockState state) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final userKey = prefs.getString(kUserDocIdKey);
       final storeKey = prefs.getString(kDefaultStore);
+
       final List<Category> categories = state.props[1];
-      final Category supplierDocId = categories[state.props[3]];
+      final Category category = categories[state.props[3]];
+      final List<Supplier> suppliers = state.props[5];
+      final Supplier supplier = suppliers[state.props[4]];
       final imageUrl = await _uploadFile(state.props[2]);
 
       final doc = await _firestore.collection('users').document(userKey);
       final collection =
           doc.collection('stores').document(storeKey).collection('items');
       final docCategory =
-          await doc.collection('suppliers').document(supplierDocId.docId);
+          await doc.collection('categories').document(category.docId);
+      final docSupplier =
+          await doc.collection('suppliers').document(supplier.docId);
 
       final createdAt = DateTime.now().millisecondsSinceEpoch;
 
-      final invoice = Item(
-          collection.document().documentID,
-          event.itemName,
-          imageUrl,
-          event.totalStock,
-          event.buyPrice,
-          event.sellPrice,
-          createdAt,
-          docCategory.path);
+      final item = Item(
+        collection.document().documentID,
+        event.itemName,
+        imageUrl,
+        event.totalStock,
+        event.buyPrice,
+        event.sellPrice,
+        createdAt,
+        docCategory.path,
+        category.name,
+        docSupplier.path,
+        supplier.name,
+      );
 
-      await collection.document(invoice.docId).setData(invoice.toMap());
+      await collection.document(item.docId).setData(item.toMap());
       toastSuccess('Sukses menambahkan barang');
       return true;
     } on SocketException {

@@ -22,6 +22,21 @@ class FormStockAddCategory extends FormStockEvent {
   FormStockAddCategory(this.categoryName);
 }
 
+
+class FormStockLoadSupplier extends FormStockEvent {}
+
+class FormStockChooseSupplier extends FormStockEvent {
+  final int indexSupplier;
+
+  FormStockChooseSupplier(this.indexSupplier);
+}
+
+class FormStockAddSupplier extends FormStockEvent {
+  final String supplierName;
+
+  FormStockAddSupplier(this.supplierName);
+}
+
 class FormStockAddItem extends FormStockEvent {
   final String itemName;
   final int totalStock;
