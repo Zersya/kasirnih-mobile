@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
+import 'package:ks_bike_mobile/models/category.dart';
+import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
+import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -35,10 +38,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),
-        BlocBuilder<DashboardBloc, DashboardState>(
+        BlocConsumer<DashboardBloc, DashboardState>(
             bloc: _dashboardBloc,
+            listener: (context, state) {
+              if (state is DashboardInitialHasStore) {
+                final bool isHasStore = state.props[1];
+                if (isHasStore) {
+                  _dashboardBloc.add(DashboardLoadStore());
+                }
+              }
+            },
             builder: (context, state) {
-              final bool isHasStore = state.props[0];
+              final bool isHasStore = state.props[1];
               if (state is DashboardLoading) {
                 return CustomLoading(withBackground: false);
               } else if (isHasStore) {
@@ -52,19 +63,89 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _bodyHasStore(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: <Widget>[
-          TextField(
+    final streamCategories = _dashboardBloc.state.props[3];
+    final streamItems = _dashboardBloc.state.props[2];
+
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
             controller: _fieldSearch,
             decoration: InputDecoration(
                 hintText: 'Cari Barang', suffixIcon: Icon(Icons.search)),
           ),
-          SizedBox(height: 16.0,),
-          ChoiceChip(label: Text('test'), selected: true)
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        StreamBuilder<List<Category>>(
+            stream: streamCategories,
+            initialData: [],
+            builder: (context, snapshot) {
+              final List<Category> categories = snapshot.data;
+
+              if (categories.isEmpty) {
+                return Center(child: Text('messages.no_data').tr());
+              }
+              return SizedBox(
+                height: 50,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final element = categories[index];
+                      return CategoryWidget(element: element);
+                    }),
+              );
+            }),
+        StreamBuilder<List<Item>>(
+            stream: streamItems,
+            initialData: [],
+            builder: (context, snapshot) {
+              final List<Item> items = snapshot.data;
+
+              if (items.isEmpty) {
+                return Center(child: Text('messages.no_data').tr());
+              }
+              final Orientation orientation =
+                  MediaQuery.of(context).orientation;
+              return GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: items.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount:
+                          (orientation == Orientation.portrait) ? 2 : 3),
+                  itemBuilder: (context, index) {
+                    final element = items[index];
+                    final bool stockEmpty = items[index].totalStock == 0;
+
+                    return Card(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Image.network(
+                            element.urlImage,
+                            height: 150,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          Text(element.itemName),
+                          Text(
+                            currencyFormatter.format(element.sellPrice),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(
+                                  color: stockEmpty ? Colors.red : Colors.green,
+                                ),
+                          )
+                        ],
+                      ),
+                    );
+                  });
+            })
+      ],
     );
   }
 
@@ -114,6 +195,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CategoryWidget extends StatelessWidget {
+  CategoryWidget({
+    Key key,
+    @required this.element,
+  }) : super(key: key);
+
+  final Category element;
+
+  @override
+  Widget build(BuildContext context) {
+    final CategoryBloc _bloc = CategoryBloc(element);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BlocBuilder<CategoryBloc, CategoryState>(
+          bloc: _bloc,
+          builder: (context, state) {
+            Category category = state.category;
+
+            return ChoiceChip(
+              label: Text(category.name),
+              selected: category.isSelected,
+              onSelected: (value) {
+                category.isSelected = value;
+                _bloc.add(category);
+              },
+            );
+          }),
     );
   }
 }

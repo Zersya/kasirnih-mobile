@@ -1,7 +1,11 @@
+import 'package:equatable/equatable.dart';
+
 class Category {
   final String docId;
   final String name;
-  int createdAt;
+  final int createdAt;
+
+  bool isSelected = false;
 
   Category(this.docId, this.name, {this.createdAt});
 
@@ -13,4 +17,6 @@ class Category {
         'name': this.name,
         'created_at': this.createdAt,
       };
+
+  Category copy() => Category(this.docId, this.name, createdAt: this.createdAt);
 }
