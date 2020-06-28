@@ -22,50 +22,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   Stream<DashboardState> mapEventToState(
     DashboardEvent event,
   ) async* {
-    yield DashboardLoading(
-        state.props[0], state.props[1], state.props[2], state.props[3]);
+    yield DashboardLoading(state.props[0], state.props[1]);
     if (event is DashboardHasStore) {
       final result = await _repo.isHasStore();
 
-      yield DashboardInitialHasStore(
-        isHasStore: result,
-        categories: state.props[3],
-        items: state.props[2],
-      );
-    } else if (event is DashboardLoadStore) {
-      final categories = await _repo.loadCategories(event, state);
-      final items = await _repo.loadItems(event, state);
-
-      final int version = state.props[0];
-      yield DashboardInitial(
-          version: version + 1,
-          isHasStore: state.props[1],
-          categories: categories,
-          items: items);
+      yield DashboardInitial(isHasStore: result);
     }
   }
-}
-
-class CategoryBloc extends Bloc<Category, CategoryState> {
-  final Category category;
-
-  CategoryBloc(this.category);
-
-  @override
-  CategoryState get initialState => CategoryState(0, category);
-
-  @override
-  Stream<CategoryState> mapEventToState(Category event) async* {
-    final int version = state.props[0];
-    yield CategoryState(version + 1, category);
-  }
-}
-
-class CategoryState extends Equatable {
-  final int version;
-  final Category category;
-
-  CategoryState(this.version, this.category);
-  @override
-  List<Object> get props => [version, category];
 }

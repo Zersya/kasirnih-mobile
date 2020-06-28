@@ -9,5 +9,3 @@ abstract class DashboardEvent extends Equatable {
 }
 
 class DashboardHasStore extends DashboardEvent {}
-
-class DashboardLoadStore extends DashboardEvent {}
