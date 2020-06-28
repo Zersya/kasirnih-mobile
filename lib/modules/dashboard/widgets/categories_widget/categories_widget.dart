@@ -57,6 +57,9 @@ class CategoriesWidget extends StatelessWidget {
                                 ..isSelected = false;
                               categoryBloc.add(element);
                             }
+
+                            itemsWidgetBloc
+                                .add(ItemsWidgetLoad(categories: categories));
                           },
                         );
                       });
