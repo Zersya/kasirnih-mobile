@@ -10,6 +10,7 @@ import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 import 'bloc/form_stock_bloc.dart';
 
@@ -138,7 +139,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
                               value: value,
                               items: listCategory
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.name),
+                                        child: Text(e.name.capitalize()),
                                         value: listCategory.indexOf(e),
                                       ))
                                   .toList(),
@@ -189,7 +190,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
                               value: value,
                               items: listCategory
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.name),
+                                        child: Text(e.name.capitalize()),
                                         value: listCategory.indexOf(e),
                                       ))
                                   .toList(),
@@ -266,7 +267,17 @@ class _FormStockScreenState extends State<FormStockScreen> {
         builder: (context, state) {
           final String imagePath = state.props[2];
           if (imagePath != null) {
-            return Image.file(File(imagePath));
+            return AspectRatio(
+              aspectRatio: 1 / 1,
+              child: GestureDetector(
+                onTap: () {
+                  _dialogChooseImage(context);
+                },
+                child: Image.file(
+                  File(imagePath),
+                ),
+              ),
+            );
           }
           return Container(
             width: double.infinity,

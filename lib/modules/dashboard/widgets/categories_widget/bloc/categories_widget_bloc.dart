@@ -13,7 +13,7 @@ part 'categories_widget_repository.dart';
 
 class CategoriesWidgetBloc
     extends Bloc<CategoriesWidgetEvent, CategoriesWidgetState> {
-      final CategoriesWidgetRepository _repo = CategoriesWidgetRepository();
+  final CategoriesWidgetRepository _repo = CategoriesWidgetRepository();
   @override
   CategoriesWidgetState get initialState => CategoriesWidgetInitial();
 
@@ -21,15 +21,13 @@ class CategoriesWidgetBloc
   Stream<CategoriesWidgetState> mapEventToState(
     CategoriesWidgetEvent event,
   ) async* {
-    if(event is CategoriesWidgetLoad){
+    if (event is CategoriesWidgetLoad) {
       final result = await _repo.loadCategories(event, state);
       final int version = state.props[0];
       yield CategoriesWidgetInitial(version: version + 1, categories: result);
     }
   }
 }
-
-
 
 class CategoryBloc extends Bloc<Category, CategoryState> {
   final List<Category> categories;

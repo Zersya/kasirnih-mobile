@@ -34,4 +34,26 @@ class ItemsWidgetRepository {
     }
     return items;
   }
+
+  
+  Future<Stream<List<Item>>> searchItem(
+      ItemsWidgetSearch event, ItemsWidgetState state) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
+
+    final doc = await _firestore.collection('users').document(userKey);
+    final items = doc
+        .collection('stores')
+        .document(storeKey)
+        .collection('items')
+        .where('item_name',
+            isGreaterThanOrEqualTo: event.name,
+            isLessThanOrEqualTo: '${event.name}~')
+        .snapshots()
+        .map((event) =>
+            event.documents.map((e) => Item.fromMap(e.data)).toList());
+
+    return items;
+  }
 }

@@ -27,9 +27,8 @@ class CategoriesWidget extends StatelessWidget {
           }
           return SizedBox(
             height: 50,
-            child: BlocConsumer<CategoryBloc, CategoryState>(
+            child: BlocBuilder<CategoryBloc, CategoryState>(
                 bloc: categoryBloc,
-                listener: (context, state) {},
                 builder: (context, state) {
                   final categories = state.categories;
                   return ListView.builder(
@@ -41,31 +40,44 @@ class CategoriesWidget extends StatelessWidget {
 
                         return CategoryWidget(
                           element: element,
-                          onSelected: (value) {
-                            element.isSelected = value;
-                            final categories = state.categories
-                                .getRange(1, state.categories.length - 1)
-                                .where((element) => element.isSelected)
-                                .toList();
-
-                            if (categories.isEmpty) {
-                              final element = state.categories[0]
-                                ..isSelected = true;
-                              categoryBloc.add(element);
-                            } else {
-                              final element = state.categories[0]
-                                ..isSelected = false;
-                              categoryBloc.add(element);
-                            }
-
-                            itemsWidgetBloc
-                                .add(ItemsWidgetLoad(categories: categories));
-                          },
+                          onSelected: (value) => onSelected(value, element,
+                              state, index, categoryBloc, itemsWidgetBloc),
                         );
                       });
                 }),
           );
         });
+  }
+
+  onSelected(bool value, Category element, CategoryState state, int index,
+      CategoryBloc categoryBloc, ItemsWidgetBloc itemsWidgetBloc) {
+    element.isSelected = value;
+    final categories = state.categories
+        .getRange(1, state.categories.length - 1)
+        .where((element) => element.isSelected)
+        .toList();
+
+    if (categories.isEmpty) {
+      final element = state.categories[0]..isSelected = true;
+      categoryBloc.add(element);
+    } else {
+      if (index == 0) {
+        final newCategories = state.categories
+            .getRange(1, state.categories.length - 1)
+            .map((element) {
+          element.isSelected = false;
+          categoryBloc.add(element);
+          return element;
+        }).toList();
+        categoryBloc.add(element);
+        return itemsWidgetBloc.add(ItemsWidgetLoad(categories: newCategories));
+      } else {
+        final element = state.categories[0]..isSelected = false;
+        categoryBloc.add(element);
+      }
+    }
+
+    itemsWidgetBloc.add(ItemsWidgetLoad(categories: categories));
   }
 }
 

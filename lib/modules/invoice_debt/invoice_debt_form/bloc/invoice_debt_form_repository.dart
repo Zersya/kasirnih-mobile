@@ -49,14 +49,14 @@ class InvoiceDebtFormRepository {
       final storeKey = prefs.getString(kDefaultStore);
       final DateTime dueDate = state.props[4];
       final List<Supplier> suppliers = state.props[1];
-      final Supplier supplierDocId = suppliers[state.props[3]];
+      final Supplier supplier = suppliers[state.props[3]];
       final imageUrl = await _uploadFile(state.props[2]);
 
       final doc = await _firestore.collection('users').document(userKey);
       final collection =
           doc.collection('stores').document(storeKey).collection('invoices');
       final docSupplier =
-          await doc.collection('suppliers').document(supplierDocId.docId);
+          await doc.collection('suppliers').document(supplier.docId);
 
       final timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -66,7 +66,7 @@ class InvoiceDebtFormRepository {
         imageUrl,
         dueDate.millisecondsSinceEpoch,
         event.totalDebt,
-        supplierDocId.name,
+        supplier.name,
         false,
         refSupplier: docSupplier.path,
         createdAt: timestamp,

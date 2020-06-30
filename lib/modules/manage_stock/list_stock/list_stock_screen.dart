@@ -6,6 +6,7 @@ import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/list_stock/bloc/list_stock_bloc.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 class ListStockScreen extends StatefulWidget {
   ListStockScreen({Key key}) : super(key: key);
@@ -18,7 +19,7 @@ class _ListStockScreenState extends State<ListStockScreen>
     with TickerProviderStateMixin {
   final TextEditingController _fieldSearch = TextEditingController();
   final ListStockBloc _bloc = ListStockBloc();
-  PersistentBottomSheetController controller;
+  PersistentBottomSheetController bottomSheetController;
 
   TabController _tabController;
 
@@ -60,14 +61,15 @@ class _ListStockScreenState extends State<ListStockScreen>
                           child: TextField(
                             controller: _fieldSearch,
                             onTap: () {
-                              if (controller != null) {
-                                controller.close();
-                                controller = null;
+                              if (bottomSheetController != null) {
+                                bottomSheetController.close();
+                                bottomSheetController = null;
                               }
                             },
                             onSubmitted: (value) {
                               _bloc.add(ListStockSearch(value));
-                              controller = buildShowBottomSheet(context);
+                              bottomSheetController =
+                                  buildShowBottomSheet(context);
                             },
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
@@ -214,7 +216,7 @@ class ListItems extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(items[index].itemName,
+                              Text(items[index].itemName.capitalize(),
                                   style: Theme.of(context).textTheme.subtitle1),
                               SizedBox(height: 16.0),
                               Text(

@@ -7,6 +7,7 @@ import 'package:ks_bike_mobile/models/invoice.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 import 'bloc/invoice_debt_list_bloc.dart';
 import 'widgets/simple_chart.dart';
@@ -81,7 +82,8 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
           }
           List<InvoiceDebtChart> listDebtChart = listItem
               .where((element) => !element.isPaid)
-              .map((e) => InvoiceDebtChart(e.supplierName, e.totalDebt))
+              .map((e) =>
+                  InvoiceDebtChart(e.supplierName.capitalize(), e.totalDebt))
               .toList();
 
           return SingleChildScrollView(
@@ -183,7 +185,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
                                                     ? Colors.green
                                                     : Colors.red),
                                       ),
-                                      Text(invoice.invoiceName,
+                                      Text(invoice.invoiceName.capitalize(),
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2),

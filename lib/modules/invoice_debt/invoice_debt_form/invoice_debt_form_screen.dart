@@ -9,6 +9,7 @@ import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 import 'bloc/invoice_debt_form_bloc.dart';
 
@@ -134,7 +135,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                               value: value,
                               items: listSupplier
                                   .map((e) => DropdownMenuItem(
-                                        child: Text(e.name),
+                                        child: Text(e.name.capitalize()),
                                         value: listSupplier.indexOf(e),
                                       ))
                                   .toList(),

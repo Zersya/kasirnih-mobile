@@ -25,7 +25,7 @@ class ItemsWidget extends StatelessWidget {
               itemCount: items.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount:
-                      (orientation == Orientation.portrait) ? 2 : 3),
+                      (orientation == Orientation.portrait) ? 3 : 4),
               itemBuilder: (context, index) {
                 final element = items[index];
                 final bool stockEmpty = items[index].totalStock == 0;
@@ -34,15 +34,18 @@ class ItemsWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Image.network(
-                        element.urlImage,
-                        height: 150,
-                        fit: BoxFit.fitWidth,
+                      Flexible(
+                        flex: 1,
+                        child: Image.network(
+                          element.urlImage,
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
-                      Text(element.itemName),
+                      Text(element.itemName.capitalize()),
                       Text(
                         currencyFormatter.format(element.sellPrice),
                         style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.bold,
                               color: stockEmpty ? Colors.red : Colors.green,
                             ),
                       )

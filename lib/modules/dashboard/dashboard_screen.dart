@@ -78,10 +78,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _fieldSearch,
-            decoration: InputDecoration(
-                hintText: 'Cari Barang', suffixIcon: Icon(Icons.search)),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFf1f1f2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: TextField(
+              controller: _fieldSearch,
+              onTap: () {},
+              onSubmitted: (value) {
+                _itemsWidgetBloc.add(ItemsWidgetSearch(value.toLowerCase()));
+              },
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: tr('list_stock_screen.search_item'),
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: GestureDetector(
+                    onTap: () {
+                      _fieldSearch.clear();
+                    },
+                    child: Icon(Icons.close)),
+                border: InputBorder.none,
+              ),
+            ),
           ),
         ),
         SizedBox(

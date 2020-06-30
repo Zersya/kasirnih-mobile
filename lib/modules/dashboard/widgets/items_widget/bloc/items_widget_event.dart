@@ -11,3 +11,11 @@ class ItemsWidgetLoad extends ItemsWidgetEvent {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+
+class ItemsWidgetSearch extends ItemsWidgetEvent {
+  final String name;
+
+  ItemsWidgetSearch(this.name);
+  @override
+  List<Object> get props => throw UnimplementedError();
+}

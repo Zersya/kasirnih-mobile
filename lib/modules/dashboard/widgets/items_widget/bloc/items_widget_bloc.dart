@@ -25,6 +25,10 @@ class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
       final result = await _repo.loadItems(event, state);
       final int version = state.props[0];
       yield ItemsWidgetInitial(version: version + 1, items: result);
+    }else if (event is ItemsWidgetSearch){
+      final result = await _repo.searchItem(event, state);
+      final int version = state.props[0];
+      yield ItemsWidgetInitial(version: version + 1, items: result);
     }
   }
 }

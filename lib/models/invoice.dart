@@ -28,13 +28,13 @@ class Invoice {
 
   Map<String, dynamic> toMap() => {
         'document_id': this.docId,
-        'invoice_name': this.invoiceName,
+        'invoice_name': this.invoiceName.toLowerCase(),
         'url_image': this.urlImage,
         'due_date': this.dueDate,
         'total_debt': this.totalDebt,
         'created_at': this.createdAt,
         'is_paid': this.isPaid,
-        'supplier_name': this.supplierName,
+        'supplier_name': this.supplierName.toLowerCase(),
         'ref_supplier': this.refSupplier,
       };
 }

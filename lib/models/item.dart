@@ -40,15 +40,15 @@ class Item {
 
   Map<String, dynamic> toMap() => {
         'document_id': this.docId,
-        'item_name': this.itemName,
+        'item_name': this.itemName.toLowerCase(),
         'url_image': this.urlImage,
         'total_stock': this.totalStock,
         'buy_price': this.buyPrice,
         'sell_price': this.sellPrice,
         'created_at': this.createdAt,
         'ref_category': this.refCategory,
-        'category_name': this.categoryName,
+        'category_name': this.categoryName.toLowerCase(),
         'ref_supplier': this.refSupplier,
-        'supplier_name': this.supplierName
+        'supplier_name': this.supplierName.toLowerCase()
       };
 }

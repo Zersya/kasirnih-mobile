@@ -12,7 +12,7 @@ class NewItemFacilities {
 
   Map<String, dynamic> toMap() => {
         'document_id': this.docId,
-        'name': this.name,
+        'name': this.name.toLowerCase(),
         'created_at':this.createdAt,
         'is_bought': this.isBought
       };
