@@ -11,6 +11,8 @@ class Item {
   final String supplierName;
   final String refSupplier;
 
+  bool isSelected = false;
+
   Item(
     this.docId,
     this.itemName,

@@ -28,7 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardBloc _dashboardBloc = DashboardBloc();
   final CategoriesWidgetBloc _categoriesWidgetBloc = CategoriesWidgetBloc();
   final ItemsWidgetBloc _itemsWidgetBloc = ItemsWidgetBloc();
-
+  final ItemBloc _itemBloc = ItemBloc();
   final TextEditingController _fieldSearch = TextEditingController();
 
   @override
@@ -62,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             builder: (context, state) {
               final bool isHasStore = state.props[1];
               if (state is DashboardLoading) {
-                return CustomLoading(withBackground: false);
+                return Expanded(child: CustomLoading(withBackground: false));
               } else if (isHasStore) {
                 return _bodyHasStore(context);
               }
@@ -74,58 +74,105 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _bodyHasStore(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFf1f1f2),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: TextField(
-              controller: _fieldSearch,
-              onTap: () {},
-              onSubmitted: (value) {
-                _itemsWidgetBloc.add(ItemsWidgetSearch(value.toLowerCase()));
-              },
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: tr('list_stock_screen.search_item'),
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: GestureDetector(
-                    onTap: () {
-                      _fieldSearch.clear();
+    return Expanded(
+      child: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFf1f1f2),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: TextField(
+                    controller: _fieldSearch,
+                    onTap: () {},
+                    onSubmitted: (value) {
+                      _itemsWidgetBloc
+                          .add(ItemsWidgetSearch(value.toLowerCase()));
                     },
-                    child: Icon(Icons.close)),
-                border: InputBorder.none,
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      hintText: tr('list_stock_screen.search_item'),
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: GestureDetector(
+                          onTap: () {
+                            _fieldSearch.clear();
+                          },
+                          child: Icon(Icons.close)),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                height: 8.0,
+              ),
+              MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: _categoriesWidgetBloc),
+                  BlocProvider.value(value: _itemsWidgetBloc),
+                ],
+                child: CategoriesWidget(),
+              ),
+              MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: _itemsWidgetBloc),
+                  BlocProvider.value(value: _itemBloc)
+                ],
+                child: ItemsWidget(),
+              )
+            ],
           ),
-        ),
-        SizedBox(
-          height: 8.0,
-        ),
-        MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-              value: _categoriesWidgetBloc,
-            ),
-            BlocProvider.value(
-              value: _itemsWidgetBloc,
-            ),
-          ],
-          child: CategoriesWidget(),
-        ),
-        BlocProvider.value(
-          value: _itemsWidgetBloc,
-          child: BlocBuilder<ItemsWidgetBloc, ItemsWidgetState>(
-              bloc: _itemsWidgetBloc,
+          BlocBuilder<ItemBloc, ItemState>(
+              bloc: _itemBloc,
               builder: (context, state) {
-                return ItemsWidget();
+                final List<Item> items = state.props[1];
+
+                final isAnySelected =
+                    items.any((element) => element.isSelected);
+
+                final total = items.where((element) => element.isSelected).fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue += element.sellPrice);
+
+                return AnimatedPositioned(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  bottom: isAnySelected ? 0 : -50,
+                  left: 50,
+                  right: 50,
+                  child: Container(
+                    height: 50,
+                    padding: EdgeInsets.symmetric(horizontal: 21.0),
+                    decoration:
+                        BoxDecoration(color: Theme.of(context).accentColor),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {},
+                          child: Text('Bayar'),
+                          textColor: Colors.white,
+                        ),
+                        Text(
+                          currencyFormatter.format(total),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ),
+                );
               }),
-        )
-      ],
+        ],
+      ),
     );
   }
 
