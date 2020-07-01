@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
@@ -137,12 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 final isAnySelected =
                     selectedItems.any((element) => element.qty > 0);
 
-                final total = selectedItems
-                    .where((element) => element.qty > 0)
-                    .fold(
-                        0.0,
-                        (previousValue, element) =>
-                            previousValue += element.sellPrice);
+                final total = _getSumSelected(selectedItems);
 
                 return AnimatedPositioned(
                   duration: Duration(milliseconds: 300),
@@ -160,8 +153,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: <Widget>[
                         FlatButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(RouterHelper.kRouteSummary);
+                            Navigator.of(context).pushNamed(
+                                RouterHelper.kRouteSummary,
+                                arguments: _itemBloc.state.props[2]);
                           },
                           child: Text('Bayar'),
                           textColor: Colors.white,
@@ -230,5 +224,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ],
     );
+  }
+
+  double _getSumSelected(List<Item> selectedItems) {
+    return selectedItems.where((element) => element.qty > 0).fold(
+        0.0, (previousValue, element) => previousValue += element.sellPrice);
   }
 }

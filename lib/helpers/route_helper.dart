@@ -42,7 +42,7 @@ class RouterHelper {
       case kRouteNewItemFacilitiesList:
         return MaterialPageRoute(
             builder: (_) => NewItemFacilitiesListScreen(settings.arguments));
-            
+
       case kRouteInvoiceDebt:
         return MaterialPageRoute(builder: (_) => InvoiceDebtListScreen());
 
@@ -53,7 +53,11 @@ class RouterHelper {
         return MaterialPageRoute(builder: (_) => FormStockScreen());
 
       case kRouteSummary:
-        return MaterialPageRoute(builder: (_) => SummaryScreen());
+        return MaterialPageRoute(
+            builder: (_) => SummaryScreen(
+                  selectedItems: settings.arguments,
+                ));
+
       default:
         return MaterialPageRoute(builder: (_) => AuthScreen());
     }

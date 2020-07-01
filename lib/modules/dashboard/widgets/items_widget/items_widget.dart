@@ -58,7 +58,6 @@ class ItemsWidget extends StatelessWidget {
                             element: element,
                             stockEmpty: stockEmpty,
                             onTap: () {
-                              // element.isSelected = !element.isSelected;
                               element.qty = element.qty > 0 ? 0 : 1;
                               final selectedItems = items
                                   .where((element) => element.qty > 0)

@@ -4,13 +4,13 @@ class Item {
   final String urlImage;
   final int totalStock;
   final int buyPrice;
-  final int sellPrice;
   final String categoryName;
   final int createdAt;
   final String refCategory;
   final String supplierName;
   final String refSupplier;
 
+  int sellPrice;
   int qty = 0;
 
   Item(

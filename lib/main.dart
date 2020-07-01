@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   );
 
   static final TextTheme _textTheme = TextTheme(
-    headline5: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
-    headline6: GoogleFonts.poppins(fontSize: 20),
+    headline5: GoogleFonts.poppins(fontSize: 21, fontWeight: FontWeight.bold),
+    headline6: GoogleFonts.poppins(fontSize: 18),
     subtitle1: GoogleFonts.poppins(fontSize: 14),
     subtitle2: GoogleFonts.poppins(color: Colors.grey[500]),
     bodyText1:
