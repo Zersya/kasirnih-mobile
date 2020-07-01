@@ -20,7 +20,7 @@ class ItemsWidget extends StatelessWidget {
             initialData: [],
             builder: (context, snapshot) {
               final List<Item> items = snapshot.data;
-              itemBloc.add(ItemEvent(items));
+              itemBloc.add(ItemEvent(items: items));
 
               if (items.isEmpty) {
                 return Expanded(
@@ -34,6 +34,16 @@ class ItemsWidget extends StatelessWidget {
                   bloc: itemBloc,
                   builder: (context, state) {
                     final items = state.items;
+                    final selectedItems = state.selectedItems;
+                    selectedItems.forEach((selectedItem) {
+                      final element = items.firstWhere(
+                          (item) => item.docId == selectedItem.docId,
+                          orElse: () => null);
+                      if (element == null) return;
+                      final index = items.indexOf(element);
+                      items[index] = selectedItem;
+                    });
+
                     return GridView.builder(
                         shrinkWrap: true,
                         itemCount: items.length,
@@ -48,8 +58,13 @@ class ItemsWidget extends StatelessWidget {
                             element: element,
                             stockEmpty: stockEmpty,
                             onTap: () {
-                              element.isSelected = !element.isSelected;
-                              itemBloc.add(ItemEvent(items));
+                              // element.isSelected = !element.isSelected;
+                              element.qty = element.qty > 0 ? 0 : 1;
+                              final selectedItems = items
+                                  .where((element) => element.qty > 0)
+                                  .toList();
+                              itemBloc
+                                  .add(ItemEvent(selectedItems: selectedItems));
                             },
                           );
                         });
@@ -78,7 +93,7 @@ class ItemCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-              color: element.isSelected
+              color: element.qty > 0
                   ? Theme.of(context).primaryColor
                   : Colors.transparent,
               width: 2.0),

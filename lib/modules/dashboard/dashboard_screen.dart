@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
@@ -130,15 +132,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           BlocBuilder<ItemBloc, ItemState>(
               bloc: _itemBloc,
               builder: (context, state) {
-                final List<Item> items = state.props[1];
+                final List<Item> selectedItems = state.props[2];
 
                 final isAnySelected =
-                    items.any((element) => element.isSelected);
+                    selectedItems.any((element) => element.qty > 0);
 
-                final total = items.where((element) => element.isSelected).fold(
-                    0.0,
-                    (previousValue, element) =>
-                        previousValue += element.sellPrice);
+                final total = selectedItems
+                    .where((element) => element.qty > 0)
+                    .fold(
+                        0.0,
+                        (previousValue, element) =>
+                            previousValue += element.sellPrice);
 
                 return AnimatedPositioned(
                   duration: Duration(milliseconds: 300),
@@ -155,7 +159,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(RouterHelper.kRouteSummary);
+                          },
                           child: Text('Bayar'),
                           textColor: Colors.white,
                         ),

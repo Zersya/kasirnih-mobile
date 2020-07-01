@@ -11,7 +11,7 @@ class Item {
   final String supplierName;
   final String refSupplier;
 
-  bool isSelected = false;
+  int qty = 0;
 
   Item(
     this.docId,

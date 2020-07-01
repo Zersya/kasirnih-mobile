@@ -35,28 +35,31 @@ class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
   @override
-  ItemState get initialState => ItemState(0, []);
+  ItemState get initialState => ItemState(0, [], []);
 
   @override
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
     final int version = state.props[0];
-    yield ItemState(version + 1, event.items);
+    yield ItemState(version + 1, event.items ?? state.props[1],
+        event.selectedItems ?? state.props[2]);
   }
 }
 
 class ItemState extends Equatable {
   final int version;
   final List<Item> items;
+  final List<Item> selectedItems;
 
-  ItemState(this.version, this.items);
+  ItemState(this.version, this.items, this.selectedItems);
   @override
-  List<Object> get props => [version, items];
+  List<Object> get props => [version, items, selectedItems];
 }
 
 class ItemEvent extends Equatable {
   final List<Item> items;
+  final List<Item> selectedItems;
 
-  ItemEvent(this.items);
+  ItemEvent({this.items, this.selectedItems});
   @override
-  List<Object> get props => [items];
+  List<Object> get props => [items, selectedItems];
 }
