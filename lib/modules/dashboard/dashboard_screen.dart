@@ -9,6 +9,7 @@ import 'package:ks_bike_mobile/modules/dashboard/widgets/items_widget/bloc/items
 
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
+import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 
 import 'widgets/categories_widget/bloc/categories_widget_bloc.dart';
@@ -131,11 +132,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               bloc: _itemBloc,
               builder: (context, state) {
                 final List<Item> selectedItems = state.props[2];
-
+                final List<Item> availableItems = selectedItems
+                    .where((element) => element.totalStock > 0)
+                    .toList();
                 final isAnySelected =
-                    selectedItems.any((element) => element.qty > 0);
+                    availableItems.any((element) => element.qty > 0);
 
-                final total = _getSumSelected(selectedItems);
+                final total = _getSumSelected(availableItems);
 
                 return AnimatedPositioned(
                   duration: Duration(milliseconds: 300),
@@ -152,10 +155,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
+                          onPressed: () async {
+                            final value = await Navigator.of(context).pushNamed(
                                 RouterHelper.kRouteSummary,
                                 arguments: _itemBloc.state.props[2]);
+                            _itemBloc.add(
+                                ItemEvent(selectedItems: value));
                           },
                           child: Text('Bayar'),
                           textColor: Colors.white,

@@ -20,6 +20,22 @@ class ItemsWidget extends StatelessWidget {
             initialData: [],
             builder: (context, snapshot) {
               final List<Item> items = snapshot.data;
+              final List<Item> selectedItems = itemBloc.state.props[2];
+
+              selectedItems.forEach((selectedItem) {
+                final item = items.firstWhere(
+                    (item) => (item.docId == selectedItem.docId),
+                    orElse: () => null);
+                if (item == null) return;
+                selectedItem.totalStock = item.totalStock;
+
+                if (item.totalStock > 0) {
+                  final index = items.indexOf(item);
+                  items[index].qty = selectedItem.qty;
+                } else {
+                  selectedItems.remove(this);
+                }
+              });
               itemBloc.add(ItemEvent(items: items));
 
               if (items.isEmpty) {
@@ -33,17 +49,6 @@ class ItemsWidget extends StatelessWidget {
               return BlocBuilder<ItemBloc, ItemState>(
                   bloc: itemBloc,
                   builder: (context, state) {
-                    final items = state.items;
-                    final selectedItems = state.selectedItems;
-                    selectedItems.forEach((selectedItem) {
-                      final element = items.firstWhere(
-                          (item) => item.docId == selectedItem.docId,
-                          orElse: () => null);
-                      if (element == null) return;
-                      final index = items.indexOf(element);
-                      items[index] = selectedItem;
-                    });
-
                     return GridView.builder(
                         shrinkWrap: true,
                         itemCount: items.length,
@@ -52,18 +57,21 @@ class ItemsWidget extends StatelessWidget {
                                 (orientation == Orientation.portrait) ? 3 : 4),
                         itemBuilder: (context, index) {
                           final element = items[index];
-                          final bool stockEmpty = items[index].totalStock == 0;
 
                           return ItemCard(
                             element: element,
-                            stockEmpty: stockEmpty,
                             onTap: () {
-                              element.qty = element.qty > 0 ? 0 : 1;
-                              final selectedItems = items
-                                  .where((element) => element.qty > 0)
-                                  .toList();
-                              itemBloc
-                                  .add(ItemEvent(selectedItems: selectedItems));
+                              if (element.totalStock > 0) {
+                                element.qty = element.qty > 0 ? 0 : 1;
+                                final selectedItems = items
+                                    .where((element) => element.qty > 0)
+                                    .toList();
+                                itemBloc.add(
+                                    ItemEvent(selectedItems: selectedItems));
+                              } else {
+                                toastError(
+                                    'Stock ${element.itemName} tidak tersedia');
+                              }
                             },
                           );
                         });
@@ -78,12 +86,10 @@ class ItemCard extends StatelessWidget {
   const ItemCard({
     Key key,
     @required this.element,
-    @required this.stockEmpty,
     @required this.onTap,
   }) : super(key: key);
 
   final Item element;
-  final bool stockEmpty;
   final Function onTap;
 
   @override
@@ -114,7 +120,8 @@ class ItemCard extends StatelessWidget {
                 currencyFormatter.format(element.sellPrice),
                 style: Theme.of(context).textTheme.subtitle2.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: stockEmpty ? Colors.red : Colors.green,
+                      color:
+                          element.totalStock == 0 ? Colors.red : Colors.green,
                     ),
               )
             ],

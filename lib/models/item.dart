@@ -2,7 +2,6 @@ class Item {
   final String docId;
   final String itemName;
   final String urlImage;
-  final int totalStock;
   final int buyPrice;
   final String categoryName;
   final int createdAt;
@@ -10,6 +9,7 @@ class Item {
   final String supplierName;
   final String refSupplier;
 
+  int totalStock;
   int sellPrice;
   int qty = 0;
 

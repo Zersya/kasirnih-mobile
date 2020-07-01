@@ -36,227 +36,241 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final dateNow = DateFormat.yMMMMEEEEd('id').format(DateTime.now());
     final timeNow = DateFormat.Hm('id').format(DateTime.now());
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ringkasan'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    '#TRX-01',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  Text(
-                    '$dateNow | $timeNow',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-              SizedBox(height: 8.0),
-              CustomTextField(
-                controller: _customerNameC,
-                label: 'Customer name',
-              ),
-              SizedBox(height: 8.0),
-              BlocBuilder<SummaryBloc, SummaryState>(
-                bloc: _summaryBloc,
-                builder: (context, state) {
-                  List<Item> items = state.props[1];
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop(_summaryBloc.state.props[1]);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Ringkasan'),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      '#TRX-01',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    Text(
+                      '$dateNow | $timeNow',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8.0),
+                CustomTextField(
+                  controller: _customerNameC,
+                  label: 'Customer name',
+                ),
+                SizedBox(height: 8.0),
+                BlocBuilder<SummaryBloc, SummaryState>(
+                  bloc: _summaryBloc,
+                  builder: (context, state) {
+                    List<Item> items = state.props[1];
 
-                  return Scrollbar(
-                    controller: _scrollController,
-                    isAlwaysShown: true,
-                    child: ListView.builder(
-                        shrinkWrap: true,
+                    return SizedBox(
+                      height: 300,
+                      child: Scrollbar(
                         controller: _scrollController,
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          final subtotal =
-                              items[index].qty * items[index].sellPrice;
+                        isAlwaysShown: true,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: _scrollController,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              final subtotal =
+                                  items[index].qty * items[index].sellPrice;
 
-                          return Card(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 0.0),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 1,
-                                  child: CachedNetworkImage(
-                                    imageUrl: items[index].urlImage,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16.0,
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        items[index].itemName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
+                              return Card(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 0.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 1,
+                                      child: CachedNetworkImage(
+                                        imageUrl: items[index].urlImage,
                                       ),
-                                      RichText(
-                                        text: TextSpan(children: [
-                                          TextSpan(
+                                    ),
+                                    SizedBox(
+                                      width: 16.0,
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            items[index].itemName,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2,
+                                                  text:
+                                                      '${items[index].qty.toString()} x '),
+                                              TextSpan(
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2,
+                                                  text: currencyFormatter
+                                                      .format(items[index]
+                                                          .sellPrice))
+                                            ]),
+                                          ),
+                                          Text(
+                                              currencyFormatter
+                                                  .format(subtotal),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle2,
-                                              text:
-                                                  '${items[index].qty.toString()} x '),
-                                          TextSpan(
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2,
-                                              text: currencyFormatter.format(
-                                                  items[index].sellPrice))
-                                        ]),
+                                                  .bodyText1),
+                                        ],
                                       ),
-                                      Text(currencyFormatter.format(subtotal),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1),
-                                    ],
-                                  ),
+                                    ),
+                                    Expanded(
+                                        child: IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () async {
+                                        _qtyC.text =
+                                            items[index].qty.toString();
+                                        _sellPriceC.text =
+                                            items[index].sellPrice.toString();
+                                        await buildShowDialog(
+                                            context, items, index);
+                                        _qtyC.clear();
+                                      },
+                                    ))
+                                  ],
                                 ),
-                                Expanded(
-                                    child: IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () async {
-                                    _qtyC.text = items[index].qty.toString();
-                                    _sellPriceC.text =
-                                        items[index].sellPrice.toString();
-                                    await buildShowDialog(
-                                        context, items, index);
-                                    _qtyC.clear();
+                              );
+                            }),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 16.0),
+                BlocBuilder<SummaryBloc, SummaryState>(
+                  bloc: _summaryBloc,
+                  builder: (context, state) {
+                    List<Item> items = state.props[1];
+                    final subtotal = items.fold(
+                        0.0,
+                        (previousValue, element) =>
+                            previousValue + (element.qty * element.sellPrice));
+                    return Container(
+                      color: Color(0xFFededed),
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Subtotal',
+                                  style: Theme.of(context).textTheme.subtitle2),
+                              Text(currencyFormatter.format(subtotal),
+                                  style: Theme.of(context).textTheme.subtitle2)
+                            ],
+                          ),
+                          SizedBox(
+                            height: 16.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Diskon',
+                                  style: Theme.of(context).textTheme.subtitle2),
+                              SizedBox(
+                                width: 100,
+                                child: TextField(
+                                  controller: _discountC,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    WhitelistingTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(),
+                                      contentPadding: EdgeInsets.only(
+                                          top: 0, right: 4, left: 4),
+                                      hintText: '0'),
+                                  onChanged: (value) {
+                                    _summaryBloc.add(
+                                        SummaryAddDiscount(int.parse(value)));
                                   },
-                                ))
-                              ],
-                            ),
-                          );
-                        }),
-                  );
-                },
-              ),
-              SizedBox(height: 16.0),
-              BlocBuilder<SummaryBloc, SummaryState>(
-                bloc: _summaryBloc,
-                builder: (context, state) {
-                  List<Item> items = state.props[1];
-                  final subtotal = items.fold(
-                      0.0,
-                      (previousValue, element) =>
-                          previousValue + (element.qty * element.sellPrice));
-                  return Container(
-                    color: Color(0xFFededed),
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 16.0),
+                BlocBuilder<SummaryBloc, SummaryState>(
+                  bloc: _summaryBloc,
+                  builder: (context, state) {
+                    List<Item> items = state.props[1];
+                    int discount = state.props[2];
+                    final total = items.fold(
+                            0.0,
+                            (previousValue, element) =>
+                                previousValue +
+                                (element.qty * element.sellPrice)) -
+                        discount;
+                    return Column(
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('Subtotal',
-                                style: Theme.of(context).textTheme.subtitle2),
-                            Text(currencyFormatter.format(subtotal),
-                                style: Theme.of(context).textTheme.subtitle2)
+                            Text('Total',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green)),
+                            Text(currencyFormatter.format(total),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green)),
                           ],
                         ),
+                        SizedBox(height: 16.0),
                         SizedBox(
-                          height: 16.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Diskon',
-                                style: Theme.of(context).textTheme.subtitle2),
-                            SizedBox(
-                              width: 100,
-                              child: TextField(
-                                controller: _discountC,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  WhitelistingTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.only(
-                                        top: 0, right: 4, left: 4),
-                                    hintText: '0'),
-                                onChanged: (value) {
-                                  _summaryBloc.add(
-                                      SummaryAddDiscount(int.parse(value)));
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                          width: double.infinity,
+                          child: RaisedButton(
+                            child: Text(
+                                'Bayar (${currencyFormatter.format(total)})'),
+                            onPressed: () {},
+                          ),
+                        )
                       ],
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 16.0),
-              BlocBuilder<SummaryBloc, SummaryState>(
-                bloc: _summaryBloc,
-                builder: (context, state) {
-                  List<Item> items = state.props[1];
-                  int discount = state.props[2];
-                  final total = items.fold(
-                          0.0,
-                          (previousValue, element) =>
-                              previousValue +
-                              (element.qty * element.sellPrice)) -
-                      discount;
-                  return Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Total',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green)),
-                          Text(currencyFormatter.format(total),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green)),
-                        ],
-                      ),
-                      SizedBox(height: 16.0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: RaisedButton(
-                          child: Text(
-                              'Bayar (${currencyFormatter.format(total)})'),
-                          onPressed: () {},
-                        ),
-                      )
-                    ],
-                  );
-                },
-              )
-            ],
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
