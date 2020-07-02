@@ -29,6 +29,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   void initState() {
     super.initState();
     _summaryBloc = SummaryBloc(widget.selectedItems);
+    _summaryBloc.add(SummaryLoad());
   }
 
   @override
@@ -54,10 +55,25 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      '#TRX-01',
-                      style: Theme.of(context).textTheme.subtitle1,
+                    BlocBuilder<SummaryBloc, SummaryState>(
+                      bloc: _summaryBloc,
+                      builder: (context, state) {
+                        return StreamBuilder<String>(
+                            stream: state.props[3],
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return Flexible(
+                                    child: LinearProgressIndicator());
+                              }
+
+                              return Text(
+                                snapshot.data,
+                                style: Theme.of(context).textTheme.subtitle1,
+                              );
+                            });
+                      },
                     ),
+                    SizedBox(width: 8.0),
                     Text(
                       '$dateNow | $timeNow',
                       style: Theme.of(context).textTheme.subtitle1,
@@ -335,8 +351,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              contentPadding:
-                                  EdgeInsets.only(top: 0, right: 4, left: 4),
+                              contentPadding: EdgeInsets.only(
+                                  top: 0, right: 8.0, left: 8.0),
                               hintText: '0'),
                         ),
                       ),
@@ -381,7 +397,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             contentPadding:
-                                EdgeInsets.only(top: 0, right: 4, left: 4),
+                                EdgeInsets.only(top: 0, right: 8, left: 8),
                             hintText: '0'),
                       ),
                     ),

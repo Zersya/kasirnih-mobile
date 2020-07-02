@@ -20,4 +20,13 @@ class Store {
         'store_owner_name': this.storeOwnerName.toLowerCase(),
         'store_owner_phone': this.storeOwnerPhone,
       };
+
+      Map<String, dynamic> toMapRegister() => {
+        'store_name': this.storeName.toLowerCase(),
+        'store_phone': this.storePhone,
+        'store_address': this.storeAddress.toLowerCase(),
+        'store_owner_name': this.storeOwnerName.toLowerCase(),
+        'store_owner_phone': this.storeOwnerPhone,
+        'latest_transaction_code': '#TRX-01'
+      };
 }

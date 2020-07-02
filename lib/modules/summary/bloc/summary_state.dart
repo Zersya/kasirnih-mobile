@@ -11,7 +11,8 @@ class SummaryInitial extends SummaryState {
   final int version;
   final List<Item> items;
   final int discount;
+  final Stream<String> streamCodeTrx;
 
-  SummaryInitial(this.version, {this.items, this.discount = 0})
-      : super(propss: [version, items, discount]);
+  SummaryInitial(this.version, {this.items, this.discount = 0, this.streamCodeTrx})
+      : super(propss: [version, items, discount, streamCodeTrx]);
 }

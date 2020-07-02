@@ -27,7 +27,7 @@ class StoreFormRepository {
 
     final doc = await _firestore.collection('users').document(userKey);
 
-    await doc.collection('stores').add(event.store.toMap());
+    await doc.collection('stores').add(event.store.toMapRegister());
     toastSuccess(tr('store_registration_screen.success_register_store'));
     return true;
   }

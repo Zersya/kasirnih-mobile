@@ -8,6 +8,8 @@ abstract class SummaryEvent extends Equatable {
   List<Object> get props => propss;
 }
 
+class SummaryLoad extends SummaryEvent {}
+
 class SummaryChangeQty extends SummaryEvent {
   final int index;
   final int qty;
