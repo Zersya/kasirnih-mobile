@@ -11,12 +11,15 @@ class Transaction {
   final int total;
   final int createdAt;
   final List<Item> items;
+  final String paymentMethod;
+  final int totalPaid;
+  final int totalChange;
 
-  Transaction(this.docId, this.code, this.customerName, this.subtotal,
-      this.discount, this.total, this.createdAt, this.items);
+  Transaction(this.code, this.customerName, this.subtotal, this.discount,
+      this.total, this.createdAt, this.items,
+      {this.docId, this.paymentMethod, this.totalChange, this.totalPaid});
 
   factory Transaction.fromMap(Map<String, dynamic> map) => Transaction(
-        map['document_id'],
         map['code'],
         map['customer_name'],
         map['sub_total'],
@@ -26,6 +29,7 @@ class Transaction {
         List.from(map['items'])
             .map((e) => Item.fromMap(jsonDecode(e)))
             .toList(),
+        docId: map['document_id'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -38,4 +42,31 @@ class Transaction {
         'created_at': this.createdAt,
         'items': this.items.map((e) => jsonEncode(e.toMap())).toList()
       };
+
+  Transaction copyWith({
+    String docId,
+    String code,
+    String customerName,
+    int subtotal,
+    int discount,
+    int total,
+    int createdAt,
+    List<Item> items,
+    String paymentMethod,
+    int totalPaid,
+    int totalChange,
+  }) =>
+      Transaction(
+        code ?? this.code,
+        customerName ?? this.customerName,
+        subtotal ?? this.subtotal,
+        discount ?? this.discount,
+        total ?? this.total,
+        createdAt ?? this.createdAt,
+        items ?? this.items,
+        docId: docId ?? this.docId,
+        totalChange: totalChange ?? this.totalChange,
+        totalPaid: totalPaid ?? this.totalPaid,
+        paymentMethod: paymentMethod ?? this.paymentMethod,
+      );
 }

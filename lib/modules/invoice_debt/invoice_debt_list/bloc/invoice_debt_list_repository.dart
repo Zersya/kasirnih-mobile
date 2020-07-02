@@ -12,7 +12,7 @@ class InvoiceDebtListRepository {
     final invoicesDoc = await doc
         .collection('stores')
         .document(storeKey)
-        .collection('invoices')
+        .collection('invoices_debt')
         // .where('is_paid', isEqualTo: false)
         .getDocuments();
 
@@ -45,7 +45,7 @@ class InvoiceDebtListRepository {
           .collection('users')
           .document(userKey)
           .collection('stores');
-      final invoices = await stores.document(storeKey).collection('invoices');
+      final invoices = await stores.document(storeKey).collection('invoices_debt');
 
       try {
         await _firestore.runTransaction((transaction) async {

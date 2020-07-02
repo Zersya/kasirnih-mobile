@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/item.dart';
+import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/summary/bloc/summary_bloc.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
@@ -25,6 +27,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
   final TextEditingController _discountC = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
+
+  String codeTransaction;
+
   @override
   void initState() {
     super.initState();
@@ -65,9 +70,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                 return Flexible(
                                     child: LinearProgressIndicator());
                               }
-
+                              codeTransaction = snapshot.data;
                               return Text(
-                                snapshot.data,
+                                codeTransaction,
                                 style: Theme.of(context).textTheme.subtitle1,
                               );
                             });
@@ -101,78 +106,138 @@ class _SummaryScreenState extends State<SummaryScreen> {
                             controller: _scrollController,
                             itemCount: items.length,
                             itemBuilder: (context, index) {
-                              final subtotal =
+                              final subItemtotal =
                                   items[index].qty * items[index].sellPrice;
 
-                              return Card(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 0.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 1,
-                                      child: CachedNetworkImage(
-                                        imageUrl: items[index].urlImage,
+                              return SizedBox(
+                                height: 100,
+                                child: Card(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 0.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: InkWell(
+                                      //     onTap: () {},
+                                      //     child: Container(
+                                      //       height: double.infinity,
+                                      //       decoration: BoxDecoration(
+                                      //         color: Colors.red[900],
+                                      //         borderRadius: BorderRadius.only(
+                                      //           topLeft: Radius.circular(16),
+                                      //           bottomLeft: Radius.circular(16),
+                                      //         ),
+                                      //       ),
+                                      //       child: Icon(
+                                      //         Icons.remove,
+                                      //         color: Colors.white,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+
+                                      Expanded(
+                                        flex: 1,
+                                        child: CachedNetworkImage(
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                          imageUrl: items[index].urlImage,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 16.0,
-                                    ),
-                                    Expanded(
-                                      flex: 4,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            items[index].itemName,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                          ),
-                                          RichText(
-                                            text: TextSpan(children: [
-                                              TextSpan(
+                                      SizedBox(
+                                        width: 16.0,
+                                      ),
+                                      Expanded(
+                                        flex: 4,
+                                        child: InkWell(
+                                          onTap: () async {
+                                            _qtyC.text =
+                                                items[index].qty.toString();
+                                            _sellPriceC.text = items[index]
+                                                .sellPrice
+                                                .toString();
+                                            await buildShowDialog(
+                                                context, items, index);
+                                            _qtyC.clear();
+                                          },
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                items[index].itemName,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline6
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(children: [
+                                                  TextSpan(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle2,
+                                                      text:
+                                                          '${items[index].qty.toString()} x '),
+                                                  TextSpan(
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle2,
+                                                      text: currencyFormatter
+                                                          .format(items[index]
+                                                              .sellPrice))
+                                                ]),
+                                              ),
+                                              Text(
+                                                  currencyFormatter
+                                                      .format(subItemtotal),
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .subtitle2,
-                                                  text:
-                                                      '${items[index].qty.toString()} x '),
-                                              TextSpan(
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2,
-                                                  text: currencyFormatter
-                                                      .format(items[index]
-                                                          .sellPrice))
-                                            ]),
+                                                      .bodyText1),
+                                            ],
                                           ),
-                                          Text(
-                                              currencyFormatter
-                                                  .format(subtotal),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                    Expanded(
-                                        child: IconButton(
-                                      icon: Icon(Icons.edit),
-                                      onPressed: () async {
-                                        _qtyC.text =
-                                            items[index].qty.toString();
-                                        _sellPriceC.text =
-                                            items[index].sellPrice.toString();
-                                        await buildShowDialog(
-                                            context, items, index);
-                                        _qtyC.clear();
-                                      },
-                                    ))
-                                  ],
+                                      Expanded(
+                                          child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () async {
+                                          _qtyC.text =
+                                              items[index].qty.toString();
+                                          _sellPriceC.text =
+                                              items[index].sellPrice.toString();
+                                          await buildShowDialog(
+                                              context, items, index);
+                                          _qtyC.clear();
+                                        },
+                                      )),
+                                      // Expanded(
+                                      //   flex: 1,
+                                      //   child: InkWell(
+                                      //     onTap: () {},
+                                      //     child: Container(
+                                      //       decoration: BoxDecoration(
+                                      //         color: Theme.of(context)
+                                      //             .primaryColor,
+                                      //         borderRadius: BorderRadius.only(
+                                      //           topRight: Radius.circular(16),
+                                      //           bottomRight:
+                                      //               Radius.circular(16),
+                                      //         ),
+                                      //       ),
+                                      //       height: double.infinity,
+                                      //       child: Icon(
+                                      //         Icons.add,
+                                      //         color: Colors.white,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),
@@ -186,7 +251,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   builder: (context, state) {
                     List<Item> items = state.props[1];
                     final subtotal = items.fold(
-                        0.0,
+                        0,
                         (previousValue, element) =>
                             previousValue + (element.qty * element.sellPrice));
                     return Container(
@@ -245,12 +310,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   builder: (context, state) {
                     List<Item> items = state.props[1];
                     int discount = state.props[2];
-                    final total = items.fold(
-                            0.0,
-                            (previousValue, element) =>
-                                previousValue +
-                                (element.qty * element.sellPrice)) -
-                        discount;
+
+                    final subtotal = items.fold(
+                        0,
+                        (previousValue, element) =>
+                            previousValue + (element.qty * element.sellPrice));
+                    final total = subtotal - discount;
+
                     return Column(
                       children: <Widget>[
                         Row(
@@ -278,7 +344,23 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           child: RaisedButton(
                             child: Text(
                                 'Bayar (${currencyFormatter.format(total)})'),
-                            onPressed: () {},
+                            onPressed: total <= 0
+                                ? null
+                                : () {
+                                    Transaction transaction = Transaction(
+                                      codeTransaction,
+                                      _customerNameC.text,
+                                      subtotal,
+                                      discount,
+                                      total,
+                                      DateTime.now().millisecondsSinceEpoch,
+                                      items,
+                                    );
+                                    Navigator.of(context).pushNamed(
+                                      RouterHelper.kRoutePayment,
+                                      arguments: transaction,
+                                    );
+                                  },
                           ),
                         )
                       ],

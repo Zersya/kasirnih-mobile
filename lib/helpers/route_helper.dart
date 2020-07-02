@@ -4,6 +4,7 @@ import 'package:ks_bike_mobile/modules/home/home_screen.dart';
 import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form/invoice_debt_form_screen.dart';
 import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_list/invoice_debt_list_screen.dart';
 import 'package:ks_bike_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
+import 'package:ks_bike_mobile/modules/payment/payment_screen.dart';
 import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
 import 'package:ks_bike_mobile/modules/store_form/store_form_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/form_stock/form_stock_screen.dart';
@@ -20,6 +21,7 @@ class RouterHelper {
   static const String kRouteInvoiceDebtForm = '/invoice_debt/form';
   static const String kRouteStockForm = '/stock/form';
   static const String kRouteSummary = '/summary';
+  static const String kRoutePayment = '/summary/transaction';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -56,6 +58,12 @@ class RouterHelper {
         return MaterialPageRoute(
             builder: (_) => SummaryScreen(
                   selectedItems: settings.arguments,
+                ));
+
+      case kRoutePayment:
+        return MaterialPageRoute(
+            builder: (_) => PaymentScreen(
+                  transaction: settings.arguments,
                 ));
 
       default:

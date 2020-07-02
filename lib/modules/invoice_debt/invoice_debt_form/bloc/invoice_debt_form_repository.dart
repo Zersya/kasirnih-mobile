@@ -53,8 +53,10 @@ class InvoiceDebtFormRepository {
       final imageUrl = await _uploadFile(state.props[2]);
 
       final doc = await _firestore.collection('users').document(userKey);
-      final collection =
-          doc.collection('stores').document(storeKey).collection('invoices');
+      final collection = doc
+          .collection('stores')
+          .document(storeKey)
+          .collection('invoices_debt');
       final docSupplier =
           await doc.collection('suppliers').document(supplier.docId);
 
@@ -98,8 +100,11 @@ class InvoiceDebtFormRepository {
     if (path == null || path.isEmpty) return '';
     final String uuid = Uuid().v1();
     final File file = await File(path);
-    final StorageReference ref =
-        _storage.ref().child('images').child('invoices_debt').child('$uuid.png');
+    final StorageReference ref = _storage
+        .ref()
+        .child('images')
+        .child('invoices_debt')
+        .child('$uuid.png');
     final StorageUploadTask uploadTask = ref.putFile(
       file,
       StorageMetadata(
