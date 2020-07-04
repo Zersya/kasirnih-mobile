@@ -13,12 +13,8 @@ part 'summary_repository.dart';
 
 class SummaryBloc extends Bloc<SummaryEvent, SummaryState> {
   final SummaryRepository _repo = SummaryRepository();
-  final List<Item> items;
 
-  SummaryBloc(this.items);
-
-  @override
-  SummaryState get initialState => SummaryInitial(0, items: items);
+  SummaryBloc(SummaryState initialState) : super(initialState);
 
   @override
   Stream<SummaryState> mapEventToState(

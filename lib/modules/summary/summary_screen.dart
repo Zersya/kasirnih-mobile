@@ -33,7 +33,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   @override
   void initState() {
     super.initState();
-    _summaryBloc = SummaryBloc(widget.selectedItems);
+    _summaryBloc = SummaryBloc(SummaryInitial(0, items: widget.selectedItems));
     _summaryBloc.add(SummaryLoad());
   }
 

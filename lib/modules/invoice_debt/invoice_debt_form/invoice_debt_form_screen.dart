@@ -29,7 +29,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _supplierForm = GlobalKey<FormState>();
 
-  final InvoiceDebtFormBloc _bloc = InvoiceDebtFormBloc();
+  final InvoiceDebtFormBloc _bloc = InvoiceDebtFormBloc(InvoiceDebtFormInitial());
 
   final picker = ImagePicker();
 

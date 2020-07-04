@@ -20,7 +20,8 @@ class CategoriesWidget extends StatelessWidget {
         initialData: [],
         builder: (context, snapshot) {
           final List<Category> categories = snapshot.data;
-          final CategoryBloc categoryBloc = CategoryBloc(categories);
+          final CategoryBloc categoryBloc =
+              CategoryBloc(CategoryState(categories: categories));
 
           if (categories.isEmpty) {
             return Center(child: Text('messages.no_data').tr());
@@ -30,7 +31,6 @@ class CategoriesWidget extends StatelessWidget {
             child: BlocBuilder<CategoryBloc, CategoryState>(
                 bloc: categoryBloc,
                 builder: (context, state) {
-                  final categories = state.categories;
                   return ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,

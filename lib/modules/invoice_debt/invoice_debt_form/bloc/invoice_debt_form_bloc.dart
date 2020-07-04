@@ -20,8 +20,7 @@ part 'invoice_debt_form_repository.dart';
 class InvoiceDebtFormBloc extends Bloc<InvoiceDebtFormEvent, InvoiceDebtFormState> {
   final InvoiceDebtFormRepository _repo = InvoiceDebtFormRepository();
 
-  @override
-  InvoiceDebtFormState get initialState => InvoiceDebtFormInitial();
+  InvoiceDebtFormBloc(InvoiceDebtFormState initialState) : super(initialState);
 
   @override
   Stream<InvoiceDebtFormState> mapEventToState(

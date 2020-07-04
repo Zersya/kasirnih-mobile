@@ -16,8 +16,7 @@ part 'store_form_repository.dart';
 class StoreFormBloc extends Bloc<StoreFormEvent, StoreFormState> {
   final StoreFormRepository _repo = StoreFormRepository();
 
-  @override
-  StoreFormState get initialState => StoreFormStateInitial();
+  StoreFormBloc(StoreFormState initialState) : super(initialState);
 
   @override
   Stream<StoreFormState> mapEventToState(

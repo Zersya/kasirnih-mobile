@@ -44,7 +44,7 @@ class _AuthScreenState extends State<AuthScreen>
   final formLoginKey = GlobalKey<FormState>();
   final formRegistKey = GlobalKey<FormState>();
 
-  final AuthBloc authBloc = AuthBloc();
+  final AuthBloc authBloc = AuthBloc(AuthInitial());
 
   @override
   void initState() {

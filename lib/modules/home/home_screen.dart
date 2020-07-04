@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ScreenIndexBloc _screenIndexBloc = ScreenIndexBloc();
+  final ScreenIndexBloc _screenIndexBloc = ScreenIndexBloc(0);
   final _screens = [];
 
   @override
@@ -69,8 +69,7 @@ class ScreenIndexChange {
 }
 
 class ScreenIndexBloc extends Bloc<ScreenIndexChange, int> {
-  @override
-  int get initialState => 0;
+  ScreenIndexBloc(int initialState) : super(initialState);
 
   @override
   Stream<int> mapEventToState(ScreenIndexChange event) async* {

@@ -18,7 +18,7 @@ class ListStockScreen extends StatefulWidget {
 class _ListStockScreenState extends State<ListStockScreen>
     with TickerProviderStateMixin {
   final TextEditingController _fieldSearch = TextEditingController();
-  final ListStockBloc _bloc = ListStockBloc();
+  final ListStockBloc _bloc = ListStockBloc(ListStockInitial());
   PersistentBottomSheetController bottomSheetController;
 
   TabController _tabController;

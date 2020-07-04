@@ -21,8 +21,7 @@ part 'form_stock_repository.dart';
 class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
   final FormStockRepository _repo = FormStockRepository();
 
-  @override
-  FormStockState get initialState => FormStockInitial();
+  FormStockBloc(FormStockState initialState) : super(initialState);
 
   @override
   Stream<FormStockState> mapEventToState(

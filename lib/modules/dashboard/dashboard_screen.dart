@@ -26,10 +26,11 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final DashboardBloc _dashboardBloc = DashboardBloc();
-  final CategoriesWidgetBloc _categoriesWidgetBloc = CategoriesWidgetBloc();
-  final ItemsWidgetBloc _itemsWidgetBloc = ItemsWidgetBloc();
-  final ItemBloc _itemBloc = ItemBloc();
+  final DashboardBloc _dashboardBloc = DashboardBloc(DashboardInitial());
+  final CategoriesWidgetBloc _categoriesWidgetBloc = CategoriesWidgetBloc(CategoriesWidgetInitial());
+  final ItemsWidgetBloc _itemsWidgetBloc = ItemsWidgetBloc(ItemsWidgetInitial());
+  final ItemBloc _itemBloc = ItemBloc(ItemState());
+  
   final TextEditingController _fieldSearch = TextEditingController();
 
   @override

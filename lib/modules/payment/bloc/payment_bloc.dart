@@ -17,8 +17,7 @@ part 'payment_repository.dart';
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final PaymentRepository _repo = PaymentRepository();
 
-  @override
-  PaymentState get initialState => PaymentInitial();
+  PaymentBloc(PaymentState initialState) : super(initialState);
 
   @override
   Stream<PaymentState> mapEventToState(
@@ -47,8 +46,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
 }
 
 class TotalChangeBloc extends Bloc<TotalChangeEvent, int> {
-  @override
-  int get initialState => 0;
+  TotalChangeBloc(int initialState) : super(initialState);
 
   @override
   Stream<int> mapEventToState(

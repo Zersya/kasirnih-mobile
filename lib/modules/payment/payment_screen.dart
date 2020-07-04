@@ -16,8 +16,8 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  final PaymentBloc _paymentBloc = PaymentBloc();
-  final TotalChangeBloc _totalChangeBloc = TotalChangeBloc();
+  final PaymentBloc _paymentBloc = PaymentBloc(PaymentInitial());
+  final TotalChangeBloc _totalChangeBloc = TotalChangeBloc(0);
 
   final MoneyMaskedTextController _paidC = MoneyMaskedTextController(
       thousandSeparator: '.',

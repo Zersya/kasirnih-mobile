@@ -17,8 +17,7 @@ class InvoiceDebtListBloc
     extends Bloc<InvoiceDebtListEvent, InvoiceDebtListState> {
   final InvoiceDebtListRepository _repo = InvoiceDebtListRepository();
 
-  @override
-  InvoiceDebtListState get initialState => InvoiceDebtListInitial();
+  InvoiceDebtListBloc(InvoiceDebtListState initialState) : super(initialState);
 
   @override
   Stream<InvoiceDebtListState> mapEventToState(

@@ -17,8 +17,7 @@ class NewItemFacilitiesBloc
     extends Bloc<NewItemFacilitiesEvent, NewItemFacilitiesState> {
   final NewItemFacilitiesRepository _repo = NewItemFacilitiesRepository();
 
-  @override
-  NewItemFacilitiesState get initialState => NewItemFacilitiesStateInitial();
+  NewItemFacilitiesBloc(NewItemFacilitiesState initialState) : super(initialState);
 
   @override
   Stream<NewItemFacilitiesState> mapEventToState(

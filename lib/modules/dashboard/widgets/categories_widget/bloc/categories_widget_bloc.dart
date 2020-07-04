@@ -14,8 +14,9 @@ part 'categories_widget_repository.dart';
 class CategoriesWidgetBloc
     extends Bloc<CategoriesWidgetEvent, CategoriesWidgetState> {
   final CategoriesWidgetRepository _repo = CategoriesWidgetRepository();
-  @override
-  CategoriesWidgetState get initialState => CategoriesWidgetInitial();
+
+  CategoriesWidgetBloc(CategoriesWidgetState initialState)
+      : super(initialState);
 
   @override
   Stream<CategoriesWidgetState> mapEventToState(
@@ -30,17 +31,12 @@ class CategoriesWidgetBloc
 }
 
 class CategoryBloc extends Bloc<Category, CategoryState> {
-  final List<Category> categories;
-
-  CategoryBloc(this.categories);
-
-  @override
-  CategoryState get initialState => CategoryState(0, categories);
+  CategoryBloc(CategoryState initialState) : super(initialState);
 
   @override
   Stream<CategoryState> mapEventToState(Category event) async* {
     final int version = state.props[0];
-    yield CategoryState(version + 1, categories);
+    yield CategoryState(version: version + 1, categories: state.categories);
   }
 }
 
@@ -48,7 +44,7 @@ class CategoryState extends Equatable {
   final int version;
   final List<Category> categories;
 
-  CategoryState(this.version, this.categories);
+  CategoryState({this.version = 0, this.categories = const []});
   @override
-  List<Object> get props => [version, categories];
+  List<Object> get props => [version];
 }

@@ -20,7 +20,7 @@ class InvoiceDebtListScreen extends StatefulWidget {
 }
 
 class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
-  final InvoiceDebtListBloc _bloc = InvoiceDebtListBloc();
+  final InvoiceDebtListBloc _bloc = InvoiceDebtListBloc(InvoiceDebtListInitial());
 
   @override
   void initState() {

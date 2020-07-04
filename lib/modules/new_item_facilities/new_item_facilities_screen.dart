@@ -21,7 +21,7 @@ class NewItemFacilitiesScreen extends StatefulWidget {
 }
 
 class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
-  final NewItemFacilitiesBloc _bloc = NewItemFacilitiesBloc();
+  final NewItemFacilitiesBloc _bloc = NewItemFacilitiesBloc(NewItemFacilitiesStateInitial());
   final TextEditingController _itemNameC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 

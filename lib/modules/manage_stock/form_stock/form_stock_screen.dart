@@ -29,7 +29,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
   final TextEditingController _categoryName = TextEditingController();
   final TextEditingController _supplierName = TextEditingController();
 
-  final FormStockBloc _bloc = FormStockBloc();
+  final FormStockBloc _bloc = FormStockBloc(FormStockInitial());
   final _formKey = GlobalKey<FormState>();
   final _dialogForm = GlobalKey<FormState>();
   final picker = ImagePicker();

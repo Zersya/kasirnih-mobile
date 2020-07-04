@@ -14,9 +14,9 @@ part 'items_widget_repository.dart';
 
 class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
   final ItemsWidgetRepository _repo = ItemsWidgetRepository();
-  @override
-  ItemsWidgetState get initialState => ItemsWidgetInitial();
 
+  ItemsWidgetBloc(ItemsWidgetState initialState) : super(initialState);
+  
   @override
   Stream<ItemsWidgetState> mapEventToState(
     ItemsWidgetEvent event,
@@ -34,14 +34,14 @@ class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
 }
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
-  @override
-  ItemState get initialState => ItemState(0, [], []);
+  ItemBloc(ItemState initialState) : super(initialState);
+
 
   @override
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
     final int version = state.props[0];
-    yield ItemState(version + 1, event.items ?? state.props[1],
-        event.selectedItems ?? state.props[2]);
+    yield ItemState(version: version + 1, items:event.items ?? state.props[1],
+        selectedItems:event.selectedItems ?? state.props[2]);
   }
 }
 
@@ -50,7 +50,7 @@ class ItemState extends Equatable {
   final List<Item> items;
   final List<Item> selectedItems;
 
-  ItemState(this.version, this.items, this.selectedItems);
+  ItemState({this.version = 0, this.items= const [], this.selectedItems = const []});
   @override
   List<Object> get props => [version, items, selectedItems];
 }

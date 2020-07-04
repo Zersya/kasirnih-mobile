@@ -14,8 +14,7 @@ part 'list_stock_repository.dart';
 class ListStockBloc extends Bloc<ListStockEvent, ListStockState> {
   final ListStockRepository _repo = ListStockRepository();
 
-  @override
-  ListStockState get initialState => ListStockInitial();
+  ListStockBloc(ListStockState initialState) : super(initialState);
 
   @override
   Stream<ListStockState> mapEventToState(

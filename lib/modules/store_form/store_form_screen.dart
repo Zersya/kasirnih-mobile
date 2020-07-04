@@ -31,7 +31,7 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final StoreFormBloc _bloc = StoreFormBloc();
+  final StoreFormBloc _bloc = StoreFormBloc(StoreFormStateInitial());
 
   @override
   void initState() {

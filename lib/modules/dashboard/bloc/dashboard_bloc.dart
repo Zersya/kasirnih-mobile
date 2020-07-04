@@ -13,8 +13,7 @@ part 'dashboard_repository.dart';
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository _repo = DashboardRepository();
 
-  @override
-  DashboardState get initialState => DashboardInitial();
+  DashboardBloc(DashboardState initialState) : super(initialState);
 
   @override
   Stream<DashboardState> mapEventToState(
