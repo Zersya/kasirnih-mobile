@@ -26,9 +26,7 @@ class Transaction {
         map['discount'],
         map['total'],
         map['created_at'],
-        List.from(map['items'])
-            .map((e) => Item.fromMap(jsonDecode(e)))
-            .toList(),
+        List.from(map['items']).map((e) => Item.fromMap(e)).toList(),
         docId: map['document_id'],
       );
 
@@ -40,7 +38,7 @@ class Transaction {
         'discount': this.discount,
         'total': this.total,
         'created_at': this.createdAt,
-        'items': this.items.map((e) => jsonEncode(e.toMap())).toList()
+        'items': this.items.map((e) => e.toMap()).toList()
       };
 
   Transaction copyWith({

@@ -12,6 +12,7 @@ class Item {
   int totalStock;
   int sellPrice;
   int qty = 0;
+  int soldToday = 0;
 
   Item(
     this.docId,

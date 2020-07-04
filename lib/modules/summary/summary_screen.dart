@@ -8,6 +8,7 @@ import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/summary/bloc/summary_bloc.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
+import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -116,27 +117,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       vertical: 8.0, horizontal: 0.0),
                                   child: Row(
                                     children: <Widget>[
-                                      // Expanded(
-                                      //   flex: 1,
-                                      //   child: InkWell(
-                                      //     onTap: () {},
-                                      //     child: Container(
-                                      //       height: double.infinity,
-                                      //       decoration: BoxDecoration(
-                                      //         color: Colors.red[900],
-                                      //         borderRadius: BorderRadius.only(
-                                      //           topLeft: Radius.circular(16),
-                                      //           bottomLeft: Radius.circular(16),
-                                      //         ),
-                                      //       ),
-                                      //       child: Icon(
-                                      //         Icons.remove,
-                                      //         color: Colors.white,
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
-
                                       Expanded(
                                         flex: 1,
                                         child: CachedNetworkImage(
@@ -214,28 +194,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                           _qtyC.clear();
                                         },
                                       )),
-                                      // Expanded(
-                                      //   flex: 1,
-                                      //   child: InkWell(
-                                      //     onTap: () {},
-                                      //     child: Container(
-                                      //       decoration: BoxDecoration(
-                                      //         color: Theme.of(context)
-                                      //             .primaryColor,
-                                      //         borderRadius: BorderRadius.only(
-                                      //           topRight: Radius.circular(16),
-                                      //           bottomRight:
-                                      //               Radius.circular(16),
-                                      //         ),
-                                      //       ),
-                                      //       height: double.infinity,
-                                      //       child: Icon(
-                                      //         Icons.add,
-                                      //         color: Colors.white,
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -501,6 +459,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           onPressed: () {
                             final int qty = int.parse(_qtyC.text);
                             final int price = int.parse(_sellPriceC.text);
+                            if (qty > items[index].totalStock) {
+                              toastError(
+                                  'Stok tersisa ${items[index].totalStock}');
+                              return;
+                            }
                             _summaryBloc
                                 .add(SummaryChangeQty(index, qty, price));
                             Navigator.of(context).pop();

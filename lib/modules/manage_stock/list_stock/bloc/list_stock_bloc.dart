@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/utils/key.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ks_bike_mobile/models/transaction.dart' as trx;
 
 part 'list_stock_event.dart';
 part 'list_stock_state.dart';

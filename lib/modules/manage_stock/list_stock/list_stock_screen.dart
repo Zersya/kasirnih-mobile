@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/item.dart';
+import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/list_stock/bloc/list_stock_bloc.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -128,7 +129,8 @@ class _ListStockScreenState extends State<ListStockScreen>
                     builder: (context, state) {
                       final streamItems = state.props[2];
 
-                      return ListItems(streamItems: streamItems);
+                      return ListItems(
+                          streamItems: streamItems, isSoldToday: true);
                     }),
                 BlocConsumer<ListStockBloc, ListStockState>(
                     bloc: _bloc,
@@ -175,9 +177,11 @@ class ListItems extends StatelessWidget {
   const ListItems({
     Key key,
     @required this.streamItems,
+    this.isSoldToday = false,
   }) : super(key: key);
 
   final Object streamItems;
+  final bool isSoldToday;
 
   @override
   Widget build(BuildContext context) {
@@ -219,19 +223,30 @@ class ListItems extends StatelessWidget {
                               Text(items[index].itemName.capitalize(),
                                   style: Theme.of(context).textTheme.subtitle1),
                               SizedBox(height: 16.0),
-                              Text(
-                                stockEmpty
-                                    ? tr('list_stock_screen.item_not_available')
-                                    : '${tr('list_stock_screen.stock_available')} ${items[index].totalStock}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2
-                                    .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: stockEmpty
-                                            ? Colors.red
-                                            : Colors.grey),
-                              ),
+                              if (isSoldToday)
+                                Text(
+                                    'Terjual Hari ini : ${items[index].soldToday}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey)),
+                              if (!isSoldToday)
+                                Text(
+                                  stockEmpty
+                                      ? tr(
+                                          'list_stock_screen.item_not_available')
+                                      : '${tr('list_stock_screen.stock_available')} ${items[index].totalStock}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: stockEmpty
+                                              ? Colors.red
+                                              : Colors.grey),
+                                ),
                               SizedBox(height: 4.0),
                               Text(
                                 '${currencyFormatter.format(items[index].sellPrice)}',

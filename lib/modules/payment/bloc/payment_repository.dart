@@ -36,7 +36,7 @@ class PaymentRepository {
 
     final doc = await _firestore.collection('users').document(userKey);
     final collection =
-        doc.collection('stores').document(storeKey).collection('transaction');
+        doc.collection('stores').document(storeKey).collection('transactions');
 
     final trx.Transaction transaction =
         event.transaction.copyWith(docId: collection.document().documentID);
@@ -48,11 +48,25 @@ class PaymentRepository {
     final newCodeTrx = '#TRX-$codeIdTrx';
 
     await _firestore.runTransaction((transaction) async {
-      final freshsnap = await transaction
+      final snapStore = await transaction
           .get(doc.collection('stores').document(storeKey))
           .catchError((err) => throw err);
+
+      event.transaction.items.forEach((element) async {
+        final snapItem = await transaction
+            .get(doc
+                .collection('stores')
+                .document(storeKey)
+                .collection('items')
+                .document(element.docId))
+            .catchError((err) => throw err);
+        final decrement = FieldValue.increment(-element.qty);
+        await transaction
+            .update(snapItem.reference, {'total_stock': decrement});
+      });
+
       await transaction
-          .update(freshsnap.reference, {'latest_transaction_code': newCodeTrx});
+          .update(snapStore.reference, {'latest_transaction_code': newCodeTrx});
     }).catchError((err) {
       toastError(err.message);
       return false;

@@ -10,6 +10,8 @@ class ListStockRepository {
     final storeKey = prefs.getString(kDefaultStore);
 
     final doc = await _firestore.collection('users').document(userKey);
+    final dt =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     switch (event.indexScreen) {
       case 0:
         final items = doc
@@ -23,16 +25,36 @@ class ListStockRepository {
 
         return items;
       case 1:
-        final items = doc
+        final qs = await doc
             .collection('stores')
             .document(storeKey)
-            .collection('items')
-            .where('total_stock', isEqualTo: 0)
-            .snapshots()
-            .map((event) =>
-                event.documents.map((e) => Item.fromMap(e.data)).toList());
+            .collection('transactions')
+            .where('created_at',
+                isGreaterThanOrEqualTo: dt.millisecondsSinceEpoch)
+            .getDocuments();
+        final List<trx.Transaction> transactions =
+            qs.documents.map((e) => trx.Transaction.fromMap(e.data)).toList();
 
-        return items;
+        final List<Item> items = transactions
+            .map((e) => e.items)
+            .toList()
+            .expand((element) => element)
+            .toList();
+
+        final List<Item> newItems = [];
+        items.forEach((element) {
+          final newElement = newItems
+              .singleWhere((e) => e.docId == element.docId, orElse: () => null);
+          if (newElement == null) {
+            element.soldToday++;
+            newItems.add(element);
+          } else {
+            newElement.soldToday++;
+          }
+          return;
+        });
+
+        return Stream.value(newItems).asBroadcastStream();
       case 2:
         final items = doc
             .collection('stores')
