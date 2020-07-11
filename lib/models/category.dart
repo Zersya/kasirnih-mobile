@@ -1,12 +1,11 @@
-
 class Category {
   final String docId;
   final String name;
   final int createdAt;
 
-  bool isSelected = false;
+  bool isSelected;
 
-  Category(this.docId, this.name, {this.createdAt});
+  Category(this.docId, this.name, {this.createdAt, this.isSelected = false});
 
   factory Category.fromMap(Map<String, dynamic> map) =>
       Category(map['document_id'], map['name'], createdAt: map['created_at']);

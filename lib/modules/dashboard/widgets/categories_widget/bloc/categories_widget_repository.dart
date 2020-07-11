@@ -16,7 +16,7 @@ class CategoriesWidgetRepository {
         .snapshots()
         .map((event) =>
             event.documents.map((e) => Category.fromMap(e.data)).toList()
-              ..insert(0, Category('', 'Semua')));
+              ..insert(0, Category('', 'Semua', isSelected: true)));
 
     return items;
   }
