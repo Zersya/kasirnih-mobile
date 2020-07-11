@@ -70,6 +70,7 @@
     },
     "form_stock_screen": {
         "add_stock": "Tambah Stock",
+        "edit_stock": "Ubah Stock",
         "upload_photo_item": "Unggah Foto Barang",
         "item_name": "Nama Barang",
         "choose_category": "Pilih Kategori",

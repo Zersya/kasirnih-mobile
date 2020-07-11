@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ks_bike_mobile/models/category.dart';
+import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
@@ -15,7 +17,8 @@ import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'bloc/form_stock_bloc.dart';
 
 class FormStockScreen extends StatefulWidget {
-  FormStockScreen({Key key}) : super(key: key);
+  final Item item;
+  FormStockScreen({Key key, this.item}) : super(key: key);
 
   @override
   _FormStockScreenState createState() => _FormStockScreenState();
@@ -39,13 +42,48 @@ class _FormStockScreenState extends State<FormStockScreen> {
     super.initState();
     _bloc.add(FormStockLoadCategory());
     _bloc.add(FormStockLoadSupplier());
+
+    _bloc.listen((state) {
+      if (widget.item != null) {
+        final Item item = widget.item;
+
+        _itemNameC.text = item.itemName;
+        _totalStockC.text = '${item.totalStock}';
+        _buyPrice.text = '${item.buyPrice}';
+        _sellPrice.text = '${item.sellPrice}';
+
+        final List<Category> categories = state.props[1];
+        final List<Supplier> suppliers = state.props[5];
+        final int curIdxCat = state.props[3];
+        final int curIdxSup = state.props[4];
+
+        if (categories.isNotEmpty &&
+            suppliers.isNotEmpty &&
+            curIdxCat == null &&
+            curIdxSup == null) {
+          final category = categories
+              .firstWhere((element) => element.name == item.categoryName);
+          final supplier = suppliers
+              .firstWhere((element) => element.name == item.supplierName);
+
+          final indexC = categories.indexOf(category);
+          final indexS = suppliers.indexOf(supplier);
+
+          _bloc.add(FormStockChooseCategory(indexC));
+          _bloc.add(FormStockChooseSupplier(indexS));
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('form_stock_screen.add_stock').tr(),
+        title: Text(widget.item == null
+                ? 'form_stock_screen.add_stock'
+                : 'form_stock_screen.edit_stock')
+            .tr(),
       ),
       body: Stack(
         children: <Widget>[
@@ -262,6 +300,19 @@ class _FormStockScreenState extends State<FormStockScreen> {
   }
 
   Widget buildImage(BuildContext context) {
+    if (widget.item != null && widget.item.urlImage.isNotEmpty) {
+      return AspectRatio(
+        aspectRatio: 1 / 1,
+        child: GestureDetector(
+          onTap: () {
+            _dialogChooseImage(context);
+          },
+          child: CachedNetworkImage(
+            imageUrl: widget.item.urlImage,
+          ),
+        ),
+      );
+    }
     return BlocBuilder<FormStockBloc, FormStockState>(
         bloc: _bloc,
         builder: (context, state) {

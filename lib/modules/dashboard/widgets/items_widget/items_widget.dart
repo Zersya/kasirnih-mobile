@@ -108,14 +108,29 @@ class ItemCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Image.network(
-                  element.urlImage,
-                  fit: BoxFit.fitWidth,
+              if (element.urlImage.isEmpty)
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    color: Colors.grey[200],
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[Icon(Icons.image), Text('No Image')],
+                    ),
+                  ),
+                )
+              else if (element.urlImage.isNotEmpty)
+                Flexible(
+                  flex: 1,
+                  child: Image.network(
+                    element.urlImage,
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
-              ),
+              SizedBox(height: 8.0),
               Text(element.itemName.capitalize()),
+              SizedBox(height: 4.0),
               Text(
                 currencyFormatter.format(element.sellPrice),
                 style: Theme.of(context).textTheme.subtitle2.copyWith(

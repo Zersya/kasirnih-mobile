@@ -52,7 +52,7 @@ class RouterHelper {
         return MaterialPageRoute(builder: (_) => InvoiceDebtFormScreen());
 
       case kRouteStockForm:
-        return MaterialPageRoute(builder: (_) => FormStockScreen());
+        return MaterialPageRoute(builder: (_) => FormStockScreen(item: settings.arguments,));
 
       case kRouteSummary:
         return MaterialPageRoute(

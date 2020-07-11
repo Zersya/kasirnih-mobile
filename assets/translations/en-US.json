@@ -70,6 +70,7 @@
     },
     "form_stock_screen": {
         "add_stock": "Add Stock",
+        "edit_stock": "Edit Stock",
         "upload_photo_item": "Upload Photo Item",
         "item_name": "Item Name",
         "choose_category": "Choose Category",

@@ -218,12 +218,26 @@ class ListItems extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        CachedNetworkImage(
-                          imageUrl: items[index].urlImage,
-                          fit: BoxFit.fitWidth,
-                          width: 150,
-                          height: 150,
-                        ),
+                        if (items[index].urlImage.isEmpty)
+                          Container(
+                            width: 150,
+                            height: 150,
+                            color: Colors.grey[200],
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.image),
+                                Text('No Image')
+                              ],
+                            ),
+                          )
+                        else if (items[index].urlImage.isNotEmpty)
+                          CachedNetworkImage(
+                            imageUrl: items[index].urlImage,
+                            fit: BoxFit.fitWidth,
+                            width: 150,
+                            height: 150,
+                          ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -360,7 +374,12 @@ class ListItems extends StatelessWidget {
                   ),
                   Expanded(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushNamed(
+                            RouterHelper.kRouteStockForm,
+                            arguments: item);
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         padding: EdgeInsets.all(16.0),
