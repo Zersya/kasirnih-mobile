@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ks_bike_mobile/models/transaction.dart' as trx;
 
@@ -28,6 +28,8 @@ class ListStockBloc extends Bloc<ListStockEvent, ListStockState> {
       yield* loadStock(event, state);
     } else if (event is ListStockSearch) {
       yield* searchStock(event, state);
+    } else if (event is ListStockDelete) {
+      yield* deleteStock(event, state);
     }
   }
 
@@ -56,6 +58,18 @@ class ListStockBloc extends Bloc<ListStockEvent, ListStockState> {
       items1: state.props[2],
       items2: state.props[3],
       itemsSearched: items,
+    );
+  }
+
+  Stream<ListStockState> deleteStock(
+      ListStockDelete event, ListStockState state) async* {
+    await _repo.deleteItem(event);
+
+    yield ListStockInitial(
+      version: state.props[0],
+      items0: state.props[1],
+      items1: state.props[2],
+      items2: state.props[3],
     );
   }
 }

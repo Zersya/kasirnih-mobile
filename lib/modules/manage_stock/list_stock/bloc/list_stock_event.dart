@@ -14,8 +14,14 @@ class ListStockLoad extends ListStockEvent {
   ListStockLoad(this.indexScreen);
 }
 
-class ListStockSearch extends ListStockEvent{
+class ListStockSearch extends ListStockEvent {
   final String name;
 
   ListStockSearch(this.name);
+}
+
+class ListStockDelete extends ListStockEvent {
+  final String docId;
+
+  ListStockDelete(this.docId);
 }

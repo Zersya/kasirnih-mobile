@@ -91,4 +91,20 @@ class ListStockRepository {
 
     return items;
   }
+
+  Future<bool> deleteItem(ListStockDelete event) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
+
+    final doc = await _firestore
+        .collection('users')
+        .document(userKey)
+        .collection('stores')
+        .document(storeKey);
+    await doc.collection('items').document(event.docId).delete();
+
+    toastSuccess('Sukses menghapus item');
+    return true;
+  }
 }

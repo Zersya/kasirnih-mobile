@@ -1,4 +1,8 @@
 {
+    "labels": {
+        "yes": "Yes",
+        "no": "No"
+    },
     "messages": {
         "no_data": "No Data",
         "no_image": "No Image"
@@ -10,7 +14,8 @@
         "choose_image_source": "Choose Image Source",
         "field": {
             "msg_empty": "Field {} cannot empty"
-        }
+        },
+        "delete_confirm": "Are you sure deleting {}?"
     },
     "auth_screen": {
         "welcome": "Welcome",
@@ -21,7 +26,7 @@
         "msg_usr_success_login": "Login Success, Welcome {}",
         "msg_username_error_login": "Username {} not found, try another one"
     },
-    "dashboard_screen":{
+    "dashboard_screen": {
         "hi": "Hi, {}",
         "no_profile_store": "No store profile",
         "register_your_store": "Register your store here"
@@ -37,7 +42,6 @@
         "success_register_store": "Success Register Store",
         "success_update_store": "Success Update Store",
         "failed_update_store": "Failed Update Store"
-
     },
     "new_item_facilities_screen": {
         "new_item_facilities": "New Item Facilities",
@@ -47,7 +51,6 @@
         "see_all": "See All",
         "success_add_new_item_facilities": "Success Add New Item Facilities",
         "no_list_bought": "No List Bought"
-
     },
     "invoice_debt_screen": {
         "invoice_debt": "Invoice Debt",
@@ -56,8 +59,8 @@
         "mark_as_invoice_not_paid": "Mark as Invoice not Paid",
         "add_invoice_debt": "Add Invoice Debt",
         "upload_photo_invoice": "Upload Photo Invoice",
-        "no_debt":"No Debt",
-        "choose_image_invoice":"Choose Image Invoice",
+        "no_debt": "No Debt",
+        "choose_image_invoice": "Choose Image Invoice",
         "invoice_name": "Invoice Name",
         "choose_supplier": "Choose Supplier",
         "due_date": "Due Date",
@@ -82,16 +85,17 @@
         "supplier_name": "Supplier Name"
     },
     "list_stock_screen": {
-        "list_stock_item":"List Stock Item",
-        "search_item":"Search Item",
-        "available":"Available",
-        "sold_today":"Sold Today",
-        "not_available":"Not Available",
-        "item_not_available":"Item not Available",
-        "stock_available":"Stock available",
-        "detail_item":"Detail Item",
-        "buy_price":"Buy Price",
-        "category":"Category",
-        "supplier":"Supplier"
+        "list_stock_item": "List Stock Item",
+        "search_item": "Search Item",
+        "available": "Available",
+        "sold_today": "Sold Today",
+        "not_available": "Not Available",
+        "item_not_available": "Item not Available",
+        "stock_available": "Stock available",
+        "detail_item": "Detail Item",
+        "buy_price": "Buy Price",
+        "sell_price": "Sell Price",
+        "category": "Category",
+        "supplier": "Supplier"
     }
 }

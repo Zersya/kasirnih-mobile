@@ -1,4 +1,8 @@
 {
+    "labels":{
+        "yes": "Ya",
+        "no": "Tidak"
+    },
     "messages": {
         "no_data": "Tidak ada data",
         "no_image": "Tidak ada gambar"
@@ -10,7 +14,8 @@
         "choose_image_source": "Pilih Sumber Gambar",
         "field": {
             "msg_empty": "Kolom {} tidak boleh kosong"
-        }
+        },
+        "delete_confirm": "Kamu yakin menghapus {}?"
     },
     "auth_screen": {
         "welcome": "Selamat Datang",
@@ -53,7 +58,7 @@
         "mark_as_invoice_paid": "Tandai sebagai tagihan terbayar",
         "mark_as_invoice_not_paid": "Tandai sebagai tagihan belum bayar",
         "add_invoice_debt": "Tambah Tagihan Hutang",
-        "no_debt":"Tidak ada hutang",
+        "no_debt": "Tidak ada hutang",
         "upload_photo_invoice": "Upload Foto Tagihan",
         "choose_image_invoice": "Pilih Foto Tagihan",
         "invoice_name": "Nama Invoice",
@@ -80,16 +85,17 @@
         "supplier_name": "Nama Kategori"
     },
     "list_stock_screen": {
-        "list_stock_item":"Daftar Stok Barang",
-        "search_item":"Cari Barang",
-        "available":"Tersedia",
-        "sold_today":"Terjual Hari ini",
-        "not_available":"Habis",
-        "item_not_available":"Barang Habis",
-        "stock_available":"Stok masih ada",
-        "detail_item":"Detail barang",
-        "buy_price":"Harga Beli",
-        "category":"Kategori",
-        "supplier":"Suplier"
+        "list_stock_item": "Daftar Stok Barang",
+        "search_item": "Cari Barang",
+        "available": "Tersedia",
+        "sold_today": "Terjual Hari ini",
+        "not_available": "Habis",
+        "item_not_available": "Barang Habis",
+        "stock_available": "Stok masih ada",
+        "detail_item": "Detail barang",
+        "buy_price": "Harga Beli",
+        "sell_price": "Harga Jual",
+        "category": "Kategori",
+        "supplier": "Suplier"
     }
 }
