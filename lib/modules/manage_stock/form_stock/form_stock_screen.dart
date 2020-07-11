@@ -44,33 +44,35 @@ class _FormStockScreenState extends State<FormStockScreen> {
     _bloc.add(FormStockLoadSupplier());
 
     _bloc.listen((state) {
-      if (widget.item != null) {
-        final Item item = widget.item;
+      if (state is FormStockInitial) {
+        if (widget.item != null) {
+          final Item item = widget.item;
 
-        _itemNameC.text = item.itemName;
-        _totalStockC.text = '${item.totalStock}';
-        _buyPrice.text = '${item.buyPrice}';
-        _sellPrice.text = '${item.sellPrice}';
+          _itemNameC.text = item.itemName;
+          _totalStockC.text = '${item.totalStock}';
+          _buyPrice.text = '${item.buyPrice}';
+          _sellPrice.text = '${item.sellPrice}';
 
-        final List<Category> categories = state.props[1];
-        final List<Supplier> suppliers = state.props[5];
-        final int curIdxCat = state.props[3];
-        final int curIdxSup = state.props[4];
+          final List<Category> categories = state.props[1];
+          final List<Supplier> suppliers = state.props[5];
+          final int curIdxCat = state.props[3];
+          final int curIdxSup = state.props[4];
 
-        if (categories.isNotEmpty &&
-            suppliers.isNotEmpty &&
-            curIdxCat == null &&
-            curIdxSup == null) {
-          final category = categories
-              .firstWhere((element) => element.name == item.categoryName);
-          final supplier = suppliers
-              .firstWhere((element) => element.name == item.supplierName);
+          if (categories.isNotEmpty &&
+              suppliers.isNotEmpty &&
+              curIdxCat == null &&
+              curIdxSup == null) {
+            final category = categories
+                .firstWhere((element) => element.name == item.categoryName);
+            final supplier = suppliers
+                .firstWhere((element) => element.name == item.supplierName);
 
-          final indexC = categories.indexOf(category);
-          final indexS = suppliers.indexOf(supplier);
+            final indexC = categories.indexOf(category);
+            final indexS = suppliers.indexOf(supplier);
 
-          _bloc.add(FormStockChooseCategory(indexC));
-          _bloc.add(FormStockChooseSupplier(indexS));
+            _bloc.add(FormStockChooseCategory(indexC));
+            _bloc.add(FormStockChooseSupplier(indexS));
+          }
         }
       }
     });
@@ -348,8 +350,20 @@ class _FormStockScreenState extends State<FormStockScreen> {
   }
 
   _submitFormStock() {
-    _bloc.add(FormStockAddItem(_itemNameC.text, int.parse(_totalStockC.text),
-        int.parse(_buyPrice.text), int.parse(_sellPrice.text)));
+    if (widget.item == null) {
+      _bloc.add(FormStockAddItem(_itemNameC.text, int.parse(_totalStockC.text),
+          int.parse(_buyPrice.text), int.parse(_sellPrice.text)));
+    } else {
+      _bloc.add(
+        FormStockEditItem(
+          widget.item,
+          _itemNameC.text,
+          int.parse(_totalStockC.text),
+          int.parse(_buyPrice.text),
+          int.parse(_sellPrice.text),
+        ),
+      );
+    }
   }
 
   _submitCategory() {

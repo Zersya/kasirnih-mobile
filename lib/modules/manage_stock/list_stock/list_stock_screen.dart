@@ -30,7 +30,9 @@ class _ListStockScreenState extends State<ListStockScreen>
     _bloc.add(ListStockLoad(0));
 
     _tabController.addListener(() {
-      _bloc.add(ListStockLoad(_tabController.index));
+      if (!_tabController.indexIsChanging) {
+        _bloc.add(ListStockLoad(_tabController.index));
+      }
     });
   }
 

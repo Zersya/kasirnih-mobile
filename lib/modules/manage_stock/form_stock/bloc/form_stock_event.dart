@@ -22,7 +22,6 @@ class FormStockAddCategory extends FormStockEvent {
   FormStockAddCategory(this.categoryName);
 }
 
-
 class FormStockLoadSupplier extends FormStockEvent {}
 
 class FormStockChooseSupplier extends FormStockEvent {
@@ -45,6 +44,17 @@ class FormStockAddItem extends FormStockEvent {
 
   FormStockAddItem(
       this.itemName, this.totalStock, this.buyPrice, this.sellPrice);
+}
+
+class FormStockEditItem extends FormStockEvent {
+  final Item item;
+  final String itemName;
+  final int totalStock;
+  final int buyPrice;
+  final int sellPrice;
+
+  FormStockEditItem(this.item, this.itemName, this.totalStock, this.buyPrice,
+      this.sellPrice);
 }
 
 class FormStockGetImage extends FormStockEvent {

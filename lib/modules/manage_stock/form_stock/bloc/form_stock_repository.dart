@@ -122,6 +122,51 @@ class FormStockRepository {
     }
   }
 
+  Future<bool> editItem(FormStockEditItem event, FormStockState state) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final userKey = prefs.getString(kUserDocIdKey);
+      final storeKey = prefs.getString(kDefaultStore);
+
+      final List<Category> categories = state.props[1];
+      final Category category = categories[state.props[3]];
+      final List<Supplier> suppliers = state.props[5];
+      final Supplier supplier = suppliers[state.props[4]];
+      final imageUrl = event.item.urlImage.isEmpty
+          ? await _uploadFile(state.props[2])
+          : event.item.urlImage;
+
+      final doc = await _firestore.collection('users').document(userKey);
+      final collection =
+          doc.collection('stores').document(storeKey).collection('items');
+      final docCategory =
+          await doc.collection('categories').document(category.docId);
+      final docSupplier =
+          await doc.collection('suppliers').document(supplier.docId);
+
+      final item = Item(
+        event.item.docId,
+        event.itemName,
+        imageUrl,
+        event.totalStock,
+        event.buyPrice,
+        event.sellPrice,
+        event.item.createdAt,
+        docCategory.path,
+        category.name,
+        docSupplier.path,
+        supplier.name,
+      );
+
+      await collection.document(item.docId).updateData(item.toMap());
+      toastSuccess('Sukses menambahkan barang');
+      return true;
+    } on SocketException {
+      toastError(tr('error.no_connection'));
+      return false;
+    }
+  }
+
   Future<String> _uploadFile(String path) async {
     if (path == null || path.isEmpty) return '';
     final String uuid = Uuid().v1();

@@ -40,6 +40,8 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
       yield* addSupplier(event, state);
     } else if (event is FormStockAddItem) {
       yield* addItem(event, state);
+    } else if (event is FormStockEditItem) {
+      yield* editItem(event, state);
     } else if (event is FormStockGetImage) {
       yield* getImage(event, state);
     } else if (event is FormStockChooseCategory) {
@@ -52,6 +54,21 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
   Stream<FormStockState> addItem(
       FormStockAddItem event, FormStockState state) async* {
     await _repo.addItem(event, state);
+
+    final int version = state.props[0];
+    yield FormStockSuccessItem(
+      version + 1,
+      state.props[1],
+      state.props[2],
+      state.props[3],
+      state.props[4],
+      state.props[5],
+    );
+  }
+
+  Stream<FormStockState> editItem(
+      FormStockEditItem event, FormStockState state) async* {
+    await _repo.editItem(event, state);
 
     final int version = state.props[0];
     yield FormStockSuccessItem(
@@ -83,8 +100,8 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
     await _repo.addCategory(event);
 
     final int version = state.props[0];
-    yield FormStockSuccessCategory(
-        version + 1, state.props[1], state.props[2], 0, state.props[4], state.props[5]);
+    yield FormStockSuccessCategory(version + 1, state.props[1], state.props[2],
+        0, state.props[4], state.props[5]);
   }
 
   Stream<FormStockState> loadSupplier(
@@ -137,7 +154,6 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
     );
   }
 
-  
   Stream<FormStockState> chooseSupplier(
       FormStockChooseSupplier event, FormStockState state) async* {
     final int version = state.props[0];
@@ -147,7 +163,7 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
       listSupplier: state.props[5],
       imagePath: state.props[2],
       indexCategory: state.props[3],
-      indexSupplier:  event.indexSupplier,
+      indexSupplier: event.indexSupplier,
     );
   }
 }
