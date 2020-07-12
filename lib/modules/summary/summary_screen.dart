@@ -305,13 +305,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
                             onPressed: total <= 0
                                 ? null
                                 : () {
+                                    final dt = DateTime.now();
                                     Transaction transaction = Transaction(
                                       codeTransaction,
                                       _customerNameC.text,
                                       subtotal,
                                       discount,
                                       total,
-                                      DateTime.now().millisecondsSinceEpoch,
+                                      dt.millisecondsSinceEpoch,
                                       items,
                                     );
                                     Navigator.of(context).pushNamed(

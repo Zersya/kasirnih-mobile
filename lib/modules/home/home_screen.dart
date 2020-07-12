@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/dashboard/dashboard_screen.dart';
 import 'package:ks_bike_mobile/modules/profile/profile_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
+import 'package:ks_bike_mobile/modules/transaction_report/transaction_report_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _screens.add(DashboardScreen(widget.username));
     _screens.add(ListStockScreen());
-    _screens.add(Text('Lap Trans'));
+    _screens.add(TransactionReportScreen());
     _screens.add(ProfileScreen());
   }
 

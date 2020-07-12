@@ -15,18 +15,18 @@ class Item {
   int soldToday = 0;
 
   Item(
-    this.docId,
-    this.itemName,
-    this.urlImage,
-    this.totalStock,
-    this.buyPrice,
-    this.sellPrice,
-    this.createdAt,
-    this.refCategory,
-    this.categoryName,
-    this.refSupplier,
-    this.supplierName,
-  );
+      this.docId,
+      this.itemName,
+      this.urlImage,
+      this.totalStock,
+      this.buyPrice,
+      this.sellPrice,
+      this.createdAt,
+      this.refCategory,
+      this.categoryName,
+      this.refSupplier,
+      this.supplierName,
+      {this.qty});
 
   factory Item.fromMap(Map<String, dynamic> map) => Item(
       map['document_id'],
@@ -39,7 +39,8 @@ class Item {
       map['ref_category'],
       map['category_name'],
       map['ref_supplier'],
-      map['supplier_name']);
+      map['supplier_name'],
+      qty: map['qty'] ?? 0);
 
   Map<String, dynamic> toMap() => {
         'document_id': this.docId,
@@ -53,5 +54,19 @@ class Item {
         'category_name': this.categoryName.toLowerCase(),
         'ref_supplier': this.refSupplier,
         'supplier_name': this.supplierName.toLowerCase()
+      };
+
+  Map<String, dynamic> toMapTrx() => {
+        'document_id': this.docId,
+        'item_name': this.itemName.toLowerCase(),
+        'url_image': this.urlImage,
+        'buy_price': this.buyPrice,
+        'sell_price': this.sellPrice,
+        'created_at': this.createdAt,
+        'ref_category': this.refCategory,
+        'category_name': this.categoryName.toLowerCase(),
+        'ref_supplier': this.refSupplier,
+        'supplier_name': this.supplierName.toLowerCase(),
+        'qty': this.qty,
       };
 }

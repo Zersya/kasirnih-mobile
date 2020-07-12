@@ -27,10 +27,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardBloc _dashboardBloc = DashboardBloc(DashboardInitial());
-  final CategoriesWidgetBloc _categoriesWidgetBloc = CategoriesWidgetBloc(CategoriesWidgetInitial());
-  final ItemsWidgetBloc _itemsWidgetBloc = ItemsWidgetBloc(ItemsWidgetInitial());
+  final CategoriesWidgetBloc _categoriesWidgetBloc =
+      CategoriesWidgetBloc(CategoriesWidgetInitial());
+  final ItemsWidgetBloc _itemsWidgetBloc =
+      ItemsWidgetBloc(ItemsWidgetInitial());
   final ItemBloc _itemBloc = ItemBloc(ItemState());
-  
+
   final TextEditingController _fieldSearch = TextEditingController();
 
   @override
@@ -157,11 +159,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: <Widget>[
                         FlatButton(
                           onPressed: () async {
-                            final value = await Navigator.of(context).pushNamed(
+                            await Navigator.of(context).pushNamed(
                                 RouterHelper.kRouteSummary,
                                 arguments: _itemBloc.state.props[2]);
-                            _itemBloc.add(
-                                ItemEvent(selectedItems: value));
+                            _itemBloc.add(ItemEvent(selectedItems: []));
                           },
                           child: Text('Bayar'),
                           textColor: Colors.white,
