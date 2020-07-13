@@ -123,8 +123,8 @@ class ItemCard extends StatelessWidget {
               else if (element.urlImage.isNotEmpty)
                 Flexible(
                   flex: 1,
-                  child: Image.network(
-                    element.urlImage,
+                  child: CachedNetworkImage(
+                    imageUrl: element.urlImage,
                     fit: BoxFit.fitWidth,
                   ),
                 ),

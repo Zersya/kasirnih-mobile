@@ -5,6 +5,7 @@ import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form/invoice_de
 import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_list/invoice_debt_list_screen.dart';
 import 'package:ks_bike_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
 import 'package:ks_bike_mobile/modules/payment/payment_screen.dart';
+import 'package:ks_bike_mobile/modules/payment_method/payment_method_screen.dart';
 import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
 import 'package:ks_bike_mobile/modules/store_form/store_form_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/form_stock/form_stock_screen.dart';
@@ -17,6 +18,7 @@ class RouterHelper {
   static const String kRouteSplashScreen = '/splashScreen';
   static const String kRouteNewItemFacilities = '/new_item_facilities';
   static const String kRouteNewItemFacilitiesList = '/new_item_facilities/list';
+  static const String kRoutePaymentMethod = '/payment_method';
   static const String kRouteInvoiceDebt = '/invoice_debt';
   static const String kRouteInvoiceDebtForm = '/invoice_debt/form';
   static const String kRouteStockForm = '/stock/form';
@@ -45,6 +47,9 @@ class RouterHelper {
         return MaterialPageRoute(
             builder: (_) => NewItemFacilitiesListScreen(settings.arguments));
 
+      case kRoutePaymentMethod:
+        return MaterialPageRoute(builder: (_) => PaymentMethodScreen());
+
       case kRouteInvoiceDebt:
         return MaterialPageRoute(builder: (_) => InvoiceDebtListScreen());
 
@@ -52,7 +57,10 @@ class RouterHelper {
         return MaterialPageRoute(builder: (_) => InvoiceDebtFormScreen());
 
       case kRouteStockForm:
-        return MaterialPageRoute(builder: (_) => FormStockScreen(item: settings.arguments,));
+        return MaterialPageRoute(
+            builder: (_) => FormStockScreen(
+                  item: settings.arguments,
+                ));
 
       case kRouteSummary:
         return MaterialPageRoute(

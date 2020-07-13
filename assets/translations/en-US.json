@@ -52,6 +52,14 @@
         "success_add_new_item_facilities": "Success Add New Item Facilities",
         "no_list_bought": "No List Bought"
     },
+    "payment_method_screen": {
+        "payment_method": "Payment Method",
+        "list_payment_method": "List Payment Method",
+        "item_name": "Payment Method Name",
+        "add_new_payment_method": "Add Payment Method",
+        "success_add_payment_method": "Success add payment method",
+        "no_list": "No list payment method"
+    },
     "invoice_debt_screen": {
         "invoice_debt": "Invoice Debt",
         "total_invoice_debt": "Total Invoice Debt",

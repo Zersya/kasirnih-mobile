@@ -1,43 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/new_item_facilities.dart';
+import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
-import './bloc/new_item_facilities_bloc.dart';
+import 'bloc/payment_method_bloc.dart';
 
-part 'new_item_facilities_list_screen.dart';
-part 'widgets/new_item_facilities_list.dart';
-
-class NewItemFacilitiesScreen extends StatefulWidget {
-  NewItemFacilitiesScreen({Key key}) : super(key: key);
+class PaymentMethodScreen extends StatefulWidget {
+  PaymentMethodScreen({Key key}) : super(key: key);
 
   @override
-  _NewItemFacilitiesScreenState createState() =>
-      _NewItemFacilitiesScreenState();
+  _PaymentMethodScreenState createState() => _PaymentMethodScreenState();
 }
 
-class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
-  final NewItemFacilitiesBloc _bloc =
-      NewItemFacilitiesBloc(NewItemFacilitiesStateInitial());
-  final TextEditingController _itemNameC = TextEditingController();
+class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+  final PaymentMethodBloc _bloc = PaymentMethodBloc();
+  final TextEditingController _paymentName = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _bloc.add(NewItemFacilitiesLoad());
+    _bloc.add(PaymentMethodLoad());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('new_item_facilities_screen.new_item_facilities').tr(),
+        title: Text('payment_method_screen.payment_method').tr(),
       ),
       body: Stack(
         children: <Widget>[
@@ -49,17 +43,17 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
   }
 
   Widget _loading(context) {
-    return BlocConsumer<NewItemFacilitiesBloc, NewItemFacilitiesState>(
+    return BlocConsumer<PaymentMethodBloc, PaymentMethodState>(
         bloc: _bloc,
         listener: (context, state) {
-          if (state is NewItemFacilitiesStateInitial) {
-          } else if (state is NewItemFacilitiesStateSuccess) {
-            _itemNameC.clear();
-            _bloc.add(NewItemFacilitiesLoad());
+          if (state is PaymentMethodStateInitial) {
+          } else if (state is PaymentMethodStateSuccess) {
+            _paymentName.clear();
+            _bloc.add(PaymentMethodLoad());
           }
         },
         builder: (context, state) {
-          if (state is NewItemFacilitiesStateLoading) {
+          if (state is PaymentMethodStateLoading) {
             return CustomLoading();
           } else {
             return SizedBox();
@@ -77,8 +71,8 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: CustomTextField(
-                controller: _itemNameC,
-                label: tr('new_item_facilities_screen.item_name'),
+                controller: _paymentName,
+                label: tr('payment_method_screen.item_name'),
               ),
             ),
             Padding(
@@ -89,7 +83,7 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
                   height: 43,
                   borderRadius: BorderRadius.circular(4),
                   child: Text(
-                    'new_item_facilities_screen.add_new_item_facilitis',
+                    'payment_method_screen.add_new_payment_method',
                     style: Theme.of(context).textTheme.button,
                   ).tr(),
                   gradient: LinearGradient(
@@ -116,34 +110,34 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      'new_item_facilities_screen.list_new_item_facilities',
+                      'payment_method_screen.list_payment_method',
                       style: Theme.of(context).textTheme.subtitle1,
                     ).tr(),
                   ),
                   SizedBox(
                     height: 450,
                     child: Hero(
-                        tag: _bloc, child: NewItemFacilitiesList(bloc: _bloc)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            RouterHelper.kRouteNewItemFacilitiesList,
-                            arguments: _bloc,
-                          );
-                        },
-                        child: Text(
-                          'new_item_facilities_screen.see_all',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(decoration: TextDecoration.underline),
-                        ).tr(),
-                      ),
+                      tag: _bloc,
+                      child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
+                          bloc: _bloc,
+                          builder: (context, state) {
+                            final List<PaymentMethod> listItem = state.props[1];
+                            if (listItem.isEmpty) {
+                              return Center(
+                                  child: Text('payment_method_screen.no_list')
+                                      .tr());
+                            }
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                physics: ScrollPhysics(),
+                                itemCount: listItem.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title:
+                                        Text(listItem[index].name.capitalize()),
+                                  );
+                                });
+                          }),
                     ),
                   ),
                 ],
@@ -156,6 +150,6 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
   }
 
   void _submit() {
-    _bloc.add(NewItemFacilitiesAdd(_itemNameC.text));
+    _bloc.add(PaymentMethodAdd(_paymentName.text));
   }
 }

@@ -15,6 +15,8 @@ class TransactionReportCubit extends Cubit<TransactionReportState> {
   TransactionReportCubit() : super(TransactionReportInitial());
 
   void loadTransaction() async {
+    emit(TransactionReportLoading(state.props[0], state.props[1]));
+
     final result = await _repo.loadTransaction(state);
     int version = state.props[0];
     version++;

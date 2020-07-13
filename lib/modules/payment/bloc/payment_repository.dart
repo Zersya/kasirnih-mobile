@@ -3,6 +3,26 @@ part of 'payment_bloc.dart';
 class PaymentRepository {
   final Firestore _firestore = Firestore.instance;
 
+  Future<List<PaymentMethod>> loadListPaymentMethod() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = prefs.getString(kDefaultStore);
+
+    final doc = await _firestore
+        .collection('users')
+        .document(userKey)
+        .collection('stores')
+        .document(storeKey)
+        .collection('payment_methods')
+        .orderBy('created_at', descending: true)
+        .getDocuments();
+
+    List<PaymentMethod> listName =
+        doc.documents.map((e) => PaymentMethod.fromMap(e.data)).toList();
+    listName.add(PaymentMethod.addInitial());
+    return listName;
+  }
+
   Future<Stream<String>> loadTrx() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final userKey = prefs.getString(kUserDocIdKey);

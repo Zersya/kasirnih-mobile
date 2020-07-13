@@ -52,6 +52,14 @@
         "success_add_new_item_facilities": "Berhasil menambah sarana",
         "no_list_bought": "Tidak Ada Daftar Beli"
     },
+    "payment_method_screen": {
+        "payment_method": "Metode Pembayaran",
+        "list_payment_method": "Daftar Metode Pembayaran",
+        "item_name": "Nama Metode Pembayaran",
+        "add_new_payment_method": "Tambah Metode Pembayaran",
+        "success_add_payment_method": "Berhasil menambah metode pembayaran",
+        "no_list": "Tidak Ada Daftar metode pembayaran"
+    },
     "invoice_debt_screen": {
         "invoice_debt": "Tagihan Hutang",
         "total_invoice_debt": "Total Tagihan Hutang",

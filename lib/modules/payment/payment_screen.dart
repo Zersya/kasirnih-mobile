@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/payment/bloc/payment_bloc.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Transaction transaction;
@@ -125,29 +127,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
             bloc: _paymentBloc,
             builder: (context, state) {
               final value = state.props[2];
-              return Row(children: <Widget>[
-                ChoiceWidget(
-                  label: 'Tunai',
-                  value: '$value',
-                  onTap: (value) {
-                    _paymentBloc.add(PaymentChooseMethod(value));
-                  },
-                ),
-                ChoiceWidget(
-                  label: 'Mandiri',
-                  value: '$value',
-                  onTap: (value) {
-                    _paymentBloc.add(PaymentChooseMethod(value));
-                  },
-                ),
-                ChoiceWidget(
-                  label: 'BCA',
-                  value: '$value',
-                  onTap: (value) {
-                    _paymentBloc.add(PaymentChooseMethod(value));
-                  },
-                ),
-              ]);
+              final List<PaymentMethod> list = state.props[3];
+              if (list.isEmpty) {
+                return Center(child: Text('messages.no_data').tr());
+              }
+              return GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: list.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, childAspectRatio: 2 / 1),
+                  itemBuilder: (context, index) {
+                    return ChoiceWidget(
+                      label: list[index].name.capitalize(),
+                      value: '$value',
+                      onTap: (value) {
+                        _paymentBloc.add(PaymentChooseMethod(value));
+                      },
+                    );
+                  });
             },
           ),
           SizedBox(
@@ -315,8 +313,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   _confirmPaid(state) {
-    final totalBuyPriceItem = widget.transaction.items
-        .fold(0, (previousValue, element) => previousValue + (element.buyPrice * element.qty));
+    final totalBuyPriceItem = widget.transaction.items.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + (element.buyPrice * element.qty));
 
     final trx = widget.transaction.copyWith(
         code: codeTransaction,
@@ -373,25 +373,22 @@ class ChoiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isActive = value.toLowerCase() == label.toLowerCase();
 
-    return Expanded(
-      child: InkWell(
-        onTap: () => onTap(label.toLowerCase()),
-        child: Card(
-          elevation: 2.0,
-          child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.0),
-                border: Border.all(color: Theme.of(context).primaryColor),
-                color:
-                    isActive ? Theme.of(context).primaryColor : Colors.white),
-            child: Text('$label',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(color: isActive ? Colors.white : Colors.black87)),
-          ),
+    return InkWell(
+      onTap: () => onTap(label.toLowerCase()),
+      child: Card(
+        elevation: 2.0,
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4.0),
+              border: Border.all(color: Theme.of(context).primaryColor),
+              color: isActive ? Theme.of(context).primaryColor : Colors.white),
+          child: Text('$label',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: isActive ? Colors.white : Colors.black87)),
         ),
       ),
     );

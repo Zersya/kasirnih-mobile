@@ -13,3 +13,13 @@ class TransactionReportInitial extends TransactionReportState {
   @override
   List<Object> get props => [version, transaction];
 }
+
+class TransactionReportLoading extends TransactionReportState {
+  final int version;
+  final Stream<List<trx.Transaction>> transaction;
+
+  TransactionReportLoading(this.version, this.transaction);
+  
+  @override
+  List<Object> get props => [version, transaction];
+}

@@ -38,7 +38,7 @@ class NewItemFacilitiesList extends StatelessWidget {
                       value: listItem[index].isBought,
                       onChanged: (value) => onTap(listItem[index]),
                     ),
-                    title: Text(listItem[index].name),
+                    title: Text(listItem[index].name.capitalize()),
                   );
                 });
           }),

@@ -48,8 +48,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: Text('Tagihan Hutang'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
+                Navigator.of(context).pushNamed(RouterHelper.kRouteInvoiceDebt);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.credit_card),
+              title: Text('Metode Pembayaran'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
                 Navigator.of(context)
-                    .pushNamed(RouterHelper.kRouteInvoiceDebt);
+                    .pushNamed(RouterHelper.kRoutePaymentMethod);
               },
             ),
           ],
