@@ -2,14 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ks_bike_mobile/models/payment_method.dart';
+import "package:collection/collection.dart";
 
+import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
-import "package:collection/collection.dart";
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 
+import 'widgets/range_picker_widget.dart';
+import 'widgets/list_checkbox_listtile_widget.dart';
+
+import 'cubit/range_picker_cubit.dart';
 import 'cubit/transaction_report_cubit.dart';
 import 'cubit/transaction_selected_payment_cubit.dart';
 
@@ -24,12 +28,14 @@ class TransactionReportScreen extends StatefulWidget {
 class _TransactionReportScreenState extends State<TransactionReportScreen> {
   final TransactionSelectedPaymentCubit _selectedPaymentCubit =
       TransactionSelectedPaymentCubit();
+  final RangePickerCubit _rangePickerCubit = RangePickerCubit();
   final TransactionReportCubit _cubit = TransactionReportCubit();
 
   @override
   void initState() {
     super.initState();
     _cubit.selectedPaymentCubit = _selectedPaymentCubit;
+    _cubit.rangePickerCubit = _rangePickerCubit;
     _cubit.loadTransaction();
 
     _selectedPaymentCubit.listen((state) {
@@ -40,6 +46,10 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
           _cubit.loadTransaction();
         }
       }
+    });
+
+    _rangePickerCubit.listen((state) {
+      _cubit.loadTransaction();
     });
   }
 
@@ -70,13 +80,45 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
               children: <Widget>[
                 Expanded(
                   flex: 5,
-                  child: Card(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              child: CubitProvider.value(
+                                value: _rangePickerCubit,
+                                child: RangePickerWidget(),
+                              ),
+                            );
+                          });
+                    },
+                    child: Card(
                       margin:
                           EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text('Pilih Rentang Tanggal Transaksi'),
-                      )),
+                        child: CubitBuilder<RangePickerCubit, RangePickerState>(
+                          cubit: _rangePickerCubit,
+                          builder: (context, state) {
+                            final DateTime start = state.props[0];
+                            final DateTime end = state.props[1];
+                            if (start != null && end != null) {
+                              if (start !=
+                                  DateTime(end.year, end.month, end.day)) {
+                                return Text(
+                                    '${DateFormat.yMMMEd('id').format(start)} - ${DateFormat.yMMMEd('id').format(end)}');
+                              } else {
+                                return Text(
+                                    '${DateFormat.yMMMEd('id').format(start)}');
+                              }
+                            }
+                            return Text('Pilih tanggal periode transaksi');
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
                     flex: 1,
@@ -361,40 +403,6 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ListCheckBoxListTile extends StatelessWidget {
-  const ListCheckBoxListTile({
-    Key key,
-    @required this.paymentMethods,
-  }) : super(key: key);
-
-  final List<PaymentMethod> paymentMethods;
-
-  @override
-  Widget build(BuildContext context) {
-    // final TransactionSelectedPaymentCubit _selectedPaymentCubit =
-    //     CubitProvider.of<TransactionSelectedPaymentCubit>(context);
-    return CubitBuilder<TransactionSelectedPaymentCubit,
-        TransactionSelectedPaymentState>(
-      builder: (context, state) {
-        return ListView.builder(
-            shrinkWrap: true,
-            itemCount: paymentMethods.length,
-            itemBuilder: (context, index) {
-              return CheckboxListTile(
-                value: paymentMethods[index].isSelected,
-                title: Text(paymentMethods[index].name.capitalize()),
-                onChanged: (value) {
-                  context
-                      .cubit<TransactionSelectedPaymentCubit>()
-                      .changeSelected(index, value);
-                },
-              );
-            });
-      },
     );
   }
 }
