@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';

@@ -2,11 +2,11 @@ part of 'summary_bloc.dart';
 
 class SummaryRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Stream<String>> loadTrx() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final snap = await _firestore
         .collection('users')

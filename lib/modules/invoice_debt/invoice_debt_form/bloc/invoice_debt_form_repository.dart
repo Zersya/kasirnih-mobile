@@ -4,10 +4,10 @@ class InvoiceDebtFormRepository {
   final Firestore _firestore = Firestore.instance;
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: kStorageBucket);
+  final storage = FlutterSecureStorage();
 
   Future<List<Supplier>> loadSupplier() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
@@ -22,8 +22,7 @@ class InvoiceDebtFormRepository {
   }
 
   Future<bool> addSupplier(InvoiceDebtFormAddSupplier event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore.collection('users').document(userKey);
     final collection = doc.collection('suppliers');
@@ -44,9 +43,9 @@ class InvoiceDebtFormRepository {
   Future<bool> addInvoice(
       InvoiceDebtFormAddInvoice event, InvoiceDebtFormState state) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final userKey = prefs.getString(kUserDocIdKey);
-      final storeKey = prefs.getString(kDefaultStore);
+      final userKey = await storage.read(key: kUserDocIdKey);
+      final storeKey = await storage.read(key: kDefaultStore);
+
       final DateTime dueDate = state.props[4];
       final List<Supplier> suppliers = state.props[1];
       final Supplier supplier = suppliers[state.props[3]];

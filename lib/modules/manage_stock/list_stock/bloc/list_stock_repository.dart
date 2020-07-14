@@ -2,12 +2,12 @@ part of 'list_stock_bloc.dart';
 
 class ListStockRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Stream<List<Item>>> loadStock(
       ListStockLoad event, ListStockState state) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore.collection('users').document(userKey);
     final dt =
@@ -73,9 +73,8 @@ class ListStockRepository {
 
   Future<Stream<List<Item>>> searchStock(
       ListStockSearch event, ListStockState state) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore.collection('users').document(userKey);
     final items = doc
@@ -93,10 +92,9 @@ class ListStockRepository {
   }
 
   Future<bool> deleteItem(ListStockDelete event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
-
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
+    
     final doc = await _firestore
         .collection('users')
         .document(userKey)

@@ -2,11 +2,11 @@ part of 'payment_method_bloc.dart';
 
 class PaymentMethodRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<List<PaymentMethod>> loadListPaymentMethod() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
@@ -23,9 +23,8 @@ class PaymentMethodRepository {
   }
 
   Future<bool> addPaymentMethod(PaymentMethodAdd event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')

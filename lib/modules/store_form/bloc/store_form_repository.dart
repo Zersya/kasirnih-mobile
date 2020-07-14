@@ -2,10 +2,10 @@ part of 'store_form_bloc.dart';
 
 class StoreFormRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Store> loadStore() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
@@ -22,8 +22,7 @@ class StoreFormRepository {
   }
 
   Future<bool> registerStore(StoreFormRegister event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore.collection('users').document(userKey);
 
@@ -33,8 +32,7 @@ class StoreFormRepository {
   }
 
   Future<bool> updateStore(StoreFormUpdate event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')

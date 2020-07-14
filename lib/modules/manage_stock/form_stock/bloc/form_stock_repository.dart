@@ -4,10 +4,10 @@ class FormStockRepository {
   final Firestore _firestore = Firestore.instance;
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: kStorageBucket);
+  final storage = FlutterSecureStorage();
 
   Future<List<Category>> loadCategory() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
@@ -22,8 +22,7 @@ class FormStockRepository {
   }
 
   Future<bool> addCategory(FormStockAddCategory event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore.collection('users').document(userKey);
     final collection = doc.collection('categories');
@@ -42,8 +41,7 @@ class FormStockRepository {
   }
 
   Future<List<Supplier>> loadSupplier() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
         .collection('users')
@@ -58,8 +56,7 @@ class FormStockRepository {
   }
 
   Future<bool> addSupplier(FormStockAddSupplier event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore.collection('users').document(userKey);
     final collection = doc.collection('suppliers');
@@ -79,9 +76,8 @@ class FormStockRepository {
 
   Future<bool> addItem(FormStockAddItem event, FormStockState state) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final userKey = prefs.getString(kUserDocIdKey);
-      final storeKey = prefs.getString(kDefaultStore);
+      final userKey = await storage.read(key: kUserDocIdKey);
+      final storeKey = await storage.read(key: kDefaultStore);
 
       final List<Category> categories = state.props[1];
       final Category category = categories[state.props[3]];
@@ -124,9 +120,8 @@ class FormStockRepository {
 
   Future<bool> editItem(FormStockEditItem event, FormStockState state) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final userKey = prefs.getString(kUserDocIdKey);
-      final storeKey = prefs.getString(kDefaultStore);
+      final userKey = await storage.read(key: kUserDocIdKey);
+      final storeKey = await storage.read(key: kDefaultStore);
 
       final List<Category> categories = state.props[1];
       final Category category = categories[state.props[3]];

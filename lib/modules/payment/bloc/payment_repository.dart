@@ -2,11 +2,11 @@ part of 'payment_bloc.dart';
 
 class PaymentRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<List<PaymentMethod>> loadListPaymentMethod() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
@@ -23,9 +23,8 @@ class PaymentRepository {
   }
 
   Future<Stream<String>> loadTrx() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final snap = await _firestore
         .collection('users')
@@ -39,9 +38,8 @@ class PaymentRepository {
   }
 
   Future<bool> addTransaction(PaymentSubmit event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     try {
       final result = await InternetAddress.lookup('google.com');

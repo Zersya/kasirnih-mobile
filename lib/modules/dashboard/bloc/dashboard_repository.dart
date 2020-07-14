@@ -4,8 +4,8 @@ class DashboardRepository {
   final Firestore _firestore = Firestore.instance;
 
   Future<bool> isHasStore() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final storage = FlutterSecureStorage();
+    final userKey = await storage.read(key: kUserDocIdKey);
 
     final collection = await _firestore
         .collection('users')
@@ -15,10 +15,9 @@ class DashboardRepository {
     final docs = await collection.getDocuments();
     final isHasStore = docs.documents.isNotEmpty;
     if (isHasStore) {
-      await prefs.setString(kDefaultStore, docs.documents.first.documentID);
+      await storage.write(
+          key: kDefaultStore, value: docs.documents.first.documentID);
     }
     return isHasStore;
   }
-
-
 }

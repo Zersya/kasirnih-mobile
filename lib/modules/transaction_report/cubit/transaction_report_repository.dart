@@ -2,12 +2,12 @@ part of 'transaction_report_cubit.dart';
 
 class TransactionReportRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Stream<List<trx.Transaction>>> loadTransaction(
       List<String> keys, DateTime start, DateTime end) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     Query items;
 
@@ -49,9 +49,8 @@ class TransactionReportRepository {
   }
 
   Future<Stream<List<PaymentMethod>>> loadListPaymentMethod() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final stream = await _firestore
         .collection('users')

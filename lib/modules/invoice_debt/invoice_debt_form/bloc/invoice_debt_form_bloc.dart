@@ -6,18 +6,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/models/invoice.dart';
 import 'package:ks_bike_mobile/models/supplier.dart';
 import 'package:ks_bike_mobile/utils/key.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 part 'invoice_debt_form_event.dart';
 part 'invoice_debt_form_state.dart';
 part 'invoice_debt_form_repository.dart';
 
-class InvoiceDebtFormBloc extends Bloc<InvoiceDebtFormEvent, InvoiceDebtFormState> {
+class InvoiceDebtFormBloc
+    extends Bloc<InvoiceDebtFormEvent, InvoiceDebtFormState> {
   final InvoiceDebtFormRepository _repo = InvoiceDebtFormRepository();
 
   InvoiceDebtFormBloc(InvoiceDebtFormState initialState) : super(initialState);
@@ -31,7 +32,7 @@ class InvoiceDebtFormBloc extends Bloc<InvoiceDebtFormEvent, InvoiceDebtFormStat
 
     if (event is InvoiceDebtFormLoadSupplier) {
       yield* loadSupplier(event, state);
-    }else if (event is InvoiceDebtFormAddInvoice) {
+    } else if (event is InvoiceDebtFormAddInvoice) {
       yield* addInvoice(event, state);
     } else if (event is InvoiceDebtFormAddSupplier) {
       yield* addSupplier(event, state);

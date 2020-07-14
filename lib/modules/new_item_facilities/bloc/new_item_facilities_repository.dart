@@ -2,11 +2,11 @@ part of 'new_item_facilities_bloc.dart';
 
 class NewItemFacilitiesRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<List<NewItemFacilities>> loadListNewFacilities() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
@@ -23,9 +23,8 @@ class NewItemFacilitiesRepository {
   }
 
   Future<bool> addNewFacilities(NewItemFacilitiesAdd event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')
@@ -46,9 +45,8 @@ class NewItemFacilitiesRepository {
   }
 
   Future<bool> updateValue(NewItemFacilitiesChangeValue event) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
         .collection('users')

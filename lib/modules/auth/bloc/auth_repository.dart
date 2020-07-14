@@ -59,10 +59,11 @@ class AuthRepository {
         'credentials': ['owner']
       });
 
-      toastSuccess(
-          tr('auth_screen.msg_usr_success_registered', args: [event.username.capitalize()]));
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(kUserDocIdKey, doc.documentID);
+      toastSuccess(tr('auth_screen.msg_usr_success_registered',
+          args: [event.username.capitalize()]));
+
+      final storage = FlutterSecureStorage();
+      await storage.write(key: kUserDocIdKey, value: doc.documentID);
 
       return result;
     } on PlatformException catch (err) {
@@ -81,8 +82,8 @@ class AuthRepository {
       final hasEmail = snapshotEmail.documents.isNotEmpty;
 
       if (!hasEmail) {
-        toastError(
-            tr('auth_screen.msg_username_error_login', args: [event.username.capitalize()]));
+        toastError(tr('auth_screen.msg_username_error_login',
+            args: [event.username.capitalize()]));
         return null;
       }
 
@@ -103,11 +104,11 @@ class AuthRepository {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: event.password);
 
-      toastSuccess(
-          tr('auth_screen.msg_usr_success_login', args: [event.username.capitalize()]));
+      toastSuccess(tr('auth_screen.msg_usr_success_login',
+          args: [event.username.capitalize()]));
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(kUserDocIdKey, docId);
+      final storage = FlutterSecureStorage();
+      await storage.write(key: kUserDocIdKey, value: docId);
 
       return result;
     } on PlatformException catch (err) {

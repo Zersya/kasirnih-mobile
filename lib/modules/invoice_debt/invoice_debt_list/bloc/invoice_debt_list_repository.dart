@@ -2,11 +2,11 @@ part of 'invoice_debt_list_bloc.dart';
 
 class InvoiceDebtListRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<List<Invoice>> loadInvoices() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore.collection('users').document(userKey);
     final invoicesDoc = await doc
@@ -22,9 +22,8 @@ class InvoiceDebtListRepository {
   }
 
   Future<int> loadTotal() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore.collection('users').document(userKey);
     final storeDoc = await doc.collection('stores').document(storeKey).get();
@@ -37,15 +36,15 @@ class InvoiceDebtListRepository {
   Future<bool> updateHasPaidInvoice(
       InvoiceDebtListUpdateHasPaid event, InvoiceDebtListState state) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final userKey = prefs.getString(kUserDocIdKey);
-      final storeKey = prefs.getString(kDefaultStore);
+      final userKey = await storage.read(key: kUserDocIdKey);
+      final storeKey = await storage.read(key: kDefaultStore);
 
       final stores = await _firestore
           .collection('users')
           .document(userKey)
           .collection('stores');
-      final invoices = await stores.document(storeKey).collection('invoices_debt');
+      final invoices =
+          await stores.document(storeKey).collection('invoices_debt');
 
       try {
         await _firestore.runTransaction((transaction) async {
