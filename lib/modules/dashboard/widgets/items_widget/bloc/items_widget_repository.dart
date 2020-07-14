@@ -2,20 +2,17 @@ part of 'items_widget_bloc.dart';
 
 class ItemsWidgetRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Stream<List<Item>>> loadItems(
       ItemsWidgetLoad event, ItemsWidgetState state) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
     Stream<List<Item>> items;
-    final List<String> names = event.categories
-        .map((e) => e.name)
-        .toList();
+    final List<String> names = event.categories.map((e) => e.name).toList();
     if (names.isEmpty) {
-      items = doc
+      items = _firestore
           .collection('stores')
           .document(storeKey)
           .collection('items')
@@ -23,7 +20,7 @@ class ItemsWidgetRepository {
           .map((event) =>
               event.documents.map((e) => Item.fromMap(e.data)).toList());
     } else {
-      items = doc
+      items = _firestore
           .collection('stores')
           .document(storeKey)
           .collection('items')
@@ -35,15 +32,12 @@ class ItemsWidgetRepository {
     return items;
   }
 
-  
   Future<Stream<List<Item>>> searchItem(
       ItemsWidgetSearch event, ItemsWidgetState state) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
-    final storeKey = prefs.getString(kDefaultStore);
+    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final items = doc
+    final items = _firestore
         .collection('stores')
         .document(storeKey)
         .collection('items')

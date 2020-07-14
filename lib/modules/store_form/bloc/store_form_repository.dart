@@ -8,9 +8,8 @@ class StoreFormRepository {
     final userKey = await storage.read(key: kUserDocIdKey);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
+        .where('store_owner_id', isEqualTo: userKey)
         .getDocuments();
 
     if (doc.documents.isNotEmpty) {
@@ -24,9 +23,8 @@ class StoreFormRepository {
   Future<bool> registerStore(StoreFormRegister event) async {
     final userKey = await storage.read(key: kUserDocIdKey);
 
-    final doc = await _firestore.collection('users').document(userKey);
-
-    await doc.collection('stores').add(event.store.toMapRegister());
+    event.store.storeOwnerId = userKey;
+    await _firestore.collection('stores').add(event.store.toMapRegister());
     toastSuccess(tr('store_registration_screen.success_register_store'));
     return true;
   }

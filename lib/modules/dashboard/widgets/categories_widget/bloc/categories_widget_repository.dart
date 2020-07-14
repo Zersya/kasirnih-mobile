@@ -2,15 +2,15 @@ part of 'categories_widget_bloc.dart';
 
 class CategoriesWidgetRepository {
   final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
 
   Future<Stream<List<Category>>> loadCategories(
       CategoriesWidgetLoad event, CategoriesWidgetState state) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userKey = prefs.getString(kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final items = await _firestore
-        .collection('users')
-        .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('categories')
         .orderBy('created_at', descending: true)
         .snapshots()

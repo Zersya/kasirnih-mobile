@@ -5,11 +5,9 @@ class InvoiceDebtListRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<Invoice>> loadInvoices() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final invoicesDoc = await doc
+    final invoicesDoc = await _firestore
         .collection('stores')
         .document(storeKey)
         .collection('invoices_debt')
@@ -22,11 +20,10 @@ class InvoiceDebtListRepository {
   }
 
   Future<int> loadTotal() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final storeDoc = await doc.collection('stores').document(storeKey).get();
+    final storeDoc =
+        await _firestore.collection('stores').document(storeKey).get();
 
     final total = storeDoc.data['total_invoice_debt'] ?? 0;
 
@@ -36,13 +33,9 @@ class InvoiceDebtListRepository {
   Future<bool> updateHasPaidInvoice(
       InvoiceDebtListUpdateHasPaid event, InvoiceDebtListState state) async {
     try {
-      final userKey = await storage.read(key: kUserDocIdKey);
       final storeKey = await storage.read(key: kDefaultStore);
 
-      final stores = await _firestore
-          .collection('users')
-          .document(userKey)
-          .collection('stores');
+      final stores = await _firestore.collection('stores');
       final invoices =
           await stores.document(storeKey).collection('invoices_debt');
 

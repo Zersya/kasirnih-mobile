@@ -7,11 +7,11 @@ class InvoiceDebtFormRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<Supplier>> loadSupplier() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('suppliers')
         .orderBy('created_at', descending: true)
         .getDocuments();
@@ -22,9 +22,9 @@ class InvoiceDebtFormRepository {
   }
 
   Future<bool> addSupplier(InvoiceDebtFormAddSupplier event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
+    final doc = await _firestore.collection('stores').document(storeKey);
     final collection = doc.collection('suppliers');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -43,7 +43,6 @@ class InvoiceDebtFormRepository {
   Future<bool> addInvoice(
       InvoiceDebtFormAddInvoice event, InvoiceDebtFormState state) async {
     try {
-      final userKey = await storage.read(key: kUserDocIdKey);
       final storeKey = await storage.read(key: kDefaultStore);
 
       final DateTime dueDate = state.props[4];
@@ -51,13 +50,12 @@ class InvoiceDebtFormRepository {
       final Supplier supplier = suppliers[state.props[3]];
       final imageUrl = await _uploadFile(state.props[2]);
 
-      final doc = await _firestore.collection('users').document(userKey);
-      final collection = doc
+      final collection = _firestore
           .collection('stores')
           .document(storeKey)
           .collection('invoices_debt');
       final docSupplier =
-          await doc.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').document(supplier.docId);
 
       final timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -76,7 +74,7 @@ class InvoiceDebtFormRepository {
       await collection.document(invoice.docId).setData(invoice.toMap());
       try {
         await _firestore.runTransaction((transaction) async {
-          final ref = doc.collection('stores').document(storeKey);
+          final ref = _firestore.collection('stores').document(storeKey);
           final freshsnap =
               await transaction.get(ref).catchError((err) => throw err);
           final currentTotal = freshsnap.data['total_invoice_debt'] ?? 0;

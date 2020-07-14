@@ -7,12 +7,11 @@ class DashboardRepository {
     final storage = FlutterSecureStorage();
     final userKey = await storage.read(key: kUserDocIdKey);
 
-    final collection = await _firestore
-        .collection('users')
-        .document(userKey)
-        .collection('stores');
+    final docs = await _firestore
+        .collection('stores')
+        .where('store_owner_id', isEqualTo: userKey)
+        .getDocuments();
 
-    final docs = await collection.getDocuments();
     final isHasStore = docs.documents.isNotEmpty;
     if (isHasStore) {
       await storage.write(

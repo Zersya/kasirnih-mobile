@@ -4,6 +4,7 @@ class Store {
   final String storeAddress;
   final String storeOwnerName;
   final String storeOwnerPhone;
+  String storeOwnerId;
 
   Store(this.storeName, this.storePhone, this.storeAddress, this.storeOwnerName,
       this.storeOwnerPhone);
@@ -19,14 +20,16 @@ class Store {
         'store_address': this.storeAddress.toLowerCase(),
         'store_owner_name': this.storeOwnerName.toLowerCase(),
         'store_owner_phone': this.storeOwnerPhone,
+        'store_owner_id':this.storeOwnerId,
       };
 
-      Map<String, dynamic> toMapRegister() => {
+  Map<String, dynamic> toMapRegister() => {
         'store_name': this.storeName.toLowerCase(),
         'store_phone': this.storePhone,
         'store_address': this.storeAddress.toLowerCase(),
         'store_owner_name': this.storeOwnerName.toLowerCase(),
         'store_owner_phone': this.storeOwnerPhone,
+        'store_owner_id':this.storeOwnerId,
         'latest_transaction_code': '#TRX-01'
       };
 }
