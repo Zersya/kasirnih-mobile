@@ -15,38 +15,43 @@ class CategoriesWidget extends StatelessWidget {
     final ItemsWidgetBloc itemsWidgetBloc =
         BlocProvider.of<ItemsWidgetBloc>(context);
 
-    return StreamBuilder<List<Category>>(
-        stream: stream,
-        initialData: [],
-        builder: (context, snapshot) {
-          final List<Category> categories = snapshot.data;
-          final CategoryBloc categoryBloc =
-              CategoryBloc(CategoryState(categories: categories));
+    return BlocBuilder<CategoriesWidgetBloc, CategoriesWidgetState>(
+      bloc: categoriesWidgetBloc,
+      builder: (context, state) {
+        return StreamBuilder<List<Category>>(
+            stream: stream,
+            initialData: [],
+            builder: (context, snapshot) {
+              final List<Category> categories = snapshot.data;
+              final CategoryBloc categoryBloc =
+                  CategoryBloc(CategoryState(categories: categories));
 
-          if (categories.isEmpty) {
-            return Center(child: Text('messages.no_data').tr());
-          }
-          return SizedBox(
-            height: 50,
-            child: BlocBuilder<CategoryBloc, CategoryState>(
-                bloc: categoryBloc,
-                builder: (context, state) {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final element = categories[index];
+              if (categories.isEmpty) {
+                return Center(child: Text('messages.no_data').tr());
+              }
+              return SizedBox(
+                height: 50,
+                child: BlocBuilder<CategoryBloc, CategoryState>(
+                    bloc: categoryBloc,
+                    builder: (context, state) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final element = categories[index];
 
-                        return CategoryWidget(
-                          element: element,
-                          onSelected: (value) => onSelected(value, element,
-                              state, index, categoryBloc, itemsWidgetBloc),
-                        );
-                      });
-                }),
-          );
-        });
+                            return CategoryWidget(
+                              element: element,
+                              onSelected: (value) => onSelected(value, element,
+                                  state, index, categoryBloc, itemsWidgetBloc),
+                            );
+                          });
+                    }),
+              );
+            });
+      },
+    );
   }
 
   onSelected(bool value, Category element, CategoryState state, int index,

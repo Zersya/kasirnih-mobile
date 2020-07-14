@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             AppBar(
               title: Text('Pengaturan Profil'),
-              centerTitle: true,
             ),
             ListTile(
               leading: Icon(Icons.person),
@@ -58,6 +58,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {
                 Navigator.of(context)
                     .pushNamed(RouterHelper.kRoutePaymentMethod);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Keluar'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () async {
+                final storage = FlutterSecureStorage();
+                await storage.deleteAll();
+                await Navigator.of(context)
+                    .pushReplacementNamed(RouterHelper.kRouteAuth);
               },
             ),
           ],
