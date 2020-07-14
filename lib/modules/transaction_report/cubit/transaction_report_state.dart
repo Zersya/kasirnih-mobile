@@ -7,19 +7,22 @@ abstract class TransactionReportState extends Equatable {
 class TransactionReportInitial extends TransactionReportState {
   final int version;
   final Stream<List<trx.Transaction>> transaction;
+  final Stream<List<PaymentMethod>> paymentMethods;
 
-  TransactionReportInitial({this.version = 0, this.transaction});
-  
+  TransactionReportInitial(
+      {this.version = 0, this.transaction, this.paymentMethods});
+
   @override
-  List<Object> get props => [version, transaction];
+  List<Object> get props => [version, transaction, paymentMethods];
 }
 
 class TransactionReportLoading extends TransactionReportState {
   final int version;
   final Stream<List<trx.Transaction>> transaction;
+  final Stream<List<PaymentMethod>> paymentMethods;
 
-  TransactionReportLoading(this.version, this.transaction);
-  
+  TransactionReportLoading(this.version, this.transaction, this.paymentMethods);
+
   @override
-  List<Object> get props => [version, transaction];
+  List<Object> get props => [version, transaction, paymentMethods];
 }

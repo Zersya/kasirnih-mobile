@@ -19,7 +19,6 @@ class PaymentRepository {
 
     List<PaymentMethod> listName =
         doc.documents.map((e) => PaymentMethod.fromMap(e.data)).toList();
-    listName.add(PaymentMethod.addInitial());
     return listName;
   }
 

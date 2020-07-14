@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ks_bike_mobile/models/payment_method.dart';
 
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
@@ -10,6 +11,7 @@ import "package:collection/collection.dart";
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 
 import 'cubit/transaction_report_cubit.dart';
+import 'cubit/transaction_selected_payment_cubit.dart';
 
 class TransactionReportScreen extends StatefulWidget {
   TransactionReportScreen({Key key}) : super(key: key);
@@ -20,12 +22,25 @@ class TransactionReportScreen extends StatefulWidget {
 }
 
 class _TransactionReportScreenState extends State<TransactionReportScreen> {
+  final TransactionSelectedPaymentCubit _selectedPaymentCubit =
+      TransactionSelectedPaymentCubit();
   final TransactionReportCubit _cubit = TransactionReportCubit();
 
   @override
   void initState() {
     super.initState();
+    _cubit.selectedPaymentCubit = _selectedPaymentCubit;
     _cubit.loadTransaction();
+
+    _selectedPaymentCubit.listen((state) {
+      if (state is TransactionSelectedPaymentInitial) {
+        List<PaymentMethod> curList = state.props[1];
+
+        if (curList.isNotEmpty) {
+          _cubit.loadTransaction();
+        }
+      }
+    });
   }
 
   @override
@@ -47,7 +62,8 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
     return CubitBuilder<TransactionReportCubit, TransactionReportState>(
       cubit: _cubit,
       builder: (context, state) {
-        final stream = state.props[1];
+        final streamTrx = state.props[1];
+        final streamPayment = state.props[2];
         return Column(
           children: <Widget>[
             Row(
@@ -62,7 +78,13 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                         child: Text('Pilih Rentang Tanggal Transaksi'),
                       )),
                 ),
-                Expanded(flex: 1, child: Icon(Icons.filter_list))
+                Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                        onTap: () {
+                          buildShowDialogFilterCategory(context, streamPayment);
+                        },
+                        child: Icon(Icons.filter_list)))
               ],
             ),
             Expanded(
@@ -80,7 +102,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
               ),
             ),
             StreamBuilder<List<Transaction>>(
-              stream: stream,
+              stream: streamTrx,
               initialData: [],
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 final List<Transaction> transactions = snapshot.data;
@@ -138,8 +160,8 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                                   final Transaction trx = transactions[index];
 
                                   return ListTile(
-                                      onTap: () =>
-                                          buildShowDialog(context, trx),
+                                      onTap: () => buildShowDialogDetailTrx(
+                                          context, trx),
                                       leading: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -172,6 +194,52 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
     );
   }
 
+  Future buildShowDialogFilterCategory(
+      BuildContext context, Object streamPayment) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            child: StreamBuilder<List<PaymentMethod>>(
+              stream: streamPayment,
+              initialData: [],
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                final List<PaymentMethod> paymentMethods = snapshot.data;
+
+                if (paymentMethods.isEmpty) {
+                  return Center(child: Text('messages.no_data').tr());
+                }
+
+                _selectedPaymentCubit.setList(paymentMethods);
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Filter Kategori',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
+                    Divider(
+                      height: 8.0,
+                    ),
+                    CubitProvider.value(
+                        value: _selectedPaymentCubit,
+                        child: ListCheckBoxListTile(
+                            paymentMethods: paymentMethods)),
+                  ],
+                );
+              },
+            ),
+          );
+        });
+  }
+
   Widget _loading(context) {
     return CubitBuilder<TransactionReportCubit, TransactionReportState>(
         cubit: _cubit,
@@ -184,7 +252,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
         });
   }
 
-  Future buildShowDialog(BuildContext context, Transaction trx) {
+  Future buildShowDialogDetailTrx(BuildContext context, Transaction trx) {
     final dt = DateTime.fromMillisecondsSinceEpoch(trx.createdAt);
     final customerName = trx.customerName.isEmpty ? '-' : trx.customerName;
     final scrollCItem = ScrollController();
@@ -293,6 +361,40 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ListCheckBoxListTile extends StatelessWidget {
+  const ListCheckBoxListTile({
+    Key key,
+    @required this.paymentMethods,
+  }) : super(key: key);
+
+  final List<PaymentMethod> paymentMethods;
+
+  @override
+  Widget build(BuildContext context) {
+    // final TransactionSelectedPaymentCubit _selectedPaymentCubit =
+    //     CubitProvider.of<TransactionSelectedPaymentCubit>(context);
+    return CubitBuilder<TransactionSelectedPaymentCubit,
+        TransactionSelectedPaymentState>(
+      builder: (context, state) {
+        return ListView.builder(
+            shrinkWrap: true,
+            itemCount: paymentMethods.length,
+            itemBuilder: (context, index) {
+              return CheckboxListTile(
+                value: paymentMethods[index].isSelected,
+                title: Text(paymentMethods[index].name.capitalize()),
+                onChanged: (value) {
+                  context
+                      .cubit<TransactionSelectedPaymentCubit>()
+                      .changeSelected(index, value);
+                },
+              );
+            });
+      },
     );
   }
 }
