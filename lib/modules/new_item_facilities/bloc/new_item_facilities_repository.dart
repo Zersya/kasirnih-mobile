@@ -5,12 +5,9 @@ class NewItemFacilitiesRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<NewItemFacilities>> loadListNewFacilities() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .collection('new_item_facilities')
@@ -23,12 +20,9 @@ class NewItemFacilitiesRepository {
   }
 
   Future<bool> addNewFacilities(NewItemFacilitiesAdd event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey);
     final collection = doc.collection('new_item_facilities');
@@ -45,12 +39,9 @@ class NewItemFacilitiesRepository {
   }
 
   Future<bool> updateValue(NewItemFacilitiesChangeValue event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .collection('new_item_facilities')

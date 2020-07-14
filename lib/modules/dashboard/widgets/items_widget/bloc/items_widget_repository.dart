@@ -6,7 +6,6 @@ class ItemsWidgetRepository {
 
   Future<Stream<List<Item>>> loadItems(
       ItemsWidgetLoad event, ItemsWidgetState state) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     Stream<List<Item>> items;
@@ -16,6 +15,7 @@ class ItemsWidgetRepository {
           .collection('stores')
           .document(storeKey)
           .collection('items')
+          .orderBy('created_at', descending: true)
           .snapshots()
           .map((event) =>
               event.documents.map((e) => Item.fromMap(e.data)).toList());
@@ -25,6 +25,7 @@ class ItemsWidgetRepository {
           .document(storeKey)
           .collection('items')
           .where('category_name', whereIn: names)
+          .orderBy('created_at', descending: true)
           .snapshots()
           .map((event) =>
               event.documents.map((e) => Item.fromMap(e.data)).toList());
@@ -34,7 +35,6 @@ class ItemsWidgetRepository {
 
   Future<Stream<List<Item>>> searchItem(
       ItemsWidgetSearch event, ItemsWidgetState state) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final items = _firestore
@@ -44,6 +44,7 @@ class ItemsWidgetRepository {
         .where('item_name',
             isGreaterThanOrEqualTo: event.name,
             isLessThanOrEqualTo: '${event.name}~')
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map((event) =>
             event.documents.map((e) => Item.fromMap(e.data)).toList());

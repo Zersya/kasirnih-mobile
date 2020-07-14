@@ -7,11 +7,11 @@ class FormStockRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<Category>> loadCategory() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('categories')
         .orderBy('created_at', descending: true)
         .getDocuments();
@@ -22,10 +22,12 @@ class FormStockRepository {
   }
 
   Future<bool> addCategory(FormStockAddCategory event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final collection = doc.collection('categories');
+    final collection = await _firestore
+        .collection('stores')
+        .document(storeKey)
+        .collection('categories');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -41,11 +43,11 @@ class FormStockRepository {
   }
 
   Future<List<Supplier>> loadSupplier() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
+        .collection('stores')
+        .document(storeKey)
         .collection('suppliers')
         .orderBy('created_at', descending: true)
         .getDocuments();
@@ -56,10 +58,12 @@ class FormStockRepository {
   }
 
   Future<bool> addSupplier(FormStockAddSupplier event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final collection = doc.collection('suppliers');
+    final collection = await _firestore
+        .collection('stores')
+        .document(storeKey)
+        .collection('suppliers');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -76,7 +80,6 @@ class FormStockRepository {
 
   Future<bool> addItem(FormStockAddItem event, FormStockState state) async {
     try {
-      final userKey = await storage.read(key: kUserDocIdKey);
       final storeKey = await storage.read(key: kDefaultStore);
 
       final List<Category> categories = state.props[1];
@@ -85,13 +88,14 @@ class FormStockRepository {
       final Supplier supplier = suppliers[state.props[4]];
       final imageUrl = await _uploadFile(state.props[2]);
 
-      final doc = await _firestore.collection('users').document(userKey);
-      final collection =
-          doc.collection('stores').document(storeKey).collection('items');
+      final collection = _firestore
+          .collection('stores')
+          .document(storeKey)
+          .collection('items');
       final docCategory =
-          await doc.collection('categories').document(category.docId);
+          await _firestore.collection('categories').document(category.docId);
       final docSupplier =
-          await doc.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').document(supplier.docId);
 
       final createdAt = DateTime.now().millisecondsSinceEpoch;
 
@@ -120,7 +124,6 @@ class FormStockRepository {
 
   Future<bool> editItem(FormStockEditItem event, FormStockState state) async {
     try {
-      final userKey = await storage.read(key: kUserDocIdKey);
       final storeKey = await storage.read(key: kDefaultStore);
 
       final List<Category> categories = state.props[1];
@@ -131,13 +134,14 @@ class FormStockRepository {
           ? await _uploadFile(state.props[2])
           : event.item.urlImage;
 
-      final doc = await _firestore.collection('users').document(userKey);
-      final collection =
-          doc.collection('stores').document(storeKey).collection('items');
+      final collection = _firestore
+          .collection('stores')
+          .document(storeKey)
+          .collection('items');
       final docCategory =
-          await doc.collection('categories').document(category.docId);
+          await _firestore.collection('categories').document(category.docId);
       final docSupplier =
-          await doc.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').document(supplier.docId);
 
       final item = Item(
         event.item.docId,

@@ -373,6 +373,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                                     contentPadding: EdgeInsets.zero,
                                     leading: trx.items[index].urlImage.isEmpty
                                         ? Container(
+                                            width: 70,
                                             padding: EdgeInsets.all(4.0),
                                             color: Colors.grey[200],
                                             child: Column(
@@ -385,6 +386,8 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                                             ),
                                           )
                                         : CachedNetworkImage(
+                                            width: 70,
+                                            fit: BoxFit.fitWidth,
                                             imageUrl:
                                                 trx.items[index].urlImage),
                                     title: Text(trx.items[index].itemName),

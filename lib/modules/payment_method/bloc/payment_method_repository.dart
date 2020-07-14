@@ -5,12 +5,9 @@ class PaymentMethodRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<PaymentMethod>> loadListPaymentMethod() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .collection('payment_methods')
@@ -23,12 +20,9 @@ class PaymentMethodRepository {
   }
 
   Future<bool> addPaymentMethod(PaymentMethodAdd event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey);
     final collection = doc.collection('payment_methods');

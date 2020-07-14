@@ -5,12 +5,9 @@ class SummaryRepository {
   final storage = FlutterSecureStorage();
 
   Future<Stream<String>> loadTrx() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final snap = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .snapshots()

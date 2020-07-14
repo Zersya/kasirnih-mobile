@@ -92,6 +92,7 @@ class FormStockBloc extends Bloc<FormStockEvent, FormStockState> {
       imagePath: state.props[2],
       indexCategory: state.props[3],
       indexSupplier: state.props[4],
+      listSupplier: state.props[5],
     );
   }
 

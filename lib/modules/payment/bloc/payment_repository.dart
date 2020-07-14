@@ -5,12 +5,9 @@ class PaymentRepository {
   final storage = FlutterSecureStorage();
 
   Future<List<PaymentMethod>> loadListPaymentMethod() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final doc = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .collection('payment_methods')
@@ -23,12 +20,9 @@ class PaymentRepository {
   }
 
   Future<Stream<String>> loadTrx() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final snap = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .snapshots()
@@ -38,8 +32,6 @@ class PaymentRepository {
   }
 
   Future<bool> addTransaction(PaymentSubmit event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
-    final storeKey = await storage.read(key: kDefaultStore);
 
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -51,9 +43,9 @@ class PaymentRepository {
       return false;
     }
 
-    final doc = await _firestore.collection('users').document(userKey);
+    final storeKey = await storage.read(key: kDefaultStore);
     final collection =
-        doc.collection('stores').document(storeKey).collection('transactions');
+        _firestore.collection('stores').document(storeKey).collection('transactions');
 
     final trx.Transaction transaction =
         event.transaction.copyWith(docId: collection.document().documentID);
@@ -66,12 +58,12 @@ class PaymentRepository {
 
     await _firestore.runTransaction((transaction) async {
       final snapStore = await transaction
-          .get(doc.collection('stores').document(storeKey))
+          .get(_firestore.collection('stores').document(storeKey))
           .catchError((err) => throw err);
 
       event.transaction.items.forEach((element) async {
         final snapItem = await transaction
-            .get(doc
+            .get(_firestore
                 .collection('stores')
                 .document(storeKey)
                 .collection('items')

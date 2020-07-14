@@ -124,6 +124,7 @@ class ItemCard extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: CachedNetworkImage(
+                    width: double.infinity,
                     imageUrl: element.urlImage,
                     fit: BoxFit.fitWidth,
                   ),

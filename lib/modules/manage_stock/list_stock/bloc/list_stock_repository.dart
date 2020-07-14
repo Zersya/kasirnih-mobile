@@ -6,15 +6,13 @@ class ListStockRepository {
 
   Future<Stream<List<Item>>> loadStock(
       ListStockLoad event, ListStockState state) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
     final dt =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     switch (event.indexScreen) {
       case 0:
-        final items = doc
+        final items = _firestore
             .collection('stores')
             .document(storeKey)
             .collection('items')
@@ -25,7 +23,7 @@ class ListStockRepository {
 
         return items;
       case 1:
-        final qs = await doc
+        final qs = await _firestore
             .collection('stores')
             .document(storeKey)
             .collection('transactions')
@@ -56,7 +54,7 @@ class ListStockRepository {
 
         return Stream.value(newItems).asBroadcastStream();
       case 2:
-        final items = doc
+        final items = _firestore
             .collection('stores')
             .document(storeKey)
             .collection('items')
@@ -73,11 +71,9 @@ class ListStockRepository {
 
   Future<Stream<List<Item>>> searchStock(
       ListStockSearch event, ListStockState state) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('users').document(userKey);
-    final items = doc
+    final items = _firestore
         .collection('stores')
         .document(storeKey)
         .collection('items')
@@ -92,14 +88,9 @@ class ListStockRepository {
   }
 
   Future<bool> deleteItem(ListStockDelete event) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
-    
-    final doc = await _firestore
-        .collection('users')
-        .document(userKey)
-        .collection('stores')
-        .document(storeKey);
+
+    final doc = await _firestore.collection('stores').document(storeKey);
     await doc.collection('items').document(event.docId).delete();
 
     toastSuccess('Sukses menghapus item');

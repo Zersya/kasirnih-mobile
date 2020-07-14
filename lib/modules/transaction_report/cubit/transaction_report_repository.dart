@@ -6,15 +6,12 @@ class TransactionReportRepository {
 
   Future<Stream<List<trx.Transaction>>> loadTransaction(
       List<String> keys, DateTime start, DateTime end) async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     Query items;
 
     if (keys.isNotEmpty) {
       items = await _firestore
-          .collection('users')
-          .document(userKey)
           .collection('stores')
           .document(storeKey)
           .collection('transactions')
@@ -22,8 +19,6 @@ class TransactionReportRepository {
           .orderBy('created_at', descending: true);
     } else {
       items = await _firestore
-          .collection('users')
-          .document(userKey)
           .collection('stores')
           .document(storeKey)
           .collection('transactions')
@@ -49,12 +44,9 @@ class TransactionReportRepository {
   }
 
   Future<Stream<List<PaymentMethod>>> loadListPaymentMethod() async {
-    final userKey = await storage.read(key: kUserDocIdKey);
     final storeKey = await storage.read(key: kDefaultStore);
 
     final stream = await _firestore
-        .collection('users')
-        .document(userKey)
         .collection('stores')
         .document(storeKey)
         .collection('payment_methods')

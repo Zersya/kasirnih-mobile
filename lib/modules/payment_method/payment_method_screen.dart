@@ -114,6 +114,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                       style: Theme.of(context).textTheme.subtitle1,
                     ).tr(),
                   ),
+                  Divider(),
                   SizedBox(
                     height: 450,
                     child: Hero(

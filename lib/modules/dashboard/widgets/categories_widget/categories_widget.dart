@@ -53,7 +53,7 @@ class CategoriesWidget extends StatelessWidget {
       CategoryBloc categoryBloc, ItemsWidgetBloc itemsWidgetBloc) {
     element.isSelected = value;
     final categories = state.categories
-        .getRange(1, state.categories.length - 1)
+        .getRange(1, state.categories.length)
         .where((element) => element.isSelected)
         .toList();
 
@@ -63,7 +63,7 @@ class CategoriesWidget extends StatelessWidget {
     } else {
       if (index == 0) {
         final newCategories = state.categories
-            .getRange(1, state.categories.length - 1)
+            .getRange(1, state.categories.length)
             .map((element) {
           element.isSelected = false;
           categoryBloc.add(element);
@@ -95,7 +95,7 @@ class CategoryWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ChoiceChip(
-        label: Text(element.name),
+        label: Text(element.name.capitalize()),
         selected: element.isSelected,
         onSelected: onSelected,
       ),
