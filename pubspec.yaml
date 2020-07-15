@@ -44,6 +44,7 @@ dependencies:
   flutter_masked_text: ^0.8.0
   flutter_date_pickers: ^0.1.4
   flutter_secure_storage: ^3.3.3
+  encrypt: ^4.0.2
 
 
 

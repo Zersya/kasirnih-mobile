@@ -35,6 +35,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.people),
+              title: Text('Tambah Karyawan'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.of(context).pushNamed(RouterHelper.kRouteEmployees);
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.mail),
               title: Text('Tambah Sarana Baru'),
               trailing: Icon(Icons.keyboard_arrow_right),
