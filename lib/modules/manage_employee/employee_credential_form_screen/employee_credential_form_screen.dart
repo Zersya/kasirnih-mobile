@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ks_bike_mobile/models/credential.dart';
-import 'package:ks_bike_mobile/modules/transaction_report/widgets/list_checkbox_listtile_widget.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
@@ -147,7 +146,7 @@ class CredentialPicker extends StatelessWidget {
                 child: Text(
                   credentials.isEmpty
                       ? 'Pilih akses karyawan'
-                      : '${selectedCreds.length} akses terpilih',
+                      : '${selectedCreds.length} hak akses terpilih',
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
               ),

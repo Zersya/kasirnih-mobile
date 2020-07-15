@@ -88,18 +88,19 @@ class AuthRepository {
       }
 
       return await _loginUser2Firestore(
-        event,
-        snapshotEmail.documents.first.data['email'],
-        snapshotEmail.documents.first.documentID,
-      );
+          event,
+          snapshotEmail.documents.first.data['email'],
+          snapshotEmail.documents.first.documentID,
+          snapshotEmail.documents.first.data['credentials'],
+          snapshotEmail.documents.first.data['store']);
     } on SocketException {
       toastError(tr('error.no_connection'));
       return null;
     }
   }
 
-  Future<AuthResult> _loginUser2Firestore(
-      AuthEventLogin event, String email, String docId) async {
+  Future<AuthResult> _loginUser2Firestore(AuthEventLogin event, String email,
+      String docId, List creds, String storeId) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: event.password);
@@ -109,6 +110,12 @@ class AuthRepository {
 
       final storage = FlutterSecureStorage();
       await storage.write(key: kUserDocIdKey, value: docId);
+      creds.forEach((element) async {
+        await storage.write(key: element, value: element);
+      });
+      if (storeId != null) {
+        await storage.write(key: kDefaultStore, value: storeId);
+      }
 
       return result;
     } on PlatformException catch (err) {

@@ -15,7 +15,7 @@ class EmployeeCredentialFormRepository {
 
   Future<AuthResult> register(String name, String username, String password,
       List<String> credentials) async {
-    final email = '$username@ksbike.com';
+    final email = '$username@$kDomain';
 
     try {
       final snapshotUsername = await _firestore
@@ -57,6 +57,7 @@ class EmployeeCredentialFormRepository {
       await _firestore.collection('users').add({
         'name': name,
         'username': username,
+        'email': email,
         'credentials': credentials,
         'store': storeKey
       });

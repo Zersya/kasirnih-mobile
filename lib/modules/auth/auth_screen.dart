@@ -52,8 +52,8 @@ class _AuthScreenState extends State<AuthScreen>
     tabController = TabController(initialIndex: 0, length: 2, vsync: this);
 
     if (kDebugMode) {
-      usernameLoginC.text = 'abidin';
-      passwordLoginC.text = '1234567';
+      usernameLoginC.text = 'misha';
+      passwordLoginC.text = '123456';
       usernameRegisterC.text = 'abidin';
       passwordRegisterC.text = '1234567';
       emailC.text = "abidin@mail.com";
@@ -79,7 +79,8 @@ class _AuthScreenState extends State<AuthScreen>
         bloc: authBloc,
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.of(context).pushReplacementNamed(RouterHelper.kRouteHome, arguments: usernameLoginC.text);
+            Navigator.of(context).pushReplacementNamed(RouterHelper.kRouteHome,
+                arguments: usernameLoginC.text);
           }
         },
         builder: (context, state) {
