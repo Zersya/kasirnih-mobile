@@ -10,14 +10,14 @@ class CategoriesWidget extends StatelessWidget {
     final CategoriesWidgetBloc categoriesWidgetBloc =
         BlocProvider.of<CategoriesWidgetBloc>(context);
 
-    final stream = categoriesWidgetBloc.state.props[1];
-
     final ItemsWidgetBloc itemsWidgetBloc =
         BlocProvider.of<ItemsWidgetBloc>(context);
 
     return BlocBuilder<CategoriesWidgetBloc, CategoriesWidgetState>(
       bloc: categoriesWidgetBloc,
       builder: (context, state) {
+        final stream = state.props[1];
+
         return StreamBuilder<List<Category>>(
             stream: stream,
             initialData: [],
