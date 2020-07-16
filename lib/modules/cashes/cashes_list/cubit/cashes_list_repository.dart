@@ -1,0 +1,39 @@
+part of 'cashes_list_cubit.dart';
+
+class CashesListRepository {
+  final Firestore _firestore = Firestore.instance;
+  final storage = FlutterSecureStorage();
+
+  Future<Stream<List<trx.Transaction>>> loadTransaction() async {
+    final storeKey = await storage.read(key: kDefaultStore);
+
+    Query items = await _firestore
+        .collection('stores')
+        .document(storeKey)
+        .collection('transactions')
+        .orderBy('created_at', descending: true);
+
+    return items
+        .snapshots()
+        .map((event) => event.documents
+            .map((e) => trx.Transaction.fromMap(e.data))
+            .toList())
+        .asBroadcastStream();
+  }
+
+  Future<Stream<List<Cashes>>> loadCashes() async {
+    final storeKey = await storage.read(key: kDefaultStore);
+
+    Query items = await _firestore
+        .collection('stores')
+        .document(storeKey)
+        .collection('cashes')
+        .orderBy('created_at', descending: true);
+
+    return items
+        .snapshots()
+        .map((event) =>
+            event.documents.map((e) => Cashes.fromMap(e.data)).toList())
+        .asBroadcastStream();
+  }
+}

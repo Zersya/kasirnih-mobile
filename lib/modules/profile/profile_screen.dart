@@ -79,6 +79,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ListTile(
+              leading: Icon(Icons.assignment_turned_in),
+              title: Text('Laporan Kas'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.of(context).pushNamed(RouterHelper.kRouteCashesList);
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Keluar'),
               trailing: Icon(Icons.keyboard_arrow_right),

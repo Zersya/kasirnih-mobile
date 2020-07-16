@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ks_bike_mobile/modules/auth/auth_screen.dart';
+import 'package:ks_bike_mobile/modules/cashes/cashes_form/cashes_form_screen.dart';
+import 'package:ks_bike_mobile/modules/cashes/cashes_list/cashes_list_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_employee/employee_credential_form_screen/employee_credential_form_screen.dart';
 import 'package:ks_bike_mobile/modules/home/home_screen.dart';
 import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form/invoice_debt_form_screen.dart';
@@ -26,6 +28,8 @@ class RouterHelper {
   static const String kRouteSummary = '/summary';
   static const String kRoutePayment = '/summary/transaction';
   static const String kRouteEmployees = '/employees';
+  static const String kRouteCashesForm = '/cashes/form';
+  static const String kRouteCashesList = '/cashes';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -61,6 +65,12 @@ class RouterHelper {
       case kRouteEmployees:
         return MaterialPageRoute(
             builder: (_) => EmployeeCredentialFormScreen());
+
+      case kRouteCashesForm:
+        return MaterialPageRoute(builder: (_) => CashesFormScreen());
+
+      case kRouteCashesList:
+        return MaterialPageRoute(builder: (_) => CashesListScreen());
 
       case kRouteStockForm:
         return MaterialPageRoute(

@@ -175,23 +175,26 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            ListTile(
-                              leading: Text('$key',
+                            Container(
+                              color: Color(0xFFf4f4f4),
+                              child: ListTile(
+                                leading: Text('$key',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                trailing: Text(
+                                  currencyFormatter.format(total),
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
                                       .copyWith(
+                                        color: Theme.of(context).primaryColor,
                                         fontWeight: FontWeight.bold,
-                                      )),
-                              trailing: Text(
-                                currencyFormatter.format(total),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                      ),
+                                ),
                               ),
                             ),
                             ListView.builder(
