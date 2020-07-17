@@ -6,7 +6,6 @@ import "package:collection/collection.dart";
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/cashes.dart';
 
-import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
