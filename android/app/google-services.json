@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "508261210232-k1l40q4hq36n9t1c52194qkhploqcuqh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inersya.ks_bike_mobile",
+            "certificate_hash": "d941032746c1cfbdd79390e5886be555e7923c51"
+          }
+        },
+        {
           "client_id": "508261210232-9s4qvrdk0d3docsg8g4truh6ald8oei1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
