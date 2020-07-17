@@ -36,4 +36,13 @@ class CashesListRepository {
             event.documents.map((e) => Cashes.fromMap(e.data)).toList())
         .asBroadcastStream();
   }
+
+  Future<Stream<int>> loadTotal() async {
+    final storeKey = await storage.read(key: kDefaultStore);
+
+    final docRef =
+        await _firestore.collection('stores').document(storeKey).snapshots();
+
+    return docRef.map((event) => event.data['total_transaction']);
+  }
 }

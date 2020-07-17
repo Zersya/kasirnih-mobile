@@ -21,9 +21,11 @@ class CashesListCubit extends Cubit<CashesListState> {
 
     final transactions = await _repo.loadTransaction();
     final cashes = await _repo.loadCashes();
+    final totalTrx = await _repo.loadTotal();
 
-    final data = Rx.combineLatest2(
-        transactions, cashes, (a, b) => {'transactions': a, 'cashes': b});
+    final data = Rx.combineLatest3(transactions, cashes, totalTrx,
+            (a, b, c) => {'transactions': a, 'cashes': b, 'totalTrx': c})
+        .asBroadcastStream();
 
     int version = state.props[0];
     version++;

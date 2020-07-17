@@ -32,7 +32,6 @@ class PaymentRepository {
   }
 
   Future<bool> addTransaction(PaymentSubmit event) async {
-
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -44,13 +43,13 @@ class PaymentRepository {
     }
 
     final storeKey = await storage.read(key: kDefaultStore);
-    final collection =
-        _firestore.collection('stores').document(storeKey).collection('transactions');
+    final trxCollection = _firestore
+        .collection('stores')
+        .document(storeKey)
+        .collection('transactions');
 
-    final trx.Transaction transaction =
-        event.transaction.copyWith(docId: collection.document().documentID);
-
-    await collection.document(transaction.docId).setData(transaction.toMap());
+    final trx.Transaction trxItem =
+        event.transaction.copyWith(docId: trxCollection.document().documentID);
 
     final codeTrx = event.transaction.code;
     final codeIdTrx = int.parse(codeTrx.substring(5)) + 1;
@@ -59,6 +58,10 @@ class PaymentRepository {
     await _firestore.runTransaction((transaction) async {
       final snapStore = await transaction
           .get(_firestore.collection('stores').document(storeKey))
+          .catchError((err) => throw err);
+
+      final snapTrx = await transaction
+          .get(trxCollection.document(trxItem.docId))
           .catchError((err) => throw err);
 
       event.transaction.items.forEach((element) async {
@@ -74,6 +77,10 @@ class PaymentRepository {
             .update(snapItem.reference, {'total_stock': decrement});
       });
 
+      final currentTotal = snapStore.data['total_transaction'] ?? 0;
+      await transaction.update(snapStore.reference,
+          {'total_transaction': currentTotal + trxItem.total});
+      await transaction.set(snapTrx.reference, trxItem.toMap());
       await transaction
           .update(snapStore.reference, {'latest_transaction_code': newCodeTrx});
     }).catchError((err) {

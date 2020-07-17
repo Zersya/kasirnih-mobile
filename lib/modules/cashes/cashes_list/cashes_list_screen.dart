@@ -98,10 +98,22 @@ class _CashesListScreenState extends State<CashesListScreen> {
                       SizedBox(
                         height: 51.0,
                       ),
-                      Text(currencyFormatter.format(80000),
-                          style: Theme.of(context).textTheme.headline5.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
+                      StreamBuilder<Map<String, dynamic>>(
+                          stream: streamData,
+                          initialData: {},
+                          builder: (context, snapshot) {
+                            final int totalTrx = snapshot.data['totalTrx'];
+                            final String formated =
+                                currencyFormatter.format(totalTrx ?? 0.0);
+
+                            return Text(formated,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold));
+                          }),
                     ],
                   ),
                 ),
@@ -121,18 +133,19 @@ class _CashesListScreenState extends State<CashesListScreen> {
                                   vertical: 16, horizontal: 32),
                               child: Column(
                                 children: <Widget>[
-                                  Text('Transaksi Hari ini',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                  Text(currencyFormatter.format(80000),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2
-                                          .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.bold)),
+                                  Icon(Icons.hot_tub)
+                                  // Text('Transaksi Hari ini',
+                                  //     style: Theme.of(context)
+                                  //         .textTheme
+                                  //         .bodyText2),
+                                  // Text(currencyFormatter.format(80000),
+                                  //     style: Theme.of(context)
+                                  //         .textTheme
+                                  //         .bodyText2
+                                  //         .copyWith(
+                                  //             color: Theme.of(context)
+                                  //                 .primaryColor,
+                                  //             fontWeight: FontWeight.bold)),
                                 ],
                               )),
                         ),
@@ -142,17 +155,18 @@ class _CashesListScreenState extends State<CashesListScreen> {
                                 vertical: 16, horizontal: 32),
                             child: Column(
                               children: <Widget>[
-                                Text('Transaksi Bulan ini',
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2),
-                                Text(currencyFormatter.format(50000),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.bold)),
+                                Icon(Icons.hot_tub)
+                                // Text('Transaksi Bulan ini',
+                                //     style:
+                                //         Theme.of(context).textTheme.bodyText2),
+                                // Text(currencyFormatter.format(50000),
+                                //     style: Theme.of(context)
+                                //         .textTheme
+                                //         .bodyText2
+                                //         .copyWith(
+                                //             color:
+                                //                 Theme.of(context).primaryColor,
+                                //             fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -173,11 +187,11 @@ class _CashesListScreenState extends State<CashesListScreen> {
                               .bodyText1
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          'Lihat Semua',
-                          style:
-                              Theme.of(context).textTheme.bodyText2.copyWith(),
-                        ),
+                        // Text(
+                        //   'Lihat Semua',
+                        //   style:
+                        //       Theme.of(context).textTheme.bodyText2.copyWith(),
+                        // ),
                       ],
                     ),
                   ),
