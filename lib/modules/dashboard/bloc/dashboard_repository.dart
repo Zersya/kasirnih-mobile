@@ -6,6 +6,9 @@ class DashboardRepository {
   Future<bool> isHasStore() async {
     final storage = FlutterSecureStorage();
     final userKey = await storage.read(key: kUserDocIdKey);
+    final storeKey = await storage.read(key: kDefaultStore);
+
+    if (storeKey != null) return true;
 
     final docs = await _firestore
         .collection('stores')
