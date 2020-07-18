@@ -64,7 +64,7 @@ class AuthRepository {
 
       final storage = FlutterSecureStorage();
       await storage.write(key: kUserDocIdKey, value: doc.documentID);
-
+      await storage.write(key: kOwner, value: kOwner);
       return result;
     } on PlatformException catch (err) {
       toastError(err.message);
