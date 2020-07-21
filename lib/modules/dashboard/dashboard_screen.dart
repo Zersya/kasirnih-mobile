@@ -12,6 +12,7 @@ import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import 'widgets/categories_widget/bloc/categories_widget_bloc.dart';
 
@@ -122,6 +123,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   BlocProvider.value(value: _itemsWidgetBloc),
                 ],
                 child: CategoriesWidget(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                child: Align(
+                    child: BlocBuilder<ItemBloc, ItemState>(
+                  bloc: _itemBloc,
+                  builder: (context, state) {
+                    return ToggleSwitch(
+                      minWidth: 50.0,
+                      minHeight: 40.0,
+                      initialLabelIndex: state.props[3],
+                      cornerRadius: 20.0,
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      inactiveFgColor: Colors.white,
+                      labels: ['', ''],
+                      icons: [
+                        Icons.grid_on,
+                        Icons.list,
+                      ],
+                      iconSize: 21.0,
+                      activeBgColors: [Colors.pink, Colors.purple],
+                      onToggle: (index) {
+                        _itemBloc.add(ItemEvent(selectedList: index));
+                      },
+                      activeBgColor: Theme.of(context).backgroundColor,
+                    );
+                  },
+                )),
               ),
               MultiBlocProvider(
                 providers: [

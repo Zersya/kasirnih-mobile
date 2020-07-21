@@ -49,16 +49,43 @@ class ItemsWidget extends StatelessWidget {
               return BlocBuilder<ItemBloc, ItemState>(
                   bloc: itemBloc,
                   builder: (context, state) {
+                    if (state.props[3] == 1) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final element = items[index];
+
+                          return ItemListCard(
+                            element: element,
+                            onTap: () {
+                              if (element.totalStock > 0) {
+                                element.qty = element.qty > 0 ? 0 : 1;
+                                final selectedItems = items
+                                    .where((element) => element.qty > 0)
+                                    .toList();
+                                itemBloc.add(
+                                    ItemEvent(selectedItems: selectedItems));
+                              } else {
+                                toastError(
+                                    'Stock ${element.itemName} tidak tersedia');
+                              }
+                            },
+                          );
+                        },
+                      );
+                    }
                     return GridView.builder(
                         shrinkWrap: true,
                         itemCount: items.length,
+                        padding: EdgeInsets.zero,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount:
                                 (orientation == Orientation.portrait) ? 3 : 4),
                         itemBuilder: (context, index) {
                           final element = items[index];
 
-                          return ItemCard(
+                          return ItemGridCard(
                             element: element,
                             onTap: () {
                               if (element.totalStock > 0) {
@@ -82,8 +109,8 @@ class ItemsWidget extends StatelessWidget {
   }
 }
 
-class ItemCard extends StatelessWidget {
-  const ItemCard({
+class ItemGridCard extends StatelessWidget {
+  const ItemGridCard({
     Key key,
     @required this.element,
     @required this.onTap,
@@ -139,10 +166,57 @@ class ItemCard extends StatelessWidget {
                       color:
                           element.totalStock == 0 ? Colors.red : Colors.green,
                     ),
-              )
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ItemListCard extends StatelessWidget {
+  const ItemListCard({
+    Key key,
+    @required this.element,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final Item element;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: element.qty > 0
+                ? Theme.of(context).primaryColor
+                : Colors.transparent,
+            width: 2.0),
+      ),
+      child: ListTile(
+        onTap: onTap,
+        title: Text(element.itemName.capitalize()),
+        subtitle: Text(
+          currencyFormatter.format(element.sellPrice),
+          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                fontWeight: FontWeight.bold,
+                color: element.totalStock == 0 ? Colors.red : Colors.green,
+              ),
+        ),
+        leading: element.urlImage.isEmpty
+            ? Container(
+                color: Colors.grey[200],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[Icon(Icons.image), Text('No Image')],
+                ),
+              )
+            : CachedNetworkImage(
+                imageUrl: element.urlImage,
+                fit: BoxFit.fitWidth,
+              ),
       ),
     );
   }
