@@ -24,11 +24,17 @@ class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
     if (event is ItemsWidgetLoad) {
       final result = await _repo.loadItems(event, state);
       final int version = state.props[0];
-      yield ItemsWidgetInitial(version: version + 1, items: result);
+      yield ItemsWidgetInitial(
+        version: version + 1,
+        items: result,
+      );
     } else if (event is ItemsWidgetSearch) {
       final result = await _repo.searchItem(event, state);
       final int version = state.props[0];
-      yield ItemsWidgetInitial(version: version + 1, items: result);
+      yield ItemsWidgetInitial(
+        version: version + 1,
+        items: result,
+      );
     }
   }
 }
@@ -42,7 +48,8 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
     yield ItemState(
         version: version + 1,
         items: event.items ?? state.props[1],
-        selectedItems: event.selectedItems ?? state.props[2]);
+        selectedItems: event.selectedItems ?? state.props[2],
+        selectedList: event.selectedList ?? state.props[3]);
   }
 }
 
@@ -50,18 +57,23 @@ class ItemState extends Equatable {
   final int version;
   final List<Item> items;
   final List<Item> selectedItems;
+  final int selectedList;
 
   ItemState(
-      {this.version = 0, this.items = const [], this.selectedItems = const []});
+      {this.version = 0,
+      this.items = const [],
+      this.selectedItems = const [],
+      this.selectedList = 0});
   @override
-  List<Object> get props => [version, items, selectedItems];
+  List<Object> get props => [version, items, selectedItems, selectedList];
 }
 
 class ItemEvent extends Equatable {
   final List<Item> items;
   final List<Item> selectedItems;
+  final int selectedList;
 
-  ItemEvent({this.items, this.selectedItems});
+  ItemEvent({this.items, this.selectedItems, this.selectedList});
   @override
-  List<Object> get props => [items, selectedItems];
+  List<Object> get props => [items, selectedItems, selectedList];
 }

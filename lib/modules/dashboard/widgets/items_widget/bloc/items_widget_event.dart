@@ -19,3 +19,4 @@ class ItemsWidgetSearch extends ItemsWidgetEvent {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+
