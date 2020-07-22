@@ -90,8 +90,8 @@
         "choose_image_item": "Pilih Foto Barang",
         "add_category": "Tambah Kategori",
         "category_name": "Nama Kategori",
-        "add_supplier": "Tambah Kategori",
-        "supplier_name": "Nama Kategori"
+        "add_supplier": "Tambah Suplier",
+        "supplier_name": "Nama Suplier"
     },
     "list_stock_screen": {
         "list_stock_item": "Daftar Stok Barang",
