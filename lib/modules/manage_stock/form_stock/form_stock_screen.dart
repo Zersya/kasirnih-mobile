@@ -156,6 +156,9 @@ class _FormStockScreenState extends State<FormStockScreen> {
                 label: tr('form_stock_screen.item_name'),
               ),
               SizedBox(height: 8.0),
+              Text('form_stock_screen.category',
+                      style: Theme.of(context).textTheme.bodyText2)
+                  .tr(),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -207,6 +210,12 @@ class _FormStockScreenState extends State<FormStockScreen> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text('form_stock_screen.supplier',
+                      style: Theme.of(context).textTheme.bodyText2)
+                  .tr(),
               Row(
                 children: <Widget>[
                   Expanded(

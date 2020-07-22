@@ -91,7 +91,9 @@
         "add_category": "Tambah Kategori",
         "category_name": "Nama Kategori",
         "add_supplier": "Tambah Suplier",
-        "supplier_name": "Nama Suplier"
+        "supplier_name": "Nama Suplier",
+        "category": "Kategori",
+        "supplier": "Suplier"
     },
     "list_stock_screen": {
         "list_stock_item": "Daftar Stok Barang",

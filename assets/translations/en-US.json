@@ -91,7 +91,9 @@
         "add_category": "Add Category",
         "category_name": "Category Name",
         "add_supplier": "Add Supplier",
-        "supplier_name": "Supplier Name"
+        "supplier_name": "Supplier Name",
+        "category": "Category",
+        "supplier": "Supplier"
     },
     "list_stock_screen": {
         "list_stock_item": "List Stock Item",
