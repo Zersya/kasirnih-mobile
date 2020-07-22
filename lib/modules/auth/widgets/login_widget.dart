@@ -46,7 +46,7 @@ class LoginWidget extends StatelessWidget {
               height: 10.0,
             ),
             BlocBuilder<AuthBloc, AuthState>(
-                bloc: authBloc,
+                cubit: authBloc,
                 builder: (context, state) {
                   return CustomTextField(
                     label: 'Password',

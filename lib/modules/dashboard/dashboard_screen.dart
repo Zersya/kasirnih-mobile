@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/category.dart';
 import 'package:ks_bike_mobile/models/item.dart';
-import 'package:ks_bike_mobile/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ks_bike_mobile/modules/dashboard/widgets/items_widget/bloc/items_widget_bloc.dart';
+import 'package:ks_bike_mobile/modules/home/cubit/credentials_access_cubit.dart';
 
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
@@ -28,7 +28,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final DashboardBloc _dashboardBloc = DashboardBloc(DashboardInitial());
   final CategoriesWidgetBloc _categoriesWidgetBloc =
       CategoriesWidgetBloc(CategoriesWidgetInitial());
   final ItemsWidgetBloc _itemsWidgetBloc =
@@ -40,11 +39,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _dashboardBloc.add(DashboardHasStore());
+    CredentialsAccessCubit accessCubit;
+    accessCubit = BlocProvider.of<CredentialsAccessCubit>(context);
+
+    final bool isHasStore = accessCubit.state.props[6];
+    if (isHasStore) {
+      _categoriesWidgetBloc.add(CategoriesWidgetLoad());
+      _itemsWidgetBloc.add(ItemsWidgetLoad());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    CredentialsAccessCubit accessCubit;
+    accessCubit = BlocProvider.of<CredentialsAccessCubit>(context);
+
     return Column(
       children: <Widget>[
         AppBar(
@@ -54,11 +63,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),
-        BlocConsumer<DashboardBloc, DashboardState>(
-            bloc: _dashboardBloc,
+        BlocConsumer<CredentialsAccessCubit, CredentialsAccessState>(
+            cubit: accessCubit,
             listener: (context, state) {
-              if (state is DashboardInitial) {
-                final bool isHasStore = state.props[1];
+              if (state is CredentialsAccessLoaded) {
+                final bool isHasStore = state.props[6];
                 if (isHasStore) {
                   _categoriesWidgetBloc.add(CategoriesWidgetLoad());
                   _itemsWidgetBloc.add(ItemsWidgetLoad());
@@ -66,8 +75,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
             builder: (context, state) {
-              final bool isHasStore = state.props[1];
-              if (state is DashboardLoading) {
+              final bool isHasStore = state.props[6];
+              if (state is CredentialsAccessLoading) {
                 return Expanded(child: CustomLoading(withBackground: false));
               } else if (isHasStore) {
                 return _bodyHasStore(context);
@@ -129,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
                 child: Align(
                     child: BlocBuilder<ItemBloc, ItemState>(
-                  bloc: _itemBloc,
+                  cubit: _itemBloc,
                   builder: (context, state) {
                     return ToggleSwitch(
                       minWidth: 50.0,
@@ -164,7 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
           BlocBuilder<ItemBloc, ItemState>(
-              bloc: _itemBloc,
+              cubit: _itemBloc,
               builder: (context, state) {
                 final List<Item> selectedItems = state.props[2];
                 final List<Item> availableItems = selectedItems
@@ -217,6 +226,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Column _bodyEmptyStore(BuildContext context) {
+    CredentialsAccessCubit accessCubit;
+    accessCubit = BlocProvider.of<CredentialsAccessCubit>(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -245,7 +257,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () async {
                       await Navigator.of(context)
                           .pushNamed(RouterHelper.kRouteStoreFormState);
-                      _dashboardBloc.add(DashboardHasStore());
+                      accessCubit.getCredentials();
                     },
                     child: Text(
                       'dashboard_screen.register_your_store',

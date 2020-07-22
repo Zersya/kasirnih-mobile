@@ -52,7 +52,7 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
     return Scaffold(
       appBar: AppBar(
         title: BlocBuilder<StoreFormBloc, StoreFormState>(
-            bloc: _bloc,
+            cubit: _bloc,
             builder: (context, state) {
               final Store store = state.props[1];
               if (store == null) {
@@ -77,7 +77,7 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<StoreFormBloc, StoreFormState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is StoreFormStateInitial) {
             final Store store = state.props[1];
@@ -142,7 +142,7 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
                 height: 43,
                 borderRadius: BorderRadius.circular(4),
                 child: BlocBuilder<StoreFormBloc, StoreFormState>(
-                    bloc: _bloc,
+                    cubit: _bloc,
                     builder: (context, state) {
                       final Store store = state.props[1];
                       return Text(

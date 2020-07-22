@@ -28,7 +28,7 @@ class NewItemFacilitiesListScreen extends StatelessWidget {
 
   Widget _loading(context) {
     return BlocConsumer<NewItemFacilitiesBloc, NewItemFacilitiesState>(
-        bloc: bloc,
+        cubit: bloc,
         listener: (context, state) {
           if (state is NewItemFacilitiesStateInitial) {
           } else if (state is NewItemFacilitiesStateSuccess) {

@@ -12,7 +12,7 @@ class ItemsWidget extends StatelessWidget {
     final ItemBloc itemBloc = BlocProvider.of<ItemBloc>(context);
 
     return BlocBuilder<ItemsWidgetBloc, ItemsWidgetState>(
-      bloc: itemsWidgetBloc,
+      cubit: itemsWidgetBloc,
       builder: (context, state) {
         final stream = itemsWidgetBloc.state.props[1];
         return StreamBuilder<List<Item>>(
@@ -47,7 +47,7 @@ class ItemsWidget extends StatelessWidget {
                   MediaQuery.of(context).orientation;
 
               return BlocBuilder<ItemBloc, ItemState>(
-                  bloc: itemBloc,
+                  cubit: itemBloc,
                   builder: (context, state) {
                     if (state.props[3] == 1) {
                       return ListView.builder(

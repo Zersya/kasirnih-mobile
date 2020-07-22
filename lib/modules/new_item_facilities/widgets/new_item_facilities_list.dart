@@ -17,7 +17,7 @@ class NewItemFacilitiesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: BlocBuilder<NewItemFacilitiesBloc, NewItemFacilitiesState>(
-          bloc: _bloc,
+          cubit: _bloc,
           builder: (context, state) {
             final List<NewItemFacilities> listItem = state.props[1];
             if (listItem.isEmpty) {

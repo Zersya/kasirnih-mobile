@@ -98,7 +98,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<FormStockBloc, FormStockState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is FormStockInitial) {
           } else if (state is FormStockSuccessCategory) {
@@ -163,7 +163,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
                 children: <Widget>[
                   Expanded(
                     child: BlocBuilder<FormStockBloc, FormStockState>(
-                        bloc: _bloc,
+                        cubit: _bloc,
                         builder: (context, state) {
                           if (state is FormStockLoading) {
                             return LinearProgressIndicator();
@@ -220,7 +220,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
                 children: <Widget>[
                   Expanded(
                     child: BlocBuilder<FormStockBloc, FormStockState>(
-                        bloc: _bloc,
+                        cubit: _bloc,
                         builder: (context, state) {
                           if (state is FormStockLoading) {
                             return LinearProgressIndicator();
@@ -325,7 +325,7 @@ class _FormStockScreenState extends State<FormStockScreen> {
       );
     }
     return BlocBuilder<FormStockBloc, FormStockState>(
-        bloc: _bloc,
+        cubit: _bloc,
         builder: (context, state) {
           final String imagePath = state.props[2];
           if (imagePath != null) {

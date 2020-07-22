@@ -4,7 +4,7 @@ import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
 import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/employee_credential_form_cubit.dart';
 
@@ -58,7 +58,7 @@ class _EmployeeCredentialFormScreenState
               controller: _usernameC,
               label: "Username",
             ),
-            CubitProvider.value(
+            BlocProvider.value(
               value: _credentialFormCubit,
               child: CredentialPicker(),
             ),
@@ -99,7 +99,7 @@ class _EmployeeCredentialFormScreenState
   }
 
   Widget _loading(context) {
-    return CubitConsumer<EmployeeCredentialFormCubit,
+    return BlocConsumer<EmployeeCredentialFormCubit,
             EmployeeCredentialFormState>(
         cubit: _credentialFormCubit,
         listener: (context, state) {
@@ -124,7 +124,7 @@ class CredentialPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CubitBuilder<EmployeeCredentialFormCubit,
+    return BlocBuilder<EmployeeCredentialFormCubit,
         EmployeeCredentialFormState>(
       builder: (context, state) {
         final List<Credential> credentials = state.props[1];
@@ -137,7 +137,7 @@ class CredentialPicker extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 final cubit =
-                    CubitProvider.of<EmployeeCredentialFormCubit>(context);
+                    BlocProvider.of<EmployeeCredentialFormCubit>(context);
                 builderChooseCredentials(context, credentials, cubit);
               },
               child: Padding(
@@ -186,7 +186,7 @@ class CredentialPicker extends StatelessWidget {
                     ],
                   ),
                   Divider(height: 16.0),
-                  CubitBuilder<EmployeeCredentialFormCubit,
+                  BlocBuilder<EmployeeCredentialFormCubit,
                       EmployeeCredentialFormState>(
                     cubit: cubit,
                     builder: (context, state) {

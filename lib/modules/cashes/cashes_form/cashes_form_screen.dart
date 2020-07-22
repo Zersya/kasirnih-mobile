@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ks_bike_mobile/modules/cashes/cashes_form/cubit/cashes_form_cubit.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
@@ -43,7 +43,7 @@ class _CashesFormScreenState extends State<CashesFormScreen> {
   }
 
   Widget _loading(context) {
-    return CubitConsumer<CashesFormCubit, CashesFormState>(
+    return BlocConsumer<CashesFormCubit, CashesFormState>(
         cubit: _cubit,
         listener: (context, state) {
           if (state is CashesFormSuccess) {
@@ -70,7 +70,7 @@ class _CashesFormScreenState extends State<CashesFormScreen> {
               controller: _nameC,
               label: 'Nama Transaksi',
             ),
-            CubitBuilder<CashesFormCubit, CashesFormState>(
+            BlocBuilder<CashesFormCubit, CashesFormState>(
               cubit: _cubit,
               builder: (context, state) {
                 return DropdownButton<int>(

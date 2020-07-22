@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/range_picker_cubit.dart';
 
@@ -11,7 +11,7 @@ class RangePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(child: CubitBuilder<RangePickerCubit, RangePickerState>(
+    return Material(child: BlocBuilder<RangePickerCubit, RangePickerState>(
       builder: (context, state) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -21,7 +21,7 @@ class RangePickerWidget extends StatelessWidget {
                   state.props[1] ?? DateTime.now()),
               onChanged: (period) {
                 context
-                    .cubit<RangePickerCubit>()
+                    .bloc<RangePickerCubit>()
                     .changePeriod(period.start, period.end);
               },
               firstDate: DateTime(2000),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/home/cubit/credentials_access_cubit.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final _accessCubit = CubitProvider.of<CredentialsAccessCubit>(context);
+    final _accessCubit = BlocProvider.of<CredentialsAccessCubit>(context);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {},
             ),
-            if (_accessCubit.state.props[3])
+            if (_accessCubit.state.props[3] && _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.store),
                 title: Text('Ubah Toko'),
@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .pushNamed(RouterHelper.kRouteStoreFormState);
                 },
               ),
-            if (_accessCubit.state.props[3])
+            if (_accessCubit.state.props[3] && _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.people),
                 title: Text('Tambah Karyawan'),
@@ -48,7 +48,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context).pushNamed(RouterHelper.kRouteEmployees);
                 },
               ),
-            if (_accessCubit.state.props[3] || _accessCubit.state.props[0])
+            if ((_accessCubit.state.props[3] || _accessCubit.state.props[0]) &&
+                _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.mail),
                 title: Text('Tambah Sarana Baru'),
@@ -58,7 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .pushNamed(RouterHelper.kRouteNewItemFacilities);
                 },
               ),
-            if (_accessCubit.state.props[3] || _accessCubit.state.props[1])
+            if ((_accessCubit.state.props[3] || _accessCubit.state.props[1]) &&
+                _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.description),
                 title: Text('Tagihan Hutang'),
@@ -68,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .pushNamed(RouterHelper.kRouteInvoiceDebt);
                 },
               ),
-            if (_accessCubit.state.props[3])
+            if (_accessCubit.state.props[3] && _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.credit_card),
                 title: Text('Metode Pembayaran'),
@@ -78,14 +80,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .pushNamed(RouterHelper.kRoutePaymentMethod);
                 },
               ),
-            ListTile(
-              leading: Icon(Icons.assignment_turned_in),
-              title: Text('Laporan Kas'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {
-                Navigator.of(context).pushNamed(RouterHelper.kRouteCashesList);
-              },
-            ),
+            if (_accessCubit.state.props[6])
+              ListTile(
+                leading: Icon(Icons.assignment_turned_in),
+                title: Text('Laporan Kas'),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(RouterHelper.kRouteCashesList);
+                },
+              ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Keluar'),

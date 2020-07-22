@@ -14,7 +14,7 @@ class CategoriesWidget extends StatelessWidget {
         BlocProvider.of<ItemsWidgetBloc>(context);
 
     return BlocBuilder<CategoriesWidgetBloc, CategoriesWidgetState>(
-      bloc: categoriesWidgetBloc,
+      cubit: categoriesWidgetBloc,
       builder: (context, state) {
         final stream = state.props[1];
 
@@ -32,7 +32,7 @@ class CategoriesWidget extends StatelessWidget {
               return SizedBox(
                 height: 50,
                 child: BlocBuilder<CategoryBloc, CategoryState>(
-                    bloc: categoryBloc,
+                    cubit: categoryBloc,
                     builder: (context, state) {
                       return ListView.builder(
                           shrinkWrap: true,

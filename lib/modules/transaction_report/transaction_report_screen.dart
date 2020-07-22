@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import "package:collection/collection.dart";
 
@@ -69,7 +69,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
   }
 
   Widget _body(BuildContext context) {
-    return CubitBuilder<TransactionReportCubit, TransactionReportState>(
+    return BlocBuilder<TransactionReportCubit, TransactionReportState>(
       cubit: _cubit,
       builder: (context, state) {
         final streamTrx = state.props[1];
@@ -86,7 +86,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                           context: context,
                           builder: (context) {
                             return Dialog(
-                              child: CubitProvider.value(
+                              child: BlocProvider.value(
                                 value: _rangePickerCubit,
                                 child: RangePickerWidget(),
                               ),
@@ -98,7 +98,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                           EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: CubitBuilder<RangePickerCubit, RangePickerState>(
+                        child: BlocBuilder<RangePickerCubit, RangePickerState>(
                           cubit: _rangePickerCubit,
                           builder: (context, state) {
                             final DateTime start = state.props[0];
@@ -273,7 +273,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                     Divider(
                       height: 8.0,
                     ),
-                    CubitProvider.value(
+                    BlocProvider.value(
                         value: _selectedPaymentCubit,
                         child: ListCheckBoxListTile(
                             paymentMethods: paymentMethods)),
@@ -286,7 +286,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
   }
 
   Widget _loading(context) {
-    return CubitBuilder<TransactionReportCubit, TransactionReportState>(
+    return BlocBuilder<TransactionReportCubit, TransactionReportState>(
         cubit: _cubit,
         builder: (context, state) {
           if (state is TransactionReportLoading) {

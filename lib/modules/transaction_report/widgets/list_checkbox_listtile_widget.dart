@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/modules/transaction_report/cubit/transaction_selected_payment_cubit.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 
@@ -16,8 +16,8 @@ class ListCheckBoxListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final TransactionSelectedPaymentCubit _selectedPaymentCubit =
-    //     CubitProvider.of<TransactionSelectedPaymentCubit>(context);
-    return CubitBuilder<TransactionSelectedPaymentCubit,
+    //     BlocProvider.of<TransactionSelectedPaymentCubit>(context);
+    return BlocBuilder<TransactionSelectedPaymentCubit,
         TransactionSelectedPaymentState>(
       builder: (context, state) {
         return ListView.builder(
@@ -29,7 +29,7 @@ class ListCheckBoxListTile extends StatelessWidget {
                 title: Text(paymentMethods[index].name.capitalize()),
                 onChanged: (value) {
                   context
-                      .cubit<TransactionSelectedPaymentCubit>()
+                      .bloc<TransactionSelectedPaymentCubit>()
                       .changeSelected(index, value);
                 },
               );

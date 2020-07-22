@@ -117,7 +117,7 @@ class _ListStockScreenState extends State<ListStockScreen>
               controller: _tabController,
               children: <Widget>[
                 BlocConsumer<ListStockBloc, ListStockState>(
-                    bloc: _bloc,
+                    cubit: _bloc,
                     listener: (context, state) {},
                     builder: (context, state) {
                       final streamItems = state.props[1];
@@ -127,7 +127,7 @@ class _ListStockScreenState extends State<ListStockScreen>
                           child: ListItems(streamItems: streamItems));
                     }),
                 BlocConsumer<ListStockBloc, ListStockState>(
-                    bloc: _bloc,
+                    cubit: _bloc,
                     listener: (context, state) {},
                     builder: (context, state) {
                       final streamItems = state.props[2];
@@ -139,7 +139,7 @@ class _ListStockScreenState extends State<ListStockScreen>
                       );
                     }),
                 BlocConsumer<ListStockBloc, ListStockState>(
-                    bloc: _bloc,
+                    cubit: _bloc,
                     listener: (context, state) {},
                     builder: (context, state) {
                       final streamItems = state.props[3];
@@ -169,7 +169,7 @@ class _ListStockScreenState extends State<ListStockScreen>
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.70,
             child: BlocConsumer<ListStockBloc, ListStockState>(
-                bloc: _bloc,
+                cubit: _bloc,
                 listener: (context, state) {},
                 builder: (context, state) {
                   final streamItems = state.props[4];

@@ -62,7 +62,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     BlocBuilder<SummaryBloc, SummaryState>(
-                      bloc: _summaryBloc,
+                      cubit: _summaryBloc,
                       builder: (context, state) {
                         return StreamBuilder<String>(
                             stream: state.props[3],
@@ -93,7 +93,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
                 SizedBox(height: 8.0),
                 BlocBuilder<SummaryBloc, SummaryState>(
-                  bloc: _summaryBloc,
+                  cubit: _summaryBloc,
                   builder: (context, state) {
                     List<Item> items = state.props[1];
 
@@ -205,7 +205,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
                 SizedBox(height: 16.0),
                 BlocBuilder<SummaryBloc, SummaryState>(
-                  bloc: _summaryBloc,
+                  cubit: _summaryBloc,
                   builder: (context, state) {
                     List<Item> items = state.props[1];
                     final subtotal = items.fold(
@@ -264,7 +264,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
                 SizedBox(height: 16.0),
                 BlocBuilder<SummaryBloc, SummaryState>(
-                  bloc: _summaryBloc,
+                  cubit: _summaryBloc,
                   builder: (context, state) {
                     List<Item> items = state.props[1];
                     int discount = state.props[2];

@@ -1,4 +1,4 @@
-import 'package:cubit/cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'range_picker_state.dart';

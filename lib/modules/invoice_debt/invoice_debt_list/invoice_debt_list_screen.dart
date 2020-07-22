@@ -20,7 +20,8 @@ class InvoiceDebtListScreen extends StatefulWidget {
 }
 
 class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
-  final InvoiceDebtListBloc _bloc = InvoiceDebtListBloc(InvoiceDebtListInitial());
+  final InvoiceDebtListBloc _bloc =
+      InvoiceDebtListBloc(InvoiceDebtListInitial());
 
   @override
   void initState() {
@@ -56,7 +57,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<InvoiceDebtListBloc, InvoiceDebtListState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {},
         builder: (context, state) {
           if (state is InvoiceDebtListLoading) {
@@ -69,7 +70,7 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
 
   Widget _body(BuildContext context) {
     return BlocConsumer<InvoiceDebtListBloc, InvoiceDebtListState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is InvoiceDebtListSuccessUpdate) {
             _bloc.add(InvoiceDebtListLoadInvoice());

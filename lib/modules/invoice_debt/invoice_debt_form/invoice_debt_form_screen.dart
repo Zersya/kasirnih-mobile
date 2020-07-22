@@ -29,7 +29,8 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _supplierForm = GlobalKey<FormState>();
 
-  final InvoiceDebtFormBloc _bloc = InvoiceDebtFormBloc(InvoiceDebtFormInitial());
+  final InvoiceDebtFormBloc _bloc =
+      InvoiceDebtFormBloc(InvoiceDebtFormInitial());
 
   final picker = ImagePicker();
 
@@ -56,7 +57,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is InvoiceDebtFormInitial) {
           } else if (state is InvoiceDebtFormSuccessSupplier) {
@@ -116,7 +117,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
                   Expanded(
                     child: BlocBuilder<InvoiceDebtFormBloc,
                             InvoiceDebtFormState>(
-                        bloc: _bloc,
+                        cubit: _bloc,
                         builder: (context, state) {
                           if (state is InvoiceDebtFormLoading) {
                             return LinearProgressIndicator();
@@ -154,7 +155,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
               ),
               SizedBox(height: 8.0),
               BlocConsumer<InvoiceDebtFormBloc, InvoiceDebtFormState>(
-                  bloc: _bloc,
+                  cubit: _bloc,
                   listener: (context, state) {
                     final DateTime dt = state.props[4];
                     if (dt != null) {
@@ -212,7 +213,7 @@ class _InvoiceDebtFormScreenState extends State<InvoiceDebtFormScreen> {
 
   Widget buildImage(BuildContext context) {
     return BlocBuilder<InvoiceDebtFormBloc, InvoiceDebtFormState>(
-        bloc: _bloc,
+        cubit: _bloc,
         builder: (context, state) {
           final String imagePath = state.props[2];
           if (imagePath != null) {

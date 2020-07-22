@@ -44,7 +44,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<PaymentMethodBloc, PaymentMethodState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is PaymentMethodStateInitial) {
           } else if (state is PaymentMethodStateSuccess) {
@@ -120,7 +120,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                     child: Hero(
                       tag: _bloc,
                       child: BlocBuilder<PaymentMethodBloc, PaymentMethodState>(
-                          bloc: _bloc,
+                          cubit: _bloc,
                           builder: (context, state) {
                             final List<PaymentMethod> listItem = state.props[1];
                             if (listItem.isEmpty) {

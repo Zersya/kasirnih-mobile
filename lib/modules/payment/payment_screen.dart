@@ -60,7 +60,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Widget _loading(context) {
     return BlocBuilder<PaymentBloc, PaymentState>(
-        bloc: _paymentBloc,
+        cubit: _paymentBloc,
         builder: (context, state) {
           if (state is PaymentLoading) {
             return CustomLoading();
@@ -78,7 +78,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               BlocBuilder<PaymentBloc, PaymentState>(
-                bloc: _paymentBloc,
+                cubit: _paymentBloc,
                 builder: (context, state) {
                   return StreamBuilder<String>(
                       stream: state.props[1],
@@ -126,7 +126,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Text('Metode Pembayaran',
                   style: Theme.of(context).textTheme.headline6),
               BlocBuilder<PaymentBloc, PaymentState>(
-                bloc: _paymentBloc,
+                cubit: _paymentBloc,
                 builder: (context, state) {
                   final value = state.props[2];
                   final List<PaymentMethod> list = state.props[3];
@@ -224,7 +224,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 height: 16.0,
               ),
               BlocBuilder<TotalChangeBloc, int>(
-                bloc: _totalChangeBloc,
+                cubit: _totalChangeBloc,
                 builder: (context, state) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -252,7 +252,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   SizedBox(width: 16.0),
                   BlocConsumer<PaymentBloc, PaymentState>(
-                    bloc: _paymentBloc,
+                    cubit: _paymentBloc,
                     listener: (context, state) {
                       if (state is PaymentSuccess) {
                         Navigator.of(context)
@@ -263,7 +263,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     },
                     builder: (context, state) {
                       return BlocBuilder<TotalChangeBloc, int>(
-                        bloc: _totalChangeBloc,
+                        cubit: _totalChangeBloc,
                         builder: (context, state) {
                           final String paymentMethod =
                               _paymentBloc.state.props[2];

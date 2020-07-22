@@ -50,7 +50,7 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
 
   Widget _loading(context) {
     return BlocConsumer<NewItemFacilitiesBloc, NewItemFacilitiesState>(
-        bloc: _bloc,
+        cubit: _bloc,
         listener: (context, state) {
           if (state is NewItemFacilitiesStateInitial) {
           } else if (state is NewItemFacilitiesStateSuccess) {

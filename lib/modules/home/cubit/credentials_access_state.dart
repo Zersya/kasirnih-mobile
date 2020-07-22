@@ -11,6 +11,7 @@ class CredentialsAccessInitial extends CredentialsAccessState {
   final bool isOwnerAllowed;
   final bool isPosAllowed;
   final bool isTrxReportAllowed;
+  final bool isHasStore;
 
   CredentialsAccessInitial(
       {this.isDebtInvoiceAllowed = false,
@@ -18,7 +19,8 @@ class CredentialsAccessInitial extends CredentialsAccessState {
       this.isItemStockAllowed = false,
       this.isPosAllowed = false,
       this.isTrxReportAllowed = false,
-      this.isOwnerAllowed = false});
+      this.isOwnerAllowed = false,
+      this.isHasStore = false});
 
   @override
   List<Object> get props => [
@@ -28,6 +30,7 @@ class CredentialsAccessInitial extends CredentialsAccessState {
         isOwnerAllowed,
         isPosAllowed,
         isTrxReportAllowed,
+        isHasStore
       ];
 }
 
@@ -38,6 +41,7 @@ class CredentialsAccessLoaded extends CredentialsAccessState {
   final bool isOwnerAllowed;
   final bool isPosAllowed;
   final bool isTrxReportAllowed;
+  final bool isHasStore;
 
   CredentialsAccessLoaded(
       this.isDebtInvoiceAllowed,
@@ -45,7 +49,8 @@ class CredentialsAccessLoaded extends CredentialsAccessState {
       this.isItemStockAllowed,
       this.isPosAllowed,
       this.isTrxReportAllowed,
-      this.isOwnerAllowed);
+      this.isOwnerAllowed,
+      this.isHasStore);
 
   @override
   List<Object> get props => [
@@ -55,16 +60,18 @@ class CredentialsAccessLoaded extends CredentialsAccessState {
         isOwnerAllowed,
         isPosAllowed,
         isTrxReportAllowed,
+        isHasStore,
       ];
 }
 
 class CredentialsAccessLoading extends CredentialsAccessState {
- final bool isAddNewItemAllowed;
+  final bool isAddNewItemAllowed;
   final bool isDebtInvoiceAllowed;
   final bool isItemStockAllowed;
   final bool isOwnerAllowed;
   final bool isPosAllowed;
   final bool isTrxReportAllowed;
+  final bool isHasStore;
 
   CredentialsAccessLoading(
       this.isDebtInvoiceAllowed,
@@ -72,7 +79,8 @@ class CredentialsAccessLoading extends CredentialsAccessState {
       this.isItemStockAllowed,
       this.isPosAllowed,
       this.isTrxReportAllowed,
-      this.isOwnerAllowed);
+      this.isOwnerAllowed,
+      this.isHasStore);
 
   @override
   List<Object> get props => [
@@ -82,5 +90,6 @@ class CredentialsAccessLoading extends CredentialsAccessState {
         isOwnerAllowed,
         isPosAllowed,
         isTrxReportAllowed,
+        isHasStore,
       ];
 }
