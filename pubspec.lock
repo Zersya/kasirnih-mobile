@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -176,6 +183,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.2"
+  esc_pos_bluetooth:
+    dependency: "direct main"
+    description:
+      name: esc_pos_bluetooth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.8"
+  esc_pos_utils:
+    dependency: "direct main"
+    description:
+      name: esc_pos_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.6"
   file:
     dependency: transitive
     description:
@@ -251,6 +272,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.0"
+  flutter_bluetooth_basic:
+    dependency: transitive
+    description:
+      name: flutter_bluetooth_basic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -357,6 +385,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  gbk_codec:
+    dependency: transitive
+    description:
+      name: gbk_codec
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   google_fonts:
     dependency: "direct main"
     description:
@@ -371,6 +406,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  hex:
+    dependency: transitive
+    description:
+      name: hex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
+  html:
+    dependency: transitive
+    description:
+      name: html
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.0+3"
   http:
     dependency: transitive
     description:
@@ -573,7 +622,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.24.1"
+    version: "0.23.1"
   shared_preferences:
     dependency: transitive
     description:
@@ -684,13 +733,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.15"
-  toggle_switch:
-    dependency: "direct main"
-    description:
-      name: toggle_switch
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.5"
   typed_data:
     dependency: transitive
     description:

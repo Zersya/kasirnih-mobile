@@ -40,16 +40,30 @@ class ItemsWidgetBloc extends Bloc<ItemsWidgetEvent, ItemsWidgetState> {
 }
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
-  ItemBloc(ItemState initialState) : super(initialState);
+  final storage = FlutterSecureStorage();
 
+  ItemBloc(ItemState initialState) : super(initialState);
   @override
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
     final int version = state.props[0];
+    int toggleSelected = event.toggleSelected;
+
+    if (toggleSelected != null) {
+      await storage.write(
+          key: kTypeDashboard, value: '${event.toggleSelected}');
+    } else {
+      final String data = await storage.read(key: kTypeDashboard);
+      if (data != null) {
+        toggleSelected = int.parse(data);
+      }
+    }
+
     yield ItemState(
-        version: version + 1,
-        items: event.items ?? state.props[1],
-        selectedItems: event.selectedItems ?? state.props[2],
-        selectedList: event.selectedList ?? state.props[3]);
+      version: version + 1,
+      items: event.items ?? state.props[1],
+      selectedItems: event.selectedItems ?? state.props[2],
+      toggleSelected: toggleSelected ?? state.props[3],
+    );
   }
 }
 
@@ -57,23 +71,23 @@ class ItemState extends Equatable {
   final int version;
   final List<Item> items;
   final List<Item> selectedItems;
-  final int selectedList;
+  final int toggleSelected;
 
   ItemState(
       {this.version = 0,
       this.items = const [],
       this.selectedItems = const [],
-      this.selectedList = 0});
+      this.toggleSelected = 0});
   @override
-  List<Object> get props => [version, items, selectedItems, selectedList];
+  List<Object> get props => [version, items, selectedItems, toggleSelected];
 }
 
 class ItemEvent extends Equatable {
   final List<Item> items;
   final List<Item> selectedItems;
-  final int selectedList;
+  final int toggleSelected;
 
-  ItemEvent({this.items, this.selectedItems, this.selectedList});
+  ItemEvent({this.items, this.selectedItems, this.toggleSelected});
   @override
-  List<Object> get props => [items, selectedItems, selectedList];
+  List<Object> get props => [items, selectedItems, toggleSelected];
 }

@@ -155,44 +155,41 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
               Text('Jumlah yang dibayar',
                   style: Theme.of(context).textTheme.headline6),
-              SizedBox(
-                height: 100,
-                child: Column(
-                  children: <Widget>[
-                    Row(children: <Widget>[
-                      ChoiceWidget(
-                        label: 'Rp. 20.000',
-                        onTap: (value) {
-                          int paid = _paidC.numberValue.floor();
-                          paid += 20000;
-                          _paidC.text = '$paid';
-                        },
-                      ),
-                      ChoiceWidget(
-                        label: 'Rp. 50.000',
-                        onTap: (value) {
-                          int paid = _paidC.numberValue.floor();
-                          paid += 50000;
-                          _paidC.text = '$paid';
-                        },
-                      ),
-                      ChoiceWidget(
-                        label: 'Rp. 100.000',
-                        onTap: (value) {
-                          int paid = _paidC.numberValue.floor();
-                          paid += 100000;
-                          _paidC.text = '$paid';
-                        },
-                      ),
-                    ]),
+              Column(
+                children: <Widget>[
+                  Wrap(children: <Widget>[
+                    ChoiceWidget(
+                      label: 'Rp. 20.000',
+                      onTap: (value) {
+                        int paid = _paidC.numberValue.floor();
+                        paid += 20000;
+                        _paidC.text = '$paid';
+                      },
+                    ),
+                    ChoiceWidget(
+                      label: 'Rp. 50.000',
+                      onTap: (value) {
+                        int paid = _paidC.numberValue.floor();
+                        paid += 50000;
+                        _paidC.text = '$paid';
+                      },
+                    ),
+                    ChoiceWidget(
+                      label: 'Rp. 100.000',
+                      onTap: (value) {
+                        int paid = _paidC.numberValue.floor();
+                        paid += 100000;
+                        _paidC.text = '$paid';
+                      },
+                    ),
                     ChoiceWidget(
                       label: 'Uang Pas',
                       onTap: (value) {
                         _paidC.text = '${widget.transaction.total}';
                       },
                     ),
-                  ],
-                ),
+                  ]),
+                ],
               ),
               SizedBox(
                 height: 16.0,
@@ -368,32 +365,38 @@ class ChoiceWidget extends StatelessWidget {
     @required this.label,
     this.value = '',
     this.onTap,
+    this.width = 150,
   }) : super(key: key);
 
   final String label;
   final Function(String) onTap;
   final String value;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     final bool isActive = value.toLowerCase() == label.toLowerCase();
 
-    return InkWell(
-      onTap: () => onTap(label.toLowerCase()),
-      child: Card(
-        elevation: 2.0,
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.0),
-              border: Border.all(color: Theme.of(context).primaryColor),
-              color: isActive ? Theme.of(context).primaryColor : Colors.white),
-          child: Text('$label',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: isActive ? Colors.white : Colors.black87)),
+    return SizedBox(
+      width: width,
+      child: InkWell(
+        onTap: () => onTap(label.toLowerCase()),
+        child: Card(
+          elevation: 2.0,
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4.0),
+                border: Border.all(color: Theme.of(context).primaryColor),
+                color:
+                    isActive ? Theme.of(context).primaryColor : Colors.white),
+            child: Text('$label',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: isActive ? Colors.white : Colors.black87)),
+          ),
         ),
       ),
     );

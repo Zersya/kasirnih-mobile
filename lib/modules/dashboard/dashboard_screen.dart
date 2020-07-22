@@ -12,7 +12,7 @@ import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:ks_bike_mobile/widgets/toggle_switch.dart';
 
 import 'widgets/categories_widget/bloc/categories_widget_bloc.dart';
 
@@ -97,30 +97,64 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFf1f1f2),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: TextField(
-                    controller: _fieldSearch,
-                    onTap: () {},
-                    onSubmitted: (value) {
-                      _itemsWidgetBloc
-                          .add(ItemsWidgetSearch(value.toLowerCase()));
-                    },
-                    textInputAction: TextInputAction.search,
-                    decoration: InputDecoration(
-                      hintText: tr('list_stock_screen.search_item'),
-                      prefixIcon: Icon(Icons.search),
-                      suffixIcon: GestureDetector(
-                          onTap: () {
-                            _fieldSearch.clear();
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFFf1f1f2),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: TextField(
+                          controller: _fieldSearch,
+                          onTap: () {},
+                          onSubmitted: (value) {
+                            _itemsWidgetBloc
+                                .add(ItemsWidgetSearch(value.toLowerCase()));
                           },
-                          child: Icon(Icons.close)),
-                      border: InputBorder.none,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                            hintText: tr('list_stock_screen.search_item'),
+                            prefixIcon: Icon(Icons.search),
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  _fieldSearch.clear();
+                                },
+                                child: Icon(Icons.close)),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    BlocBuilder<ItemBloc, ItemState>(
+                      cubit: _itemBloc,
+                      builder: (context, state) {
+                        return ToggleSwitch(
+                          minWidth: 50.0,
+                          minHeight: 40.0,
+                          initialLabelIndex: state.props[3],
+                          value: state.props[3],
+                          activeFgColor: Colors.white,
+                          inactiveBgColor: Colors.grey,
+                          inactiveFgColor: Colors.white,
+                          labels: ['', ''],
+                          icons: [
+                            Icons.grid_on,
+                            Icons.list,
+                          ],
+                          iconSize: 21.0,
+                          activeBgColors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).primaryColor,
+                          ],
+                          onToggle: (index) {
+                            _itemBloc.add(ItemEvent(toggleSelected: index));
+                          },
+                          activeBgColor: Theme.of(context).backgroundColor,
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
@@ -132,36 +166,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   BlocProvider.value(value: _itemsWidgetBloc),
                 ],
                 child: CategoriesWidget(),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-                child: Align(
-                    child: BlocBuilder<ItemBloc, ItemState>(
-                  cubit: _itemBloc,
-                  builder: (context, state) {
-                    return ToggleSwitch(
-                      minWidth: 50.0,
-                      minHeight: 40.0,
-                      initialLabelIndex: state.props[3],
-                      cornerRadius: 20.0,
-                      activeFgColor: Colors.white,
-                      inactiveBgColor: Colors.grey,
-                      inactiveFgColor: Colors.white,
-                      labels: ['', ''],
-                      icons: [
-                        Icons.grid_on,
-                        Icons.list,
-                      ],
-                      iconSize: 21.0,
-                      activeBgColors: [Colors.pink, Colors.purple],
-                      onToggle: (index) {
-                        _itemBloc.add(ItemEvent(selectedList: index));
-                      },
-                      activeBgColor: Theme.of(context).backgroundColor,
-                    );
-                  },
-                )),
               ),
               MultiBlocProvider(
                 providers: [
