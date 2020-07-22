@@ -9,13 +9,14 @@ class PaymentLoading extends PaymentState {
   final Stream<String> streamCodeTrx;
   final String paymentMethod;
   final List<PaymentMethod> listPaymentMethods;
+  final trx.Transaction transaction;
 
   PaymentLoading(this.version, this.streamCodeTrx, this.paymentMethod,
-      this.listPaymentMethods);
+      this.listPaymentMethods, this.transaction);
 
   @override
   List<Object> get props =>
-      [version, streamCodeTrx, paymentMethod, listPaymentMethods];
+      [version, streamCodeTrx, paymentMethod, listPaymentMethods, transaction];
 }
 
 class PaymentInitial extends PaymentState {
@@ -23,16 +24,18 @@ class PaymentInitial extends PaymentState {
   final Stream<String> streamCodeTrx;
   final String paymentMethod;
   final List<PaymentMethod> listPaymentMethods;
+  final trx.Transaction transaction;
 
   PaymentInitial(
       {this.version = 0,
       this.streamCodeTrx,
       this.paymentMethod = '',
-      this.listPaymentMethods = const []});
+      this.listPaymentMethods = const [],
+      this.transaction});
 
   @override
   List<Object> get props =>
-      [version, streamCodeTrx, paymentMethod, listPaymentMethods];
+      [version, streamCodeTrx, paymentMethod, listPaymentMethods, transaction];
 }
 
 class PaymentSuccess extends PaymentState {
@@ -40,13 +43,14 @@ class PaymentSuccess extends PaymentState {
   final Stream<String> streamCodeTrx;
   final String paymentMethod;
   final List<PaymentMethod> listPaymentMethods;
+  final trx.Transaction transaction;
 
   PaymentSuccess(this.version, this.streamCodeTrx, this.paymentMethod,
-      this.listPaymentMethods);
+      this.listPaymentMethods, this.transaction);
 
   @override
   List<Object> get props =>
-      [version, streamCodeTrx, paymentMethod, listPaymentMethods];
+      [version, streamCodeTrx, paymentMethod, listPaymentMethods, transaction];
 }
 
 class PaymentFailed extends PaymentState {
@@ -54,11 +58,12 @@ class PaymentFailed extends PaymentState {
   final Stream<String> streamCodeTrx;
   final String paymentMethod;
   final List<PaymentMethod> listPaymentMethods;
+  final trx.Transaction transaction;
 
   PaymentFailed(this.version, this.streamCodeTrx, this.paymentMethod,
-      this.listPaymentMethods);
+      this.listPaymentMethods, this.transaction);
 
   @override
   List<Object> get props =>
-      [version, streamCodeTrx, paymentMethod, listPaymentMethods];
+      [version, streamCodeTrx, paymentMethod, listPaymentMethods, transaction];
 }

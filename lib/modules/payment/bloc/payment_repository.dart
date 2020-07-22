@@ -31,7 +31,7 @@ class PaymentRepository {
     return snap;
   }
 
-  Future<bool> addTransaction(PaymentSubmit event) async {
+  Future<trx.Transaction> addTransaction(PaymentSubmit event) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -39,7 +39,7 @@ class PaymentRepository {
       }
     } on SocketException catch (_) {
       toastError(tr('error.no_connection'));
-      return false;
+      return null;
     }
 
     final storeKey = await storage.read(key: kDefaultStore);
@@ -85,9 +85,9 @@ class PaymentRepository {
           .update(snapStore.reference, {'latest_transaction_code': newCodeTrx});
     }).catchError((err) {
       toastError(err.message);
-      return false;
+      return null;
     });
     toastSuccess('Sukses menambahkan transaksi');
-    return true;
+    return trxItem;
   }
 }

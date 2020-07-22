@@ -25,7 +25,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     PaymentEvent event,
   ) async* {
     yield PaymentLoading(
-        state.props[0], state.props[1], state.props[2], state.props[3]);
+        state.props[0], state.props[1], state.props[2], state.props[3],state.props[4]);
     if (event is PaymentLoad) {
       final resultLatestCode = await _repo.loadTrx();
       final resultPaymentMethods = await _repo.loadListPaymentMethod();
@@ -44,12 +44,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           listPaymentMethods: state.props[3]);
     } else if (event is PaymentSubmit) {
       final result = await _repo.addTransaction(event);
-      if (result) {
-        yield PaymentSuccess(
-            state.props[0], state.props[1], state.props[2], state.props[3]);
+      if (result != null) {
+        yield PaymentSuccess(state.props[0], state.props[1], state.props[2],
+            state.props[3], result);
       } else {
-        yield PaymentFailed(
-            state.props[0], state.props[1], state.props[2], state.props[3]);
+        yield PaymentFailed(state.props[0], state.props[1], state.props[2],
+            state.props[3], state.props[3]);
       }
     }
   }

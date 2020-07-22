@@ -5,6 +5,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/payment/bloc/payment_bloc.dart';
+import 'package:ks_bike_mobile/modules/payment/widgets/print_widget.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -250,8 +251,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   SizedBox(width: 16.0),
                   BlocConsumer<PaymentBloc, PaymentState>(
                     cubit: _paymentBloc,
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       if (state is PaymentSuccess) {
+                        final Transaction trx = state.props[4];
+                        await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: PrintWidget(
+                                  transaction: trx,
+                                ),
+                              );
+                            });
                         Navigator.of(context)
                             .popUntil((route) => route.isFirst);
                       } else if (state is PaymentFailed) {
