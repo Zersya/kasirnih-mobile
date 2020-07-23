@@ -91,15 +91,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       .pushNamed(RouterHelper.kRouteCashesList);
                 },
               ),
-            ListTile(
-              leading: Icon(Icons.print),
-              title: Text('Test Print'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () async {
-                await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => PrintScreen()));
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.print),
+            //   title: Text('Test Print'),
+            //   trailing: Icon(Icons.keyboard_arrow_right),
+            //   onTap: () async {
+            //     await Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (context) => PrintScreen()));
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text('Keluar'),

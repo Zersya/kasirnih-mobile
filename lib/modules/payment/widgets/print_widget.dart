@@ -33,7 +33,7 @@ class _PrintWidgetState extends State<PrintWidget> {
   void initState() {
     super.initState();
     _loadStoreCubit.loadStore();
-    _startScanDevices();
+    _startScanDevices(1);
 
     printerManager.scanResults.listen((devices) async {
       setState(() {
@@ -49,11 +49,11 @@ class _PrintWidgetState extends State<PrintWidget> {
     });
   }
 
-  void _startScanDevices() {
+  void _startScanDevices(int second) {
     setState(() {
       _devices = [];
     });
-    printerManager.startScan(Duration(seconds: 3));
+    printerManager.startScan(Duration(seconds: second));
   }
 
   void _stopScanDevices() {
@@ -63,7 +63,6 @@ class _PrintWidgetState extends State<PrintWidget> {
   void _testPrint(PrinterBluetooth printer) async {
     printerManager.selectPrinter(printer);
 
-    // TODO Don't forget to choose printer's paper
     const PaperSize paper = PaperSize.mm58;
 
     // TEST PRINT
@@ -147,9 +146,10 @@ class _PrintWidgetState extends State<PrintWidget> {
                                         Text(_devices[index].name ?? ''),
                                         Text(_devices[index].address),
                                         Text(
-                                          'Click to print a test receipt',
+                                          'Klik untuk print struk',
                                           style: TextStyle(
-                                              color: Colors.grey[700]),
+                                              color: Colors.grey[700],
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
@@ -203,7 +203,7 @@ class _PrintWidgetState extends State<PrintWidget> {
                 color: Theme.of(context).primaryColor,
                 padding: EdgeInsets.all(16.0),
                 child: InkWell(
-                  onTap: _startScanDevices,
+                  onTap: () => _startScanDevices(4),
                   child: Row(
                     children: <Widget>[
                       Text(

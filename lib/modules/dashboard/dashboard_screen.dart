@@ -208,6 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 RouterHelper.kRouteSummary,
                                 arguments: _itemBloc.state.props[2]);
                             _itemBloc.add(ItemEvent(selectedItems: []));
+                            _itemsWidgetBloc.add(ItemsWidgetLoad());
                           },
                           child: Text('Bayar'),
                           textColor: Colors.white,
