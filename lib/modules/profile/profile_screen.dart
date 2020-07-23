@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/home/cubit/credentials_access_cubit.dart';
-import 'package:ks_bike_mobile/modules/printing/print_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key key}) : super(key: key);

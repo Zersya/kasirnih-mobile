@@ -1,11 +1,11 @@
 import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Image;
-import 'package:flutter/services.dart';
-import 'package:image/image.dart';
+// import 'package:flutter/services.dart';
+// import 'package:image/image.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
@@ -256,7 +256,6 @@ class _PrintScreenState extends State<PrintScreen> {
   void _testPrint(PrinterBluetooth printer) async {
     printerManager.selectPrinter(printer);
 
-    // TODO Don't forget to choose printer's paper
     const PaperSize paper = PaperSize.mm58;
 
     // TEST PRINT
