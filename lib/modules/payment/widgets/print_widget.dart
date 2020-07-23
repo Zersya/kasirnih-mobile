@@ -251,22 +251,33 @@ class _PrintWidgetState extends State<PrintWidget> {
     ticket.hr();
 
     ticket.row([
-      PosColumn(text: 'Qty', width: 2),
-      PosColumn(text: 'Barang', width: 5),
-      // PosColumn(
-      //     text: 'Harga', width: 3, styles: PosStyles(align: PosAlign.left)),
-      PosColumn(
-          text: 'Total', width: 5, styles: PosStyles(align: PosAlign.right)),
+      PosColumn(text: 'Transaksi', width: 5),
+      PosColumn(text: '${trx.code}', width: 7),
     ]);
 
+    final dt = DateTime.fromMillisecondsSinceEpoch(trx.createdAt);
+    final formatter = DateFormat('dd/MM/yyyy H:m');
+    ticket.row([
+      PosColumn(text: 'Tanggal', width: 5),
+      PosColumn(text: '${formatter.format(dt)}', width: 7),
+    ]);
+
+    ticket.row([
+      PosColumn(text: 'Kasir', width: 5),
+      PosColumn(text: '${trx.cashier}', width: 7),
+    ]);
+
+    ticket.hr();
+
     trx.items.forEach((element) {
+      ticket.text('${element.itemName.toUpperCase()}',
+          styles: PosStyles(align: PosAlign.left));
       ticket.row([
-        PosColumn(text: '${element.qty}', width: 2),
-        PosColumn(text: '${element.itemName.toUpperCase()}', width: 5),
-        // PosColumn(
-        //     text: '${currencyFormatternoSym.format(element.sellPrice)}',
-        //     width: 3,
-        //     styles: PosStyles(align: PosAlign.left)),
+        PosColumn(text: '${element.qty}x', width: 2),
+        PosColumn(
+            text: '${currencyFormatternoSym.format(element.sellPrice)}',
+            width: 5,
+            styles: PosStyles(align: PosAlign.left)),
         PosColumn(
             text:
                 '${currencyFormatternoSym.format(element.sellPrice * element.qty)}',
@@ -340,15 +351,25 @@ class _PrintWidgetState extends State<PrintWidget> {
           styles: PosStyles(align: PosAlign.right, width: PosTextSize.size1)),
     ]);
 
-    ticket.feed(2);
-    ticket.text('Terima kasih!',
-        styles: PosStyles(align: PosAlign.center, bold: true));
+    ticket.hr();
 
-    final now = DateTime.now();
-    final formatter = DateFormat('dd/MM/yyyy H:m');
-    final String timestamp = formatter.format(now);
-    ticket.text(timestamp,
-        styles: PosStyles(align: PosAlign.center), linesAfter: 2);
+    ticket.text(
+      'Terima kasih atas kunjungan anda',
+      styles: PosStyles(
+        align: PosAlign.center,
+        height: PosTextSize.size1,
+        width: PosTextSize.size1,
+      ),
+    );
+    ticket.hr();
+    ticket.text(
+      'Barang yang sudah terbeli tidak bisa ditukar kembali',
+      styles: PosStyles(
+        align: PosAlign.center,
+        height: PosTextSize.size1,
+        width: PosTextSize.size1,
+      ),
+    );
 
     // Print QR Code from image
     // try {

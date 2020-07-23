@@ -43,13 +43,15 @@ class PaymentRepository {
     }
 
     final storeKey = await storage.read(key: kDefaultStore);
+    final cashier = await storage.read(key: kUsername);
+
     final trxCollection = _firestore
         .collection('stores')
         .document(storeKey)
         .collection('transactions');
 
-    final trx.Transaction trxItem =
-        event.transaction.copyWith(docId: trxCollection.document().documentID);
+    final trx.Transaction trxItem = event.transaction
+        .copyWith(docId: trxCollection.document().documentID, cashier: cashier);
 
     final codeTrx = event.transaction.code;
     final codeIdTrx = int.parse(codeTrx.substring(5)) + 1;
