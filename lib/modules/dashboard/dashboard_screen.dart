@@ -126,6 +126,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
                     BlocBuilder<ItemBloc, ItemState>(
                       cubit: _itemBloc,
                       builder: (context, state) {
