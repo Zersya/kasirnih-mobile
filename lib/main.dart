@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
@@ -58,6 +60,8 @@ class MyApp extends StatelessWidget {
     fontFamily: 'Roboto',
   );
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -67,6 +71,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       onGenerateRoute: RouterHelper.generateRoute,
+      navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
       home: SplashScreen(),
     );
   }
