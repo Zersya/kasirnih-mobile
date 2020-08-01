@@ -7,6 +7,7 @@ class TransactionReportRepository {
   Future<Stream<List<trx.Transaction>>> loadTransaction(
       List<String> keys, DateTime start, DateTime end) async {
     final storeKey = await storage.read(key: kDefaultStore);
+    final numberLimit = int.parse((await storage.read(key: kLimitData)));
 
     Query items;
 
@@ -16,13 +17,15 @@ class TransactionReportRepository {
           .document(storeKey)
           .collection('transactions')
           .where('payment_method', whereIn: keys)
-          .orderBy('created_at', descending: true);
+          .orderBy('created_at', descending: true)
+          .limit(numberLimit);
     } else {
       items = await _firestore
           .collection('stores')
           .document(storeKey)
           .collection('transactions')
-          .orderBy('created_at', descending: true);
+          .orderBy('created_at', descending: true)
+          .limit(numberLimit);
     }
 
     if (start != null) {

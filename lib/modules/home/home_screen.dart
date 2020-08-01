@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/dashboard/dashboard_screen.dart';
+import 'package:ks_bike_mobile/modules/home/cubit/version_cubit.dart';
 import 'package:ks_bike_mobile/modules/profile/profile_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
 import 'package:ks_bike_mobile/modules/transaction_report/transaction_report_screen.dart';
+import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'cubit/credentials_access_cubit.dart';
 
@@ -18,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CredentialsAccessCubit _accessCubit = CredentialsAccessCubit();
+  final VersionCubit _versionCubit = VersionCubit();
+
   final ScreenIndexBloc _screenIndexBloc = ScreenIndexBloc(0);
   final List<Widget> _screens = [];
   final List<BottomNavigationBarItem> _bottomNav = [];
@@ -26,6 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _accessCubit.getCredentials();
+    _versionCubit.versionCheck();
+
+    _versionCubit.listen((state) {
+      if (state is VersionInitial) {
+        state.streamVersion.listen((event) async {
+          PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+          final int localBuildNumber = int.parse(packageInfo.buildNumber);
+          final int dbBuildNumber = event;
+
+          if (localBuildNumber < dbBuildNumber) {
+            await _buildDialogUpdate();
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -64,6 +85,61 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  Future _buildDialogUpdate() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Update Baru',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  Divider(
+                    height: 16.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text('Nanti Saja'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      RaisedButton(
+                        child: Text('Klik Disini'),
+                        onPressed: () {
+                          _launchURL();
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _launchURL() async {
+    const url =
+        'https://play.google.com/store/apps/details?id=com.inersya.ks_bike_mobile';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   _initial(context, state) {

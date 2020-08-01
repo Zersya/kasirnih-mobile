@@ -24,12 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             AppBar(
               title: Text('Pengaturan Profil'),
             ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Ubah Profil'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.person),
+            //   title: Text('Ubah Profil'),
+            //   trailing: Icon(Icons.keyboard_arrow_right),
+            //   onTap: () {},
+            // ),
             if (_accessCubit.state.props[3] && _accessCubit.state.props[6])
               ListTile(
                 leading: Icon(Icons.store),

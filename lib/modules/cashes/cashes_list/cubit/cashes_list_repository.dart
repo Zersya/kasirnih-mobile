@@ -6,12 +6,14 @@ class CashesListRepository {
 
   Future<Stream<List<trx.Transaction>>> loadTransaction() async {
     final storeKey = await storage.read(key: kDefaultStore);
+    final numberLimit = int.parse((await storage.read(key: kLimitData)));
 
     Query items = await _firestore
         .collection('stores')
         .document(storeKey)
         .collection('transactions')
-        .orderBy('created_at', descending: true);
+        .orderBy('created_at', descending: true)
+        .limit(numberLimit);
 
     return items
         .snapshots()
@@ -23,12 +25,14 @@ class CashesListRepository {
 
   Future<Stream<List<Cashes>>> loadCashes() async {
     final storeKey = await storage.read(key: kDefaultStore);
+    final numberLimit = int.parse((await storage.read(key: kLimitData)));
 
     Query items = await _firestore
         .collection('stores')
         .document(storeKey)
         .collection('cashes')
-        .orderBy('created_at', descending: true);
+        .orderBy('created_at', descending: true)
+        .limit(numberLimit);
 
     return items
         .snapshots()

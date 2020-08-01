@@ -12,3 +12,5 @@ const String kItemStock = 'item-stock';
 const String kPos = 'pos';
 const String kTrxReport = 'transaction-report';
 const String kOwner = 'owner';
+
+const String kLimitData = "limit_data";
