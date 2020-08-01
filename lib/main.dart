@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/modules/auth/auth_screen.dart';
+import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       onGenerateRoute: RouterHelper.generateRoute,
-      home: AuthScreen(),
+      home: SplashScreen(),
     );
   }
 }

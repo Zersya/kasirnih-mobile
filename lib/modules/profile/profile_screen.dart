@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
@@ -106,6 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () async {
                 final storage = FlutterSecureStorage();
                 await storage.deleteAll();
+                await FirebaseAuth.instance.signOut();
                 await Navigator.of(context)
                     .pushReplacementNamed(RouterHelper.kRouteAuth);
               },
