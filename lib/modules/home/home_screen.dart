@@ -1,11 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/modules/dashboard/dashboard_screen.dart';
-import 'package:ks_bike_mobile/modules/home/cubit/version_cubit.dart';
+import 'package:ks_bike_mobile/modules/home/cubit/remote_config_cubit.dart';
 import 'package:ks_bike_mobile/modules/profile/profile_screen.dart';
 import 'package:ks_bike_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
 import 'package:ks_bike_mobile/modules/transaction_report/transaction_report_screen.dart';
-import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'cubit/credentials_access_cubit.dart';
@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CredentialsAccessCubit _accessCubit = CredentialsAccessCubit();
-  final VersionCubit _versionCubit = VersionCubit();
+  final RemoteConfigCubit _remoteConfig = RemoteConfigCubit();
 
   final ScreenIndexBloc _screenIndexBloc = ScreenIndexBloc(0);
   final List<Widget> _screens = [];
@@ -31,20 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _accessCubit.getCredentials();
-    _versionCubit.versionCheck();
+    _remoteConfig.versionCheck(kDebugMode);
 
-    _versionCubit.listen((state) {
-      if (state is VersionInitial) {
-        state.streamVersion.listen((event) async {
-          PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-          final int localBuildNumber = int.parse(packageInfo.buildNumber);
-          final int dbBuildNumber = event;
-
-          if (localBuildNumber < dbBuildNumber) {
-            await _buildDialogUpdate();
-          }
-        });
+    _remoteConfig.listen((state) {
+      if (state is RemoteConfigInitial) {
+        if (state.isUpdate) {
+          _buildDialogUpdate();
+        }
       }
     });
   }

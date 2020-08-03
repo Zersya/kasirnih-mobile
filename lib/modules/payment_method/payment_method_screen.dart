@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
@@ -24,6 +26,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   @override
   void initState() {
     super.initState();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRoutePaymentMethod);
+
     _bloc.add(PaymentMethodLoad());
   }
 

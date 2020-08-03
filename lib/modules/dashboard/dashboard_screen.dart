@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ks_bike_mobile/helpers/route_helper.dart';
@@ -39,6 +40,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: '/dashboard');
+
     CredentialsAccessCubit accessCubit;
     accessCubit = BlocProvider.of<CredentialsAccessCubit>(context);
 

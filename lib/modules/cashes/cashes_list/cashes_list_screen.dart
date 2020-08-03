@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,6 +27,10 @@ class _CashesListScreenState extends State<CashesListScreen> {
   @override
   void initState() {
     super.initState();
+    
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: '/cashes_list');
+
     _cubit.loadTransaction();
   }
 

@@ -1,7 +1,9 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/modules/payment/bloc/payment_bloc.dart';
@@ -35,6 +37,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRoutePayment);
+
     _totalChangeBloc = TotalChangeBloc(widget.transaction.total);
     _paymentBloc.add(PaymentLoad());
 

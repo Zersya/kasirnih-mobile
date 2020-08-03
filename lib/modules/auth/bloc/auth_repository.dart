@@ -64,6 +64,7 @@ class AuthRepository {
 
       final storage = FlutterSecureStorage();
       await storage.write(key: kUserDocIdKey, value: doc.documentID);
+      await storage.write(key: kEmail, value: event.email);
       await storage.write(key: kOwner, value: kOwner);
       await storage.write(key: kUsername, value: event.username);
 
@@ -112,6 +113,7 @@ class AuthRepository {
 
       final storage = FlutterSecureStorage();
       await storage.write(key: kUserDocIdKey, value: docId);
+      await storage.write(key: kEmail, value: email);
       creds.forEach((element) async {
         await storage.write(key: element, value: element);
       });
