@@ -1,7 +1,9 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/store.dart';
 import 'package:ks_bike_mobile/modules/store_form/bloc/store_form_bloc.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
@@ -36,6 +38,9 @@ class _StoreFormStateScreenState extends State<StoreFormStateScreen> {
   @override
   void initState() {
     super.initState();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRouteStoreFormState);
 
     _bloc.add(StoreFormLoad());
     if (kDebugMode) {

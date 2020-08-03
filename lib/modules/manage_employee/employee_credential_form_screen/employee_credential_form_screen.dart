@@ -1,4 +1,6 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/credential.dart';
 import 'package:ks_bike_mobile/utils/toast.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
@@ -27,6 +29,14 @@ class _EmployeeCredentialFormScreenState
       EmployeeCredentialFormCubit();
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() { 
+    super.initState();
+    
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRouteEmployees);
+  }
 
   @override
   Widget build(BuildContext context) {

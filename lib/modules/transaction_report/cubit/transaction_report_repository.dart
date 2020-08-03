@@ -60,4 +60,24 @@ class TransactionReportRepository {
 
     return stream;
   }
+
+  Future<bool> requestEmail(DateTime start, DateTime end) async {
+    final email = await storage.read(key: kEmail);
+    final username = await storage.read(key: kUsername);
+    final storeId = await storage.read(key: kDefaultStore);
+    final startDate = start.millisecondsSinceEpoch;
+    final endDate = end.millisecondsSinceEpoch;
+
+    final rmId = _firestore.collection('statements_mail').document().documentID;
+    await _firestore.collection('statements_mail').add({
+      'rm_id': rmId,
+      'email': email,
+      'name': username,
+      'store_id': storeId,
+      'start_date': startDate,
+      'end_date': endDate,
+    });
+    toastSuccess('Silahkan cek email kamu.');
+    return true;
+  }
 }

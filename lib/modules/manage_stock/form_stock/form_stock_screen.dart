@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ks_bike_mobile/helpers/route_helper.dart';
 import 'package:ks_bike_mobile/models/category.dart';
 import 'package:ks_bike_mobile/models/item.dart';
 import 'package:ks_bike_mobile/models/supplier.dart';
@@ -40,6 +42,10 @@ class _FormStockScreenState extends State<FormStockScreen> {
   @override
   void initState() {
     super.initState();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRouteStockForm);
+
     _bloc.add(FormStockLoadCategory());
     _bloc.add(FormStockLoadSupplier());
 

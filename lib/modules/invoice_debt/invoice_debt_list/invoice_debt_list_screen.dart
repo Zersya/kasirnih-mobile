@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,10 @@ class _InvoiceDebtListScreenState extends State<InvoiceDebtListScreen> {
   @override
   void initState() {
     super.initState();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+    analytics.setCurrentScreen(screenName: RouterHelper.kRouteInvoiceDebt);
+
     _bloc.add(InvoiceDebtListLoadInvoice());
   }
 

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import "package:collection/collection.dart";
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:ks_bike_mobile/models/payment_method.dart';
 import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
 import 'package:ks_bike_mobile/models/transaction.dart';
 import 'package:ks_bike_mobile/utils/function.dart';
+import 'package:ks_bike_mobile/utils/key.dart';
 import 'package:ks_bike_mobile/widgets/custom_loading.dart';
 
 import 'widgets/range_picker_widget.dart';
@@ -29,27 +31,28 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
   final TransactionSelectedPaymentCubit _selectedPaymentCubit =
       TransactionSelectedPaymentCubit();
   final RangePickerCubit _rangePickerCubit = RangePickerCubit();
-  final TransactionReportCubit _cubit = TransactionReportCubit();
+  final TransactionReportCubit _transactionReportCubit =
+      TransactionReportCubit();
 
   @override
   void initState() {
     super.initState();
-    _cubit.selectedPaymentCubit = _selectedPaymentCubit;
-    _cubit.rangePickerCubit = _rangePickerCubit;
-    _cubit.loadTransaction();
+    _transactionReportCubit.selectedPaymentCubit = _selectedPaymentCubit;
+    _transactionReportCubit.rangePickerCubit = _rangePickerCubit;
+    _transactionReportCubit.loadTransaction();
 
     _selectedPaymentCubit.listen((state) {
       if (state is TransactionSelectedPaymentInitial) {
         List<PaymentMethod> curList = state.props[1];
 
         if (curList.isNotEmpty) {
-          _cubit.loadTransaction();
+          _transactionReportCubit.loadTransaction();
         }
       }
     });
 
     _rangePickerCubit.listen((state) {
-      _cubit.loadTransaction();
+      _transactionReportCubit.loadTransaction();
     });
   }
 
@@ -70,7 +73,7 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
 
   Widget _body(BuildContext context) {
     return BlocBuilder<TransactionReportCubit, TransactionReportState>(
-      cubit: _cubit,
+      cubit: _transactionReportCubit,
       builder: (context, state) {
         final streamTrx = state.props[1];
         final streamPayment = state.props[2];
@@ -132,15 +135,22 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(children: <Widget>[
-                  Text(
-                    'Detail Transaksi',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(fontWeight: FontWeight.bold),
-                  )
-                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Detail Transaksi',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      FlatButton.icon(
+                        icon: Icon(Icons.email),
+                        label: Text('Email Laporan'),
+                        onPressed: () => _reportEmail(),
+                      )
+                    ]),
               ),
             ),
             StreamBuilder<List<Transaction>>(
@@ -285,9 +295,84 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
         });
   }
 
+  _reportEmail() async {
+    final storage = FlutterSecureStorage();
+    final email = await storage.read(key: kEmail);
+
+    final dt = DateTime.now();
+    final DateTime start =
+        _rangePickerCubit.state.props[0] ?? DateTime(dt.year, dt.month);
+    final DateTime end =
+        _rangePickerCubit.state.props[1] ?? DateTime(dt.year, dt.month + 1, -1);
+    final String selected = start != DateTime(end.year, end.month, end.day)
+        ? '${DateFormat.yMMMd('id').format(start)} - ${DateFormat.yMMMd('id').format(end)}'
+        : DateFormat.yMMMd('id').format(start);
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Info',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Divider(
+                    height: 16.0,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                        text: 'Laporan akan dikirim ke ',
+                        style: Theme.of(context).textTheme.bodyText2,
+                        children: [
+                          TextSpan(
+                            text: email,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ]),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                        text: 'Periode Transaksi ',
+                        style: Theme.of(context).textTheme.bodyText2,
+                        children: [
+                          TextSpan(
+                            text: selected,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ]),
+                  ),
+                  Divider(
+                    height: 16.0,
+                  ),
+                  RaisedButton.icon(
+                      onPressed: () {
+                        _transactionReportCubit.requestEmail(start, end);
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.send),
+                      label: Text('Kirim'))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   Widget _loading(context) {
     return BlocBuilder<TransactionReportCubit, TransactionReportState>(
-        cubit: _cubit,
+        cubit: _transactionReportCubit,
         builder: (context, state) {
           if (state is TransactionReportLoading) {
             return CustomLoading();
