@@ -1,7 +1,7 @@
 part of 'new_item_facilities_bloc.dart';
 
 class NewItemFacilitiesRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<List<NewItemFacilities>> loadListNewFacilities() async {
@@ -9,30 +9,28 @@ class NewItemFacilitiesRepository {
 
     final doc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('new_item_facilities')
         .orderBy('created_at', descending: true)
-        .getDocuments();
+        .get();
 
     List<NewItemFacilities> listName =
-        doc.documents.map((e) => NewItemFacilities.fromMap(e.data)).toList();
+        doc.docs.map((e) => NewItemFacilities.fromMap(e.data())).toList();
     return listName;
   }
 
   Future<bool> addNewFacilities(NewItemFacilitiesAdd event) async {
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore
-        .collection('stores')
-        .document(storeKey);
+    final doc = await _firestore.collection('stores').doc(storeKey);
     final collection = doc.collection('new_item_facilities');
 
     final createdAt = DateTime.now().millisecondsSinceEpoch;
 
     final NewItemFacilities item = NewItemFacilities(
-        collection.document().documentID, event.itemName, createdAt, false);
+        collection.doc().id, event.itemName, createdAt, false);
 
-    await collection.document(item.docId).setData(item.toMap());
+    await collection.doc(item.docId).set(item.toMap());
     toastSuccess(
         tr('new_item_facilities_screen.success_add_new_item_facilities'));
     return true;
@@ -43,12 +41,12 @@ class NewItemFacilitiesRepository {
 
     final doc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('new_item_facilities')
-        .getDocuments();
+        .get();
 
-    final ref = doc.documents
-        .firstWhere((element) => event.item.docId == element.documentID)
+    final ref = doc.docs
+        .firstWhere((element) => event.item.docId == element.id)
         .reference;
 
     final result = await _firestore.runTransaction((transaction) async {

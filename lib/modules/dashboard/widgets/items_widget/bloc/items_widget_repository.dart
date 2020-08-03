@@ -1,7 +1,7 @@
 part of 'items_widget_bloc.dart';
 
 class ItemsWidgetRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Stream<List<Item>>> loadItems(
@@ -13,22 +13,20 @@ class ItemsWidgetRepository {
     if (names.isEmpty) {
       items = _firestore
           .collection('stores')
-          .document(storeKey)
+          .doc(storeKey)
           .collection('items')
           .orderBy('created_at', descending: true)
           .snapshots()
-          .map((event) =>
-              event.documents.map((e) => Item.fromMap(e.data)).toList());
+          .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
     } else {
       items = _firestore
           .collection('stores')
-          .document(storeKey)
+          .doc(storeKey)
           .collection('items')
           .where('category_name', whereIn: names)
           .orderBy('created_at', descending: true)
           .snapshots()
-          .map((event) =>
-              event.documents.map((e) => Item.fromMap(e.data)).toList());
+          .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
     }
     return items;
   }
@@ -39,15 +37,14 @@ class ItemsWidgetRepository {
 
     final items = _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('items')
         .where('item_name',
             isGreaterThanOrEqualTo: event.name,
             isLessThanOrEqualTo: '${event.name}~')
         .orderBy('created_at', descending: true)
         .snapshots()
-        .map((event) =>
-            event.documents.map((e) => Item.fromMap(e.data)).toList());
+        .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
 
     return items;
   }

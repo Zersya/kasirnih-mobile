@@ -11,15 +11,14 @@ class LoadStoreCubit extends Cubit<LoadStoreState> {
   LoadStoreCubit() : super(LoadStoreInitial());
 
   void loadStore() async {
-    final Firestore _firestore = Firestore.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     final storage = FlutterSecureStorage();
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc =
-        await _firestore.collection('stores').document(storeKey).snapshots();
+    final doc = await _firestore.collection('stores').doc(storeKey).snapshots();
 
     Stream<Store> result =
-        doc.map((event) => Store.fromMap(event.data)).asBroadcastStream();
+        doc.map((event) => Store.fromMap(event.data())).asBroadcastStream();
     emit(LoadStoreInitial(streamStore: result));
   }
 }

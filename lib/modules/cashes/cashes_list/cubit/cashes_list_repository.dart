@@ -1,7 +1,7 @@
 part of 'cashes_list_cubit.dart';
 
 class CashesListRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Stream<List<trx.Transaction>>> loadTransaction() async {
@@ -10,16 +10,15 @@ class CashesListRepository {
 
     Query items = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('transactions')
         .orderBy('created_at', descending: true)
         .limit(numberLimit);
 
     return items
         .snapshots()
-        .map((event) => event.documents
-            .map((e) => trx.Transaction.fromMap(e.data))
-            .toList())
+        .map((event) =>
+            event.docs.map((e) => trx.Transaction.fromMap(e.data())).toList())
         .asBroadcastStream();
   }
 
@@ -29,15 +28,15 @@ class CashesListRepository {
 
     Query items = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('cashes')
         .orderBy('created_at', descending: true)
         .limit(numberLimit);
 
     return items
         .snapshots()
-        .map((event) =>
-            event.documents.map((e) => Cashes.fromMap(e.data)).toList())
+        .map(
+            (event) => event.docs.map((e) => Cashes.fromMap(e.data())).toList())
         .asBroadcastStream();
   }
 
@@ -45,8 +44,8 @@ class CashesListRepository {
     final storeKey = await storage.read(key: kDefaultStore);
 
     final docRef =
-        await _firestore.collection('stores').document(storeKey).snapshots();
+        await _firestore.collection('stores').doc(storeKey).snapshots();
 
-    return docRef.map((event) => event.data['total_transaction']);
+    return docRef.map((event) => event.data()['total_transaction']);
   }
 }

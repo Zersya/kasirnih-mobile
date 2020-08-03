@@ -17,9 +17,12 @@ class CashesFormCubit extends Cubit<CashesFormState> {
   void submitCashes(String name, int total) async {
     emit(CashesFormLoading(state.props[0]));
 
-    await _repo.addCashes(name, state.props[0], total);
-
-    emit(CashesFormSuccess(state.props[0]));
+    final response = await _repo.addCashes(name, state.props[0], total);
+    if (response) {
+      emit(CashesFormSuccess(state.props[0]));
+    } else {
+      emit(CashesFormFail(state.props[0]));
+    }
   }
 
   void changeType(int value) {

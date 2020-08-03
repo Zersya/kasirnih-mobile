@@ -1,7 +1,7 @@
 part of 'invoice_debt_list_bloc.dart';
 
 class InvoiceDebtListRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<List<Invoice>> loadInvoices() async {
@@ -9,23 +9,22 @@ class InvoiceDebtListRepository {
 
     final invoicesDoc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('invoices_debt')
         // .where('is_paid', isEqualTo: false)
-        .getDocuments();
+        .get();
 
     List<Invoice> list =
-        invoicesDoc.documents.map((e) => Invoice.fromMap(e.data)).toList();
+        invoicesDoc.docs.map((e) => Invoice.fromMap(e.data())).toList();
     return list;
   }
 
   Future<int> loadTotal() async {
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final storeDoc =
-        await _firestore.collection('stores').document(storeKey).get();
+    final storeDoc = await _firestore.collection('stores').doc(storeKey).get();
 
-    final total = storeDoc.data['total_invoice_debt'] ?? 0;
+    final total = storeDoc.data()['total_invoice_debt'] ?? 0;
 
     return total;
   }
@@ -36,20 +35,19 @@ class InvoiceDebtListRepository {
       final storeKey = await storage.read(key: kDefaultStore);
 
       final stores = await _firestore.collection('stores');
-      final invoices =
-          await stores.document(storeKey).collection('invoices_debt');
+      final invoices = await stores.doc(storeKey).collection('invoices_debt');
 
       try {
         await _firestore.runTransaction((transaction) async {
-          final refStore = stores.document(storeKey);
-          final refInvoice = invoices.document(event.docId);
+          final refStore = stores.doc(storeKey);
+          final refInvoice = invoices.doc(event.docId);
 
           final freshsnapStore =
               await transaction.get(refStore).catchError((err) => throw err);
           final freshsnapInvoice =
               await transaction.get(refInvoice).catchError((err) => throw err);
 
-          final currentTotal = freshsnapStore.data['total_invoice_debt'] ?? 0;
+          final currentTotal = freshsnapStore.data()['total_invoice_debt'] ?? 0;
 
           await transaction
               .update(freshsnapInvoice.reference, {'is_paid': event.isPaid});

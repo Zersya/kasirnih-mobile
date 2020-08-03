@@ -2,14 +2,14 @@ part of 'employee_credential_form_cubit.dart';
 
 class EmployeeCredentialFormRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<List<Credential>> loadCredential() async {
-    final doc = await _firestore.collection('credentials').getDocuments();
+    final doc = await _firestore.collection('credentials').get();
 
     List<Credential> list =
-        doc.documents.map((e) => Credential.fromMap(e.data)).toList();
+        doc.docs.map((e) => Credential.fromMap(e.data())).toList();
     return list;
   }
 
@@ -30,8 +30,8 @@ class EmployeeCredentialFormRepository {
           .snapshots()
           .first;
 
-      final isUsername = snapshotUsername.documents.isNotEmpty;
-      final isEmail = snapshotEmail.documents.isNotEmpty;
+      final isUsername = snapshotUsername.docs.isNotEmpty;
+      final isEmail = snapshotEmail.docs.isNotEmpty;
 
       if (isUsername && isEmail) {
         toastError(

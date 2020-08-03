@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomLoading extends StatelessWidget {
   final bool withBackground;
 
-  const CustomLoading({Key key, this.withBackground = false}) : super(key: key);
+  const CustomLoading({Key key, this.withBackground = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

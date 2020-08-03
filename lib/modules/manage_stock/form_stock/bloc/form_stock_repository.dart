@@ -1,7 +1,7 @@
 part of 'form_stock_bloc.dart';
 
 class FormStockRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: kStorageBucket);
   final storage = FlutterSecureStorage();
@@ -11,13 +11,13 @@ class FormStockRepository {
 
     final doc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('categories')
         .orderBy('created_at', descending: true)
-        .getDocuments();
+        .get();
 
     List<Category> list =
-        doc.documents.map((e) => Category.fromMap(e.data)).toList();
+        doc.docs.map((e) => Category.fromMap(e.data())).toList();
     return list;
   }
 
@@ -26,18 +26,18 @@ class FormStockRepository {
 
     final collection = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('categories');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
     final Category item = Category(
-      collection.document().documentID,
+      collection.doc().id,
       event.categoryName,
       createdAt: timestamp,
     );
 
-    await collection.document(item.docId).setData(item.toMap());
+    await collection.doc(item.docId).set(item.toMap());
     toastSuccess('Sukses menambahkan category');
     return true;
   }
@@ -47,13 +47,13 @@ class FormStockRepository {
 
     final doc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('suppliers')
         .orderBy('created_at', descending: true)
-        .getDocuments();
+        .get();
 
     List<Supplier> list =
-        doc.documents.map((e) => Supplier.fromMap(e.data)).toList();
+        doc.docs.map((e) => Supplier.fromMap(e.data())).toList();
     return list;
   }
 
@@ -62,18 +62,18 @@ class FormStockRepository {
 
     final collection = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('suppliers');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
     final Supplier item = Supplier(
-      collection.document().documentID,
+      collection.doc().id,
       event.supplierName,
       createdAt: timestamp,
     );
 
-    await collection.document(item.docId).setData(item.toMap());
+    await collection.doc(item.docId).set(item.toMap());
     toastSuccess('Sukses menambahkan supplier');
     return true;
   }
@@ -88,19 +88,17 @@ class FormStockRepository {
       final Supplier supplier = suppliers[state.props[4]];
       final imageUrl = await _uploadFile(state.props[2]);
 
-      final collection = _firestore
-          .collection('stores')
-          .document(storeKey)
-          .collection('items');
+      final collection =
+          _firestore.collection('stores').doc(storeKey).collection('items');
       final docCategory =
-          await _firestore.collection('categories').document(category.docId);
+          await _firestore.collection('categories').doc(category.docId);
       final docSupplier =
-          await _firestore.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').doc(supplier.docId);
 
       final createdAt = DateTime.now().millisecondsSinceEpoch;
 
       final item = Item(
-        collection.document().documentID,
+        collection.doc().id,
         event.itemName,
         imageUrl,
         event.totalStock,
@@ -113,7 +111,7 @@ class FormStockRepository {
         supplier.name,
       );
 
-      await collection.document(item.docId).setData(item.toMap());
+      await collection.doc(item.docId).set(item.toMap());
       toastSuccess('Sukses menambahkan barang');
       return true;
     } on SocketException {
@@ -134,14 +132,12 @@ class FormStockRepository {
           ? await _uploadFile(state.props[2])
           : event.item.urlImage;
 
-      final collection = _firestore
-          .collection('stores')
-          .document(storeKey)
-          .collection('items');
+      final collection =
+          _firestore.collection('stores').doc(storeKey).collection('items');
       final docCategory =
-          await _firestore.collection('categories').document(category.docId);
+          await _firestore.collection('categories').doc(category.docId);
       final docSupplier =
-          await _firestore.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').doc(supplier.docId);
 
       final item = Item(
         event.item.docId,
@@ -157,7 +153,7 @@ class FormStockRepository {
         supplier.name,
       );
 
-      await collection.document(item.docId).updateData(item.toMap());
+      await collection.doc(item.docId).update(item.toMap());
       toastSuccess('Sukses menambahkan barang');
       return true;
     } on SocketException {

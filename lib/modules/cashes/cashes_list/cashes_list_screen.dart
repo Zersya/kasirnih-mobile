@@ -27,7 +27,7 @@ class _CashesListScreenState extends State<CashesListScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     final FirebaseAnalytics analytics = FirebaseAnalytics();
     analytics.setCurrentScreen(screenName: '/cashes_list');
 
@@ -205,6 +205,11 @@ class _CashesListScreenState extends State<CashesListScreen> {
                 stream: streamData,
                 initialData: {},
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CustomLoading(
+                      withBackground: false,
+                    );
+                  }
                   final List<Transaction> transactions =
                       snapshot.data['transactions'];
 
