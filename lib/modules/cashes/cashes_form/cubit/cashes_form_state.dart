@@ -20,6 +20,14 @@ class CashesFormSuccess extends CashesFormState {
   List<Object> get props => [type];
 }
 
+class CashesFormFail extends CashesFormState {
+  final int type;
+
+  CashesFormFail(this.type);
+  @override
+  List<Object> get props => [type];
+}
+
 class CashesFormLoading extends CashesFormState {
   final int type;
 

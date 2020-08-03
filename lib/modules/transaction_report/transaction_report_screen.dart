@@ -375,7 +375,9 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
         cubit: _transactionReportCubit,
         builder: (context, state) {
           if (state is TransactionReportLoading) {
-            return CustomLoading();
+            return CustomLoading(
+              withBackground: false,
+            );
           } else {
             return SizedBox();
           }

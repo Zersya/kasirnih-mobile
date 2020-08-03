@@ -1,22 +1,27 @@
 part of 'cashes_form_cubit.dart';
 
 class CashesFormRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<bool> addCashes(String name, int type, int total) async {
-    final storeKey = await storage.read(key: kDefaultStore);
+    try {
+      final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('stores').document(storeKey);
-    final collection = doc.collection('cashes');
+      final doc = _firestore.collection('stores').doc(storeKey);
+      final collection = doc.collection('cashes');
 
-    final createdAt = DateTime.now().millisecondsSinceEpoch;
+      final createdAt = DateTime.now().millisecondsSinceEpoch;
 
-    final Cashes item =
-        Cashes(collection.document().documentID, name, type, total, createdAt);
+      final Cashes item =
+          Cashes(collection.doc().id, name, type, total, createdAt);
 
-    await collection.document(item.docId).setData(item.toMap());
-    toastSuccess('Berhasil menambahkan');
-    return true;
+      await collection.doc(item.docId).set(item.toMap());
+      toastSuccess('Berhasil menambahkan');
+      return true;
+    } on FirebaseException catch (e) {
+      toastError(e.message);
+      return false;
+    }
   }
 }

@@ -1,7 +1,7 @@
 part of 'invoice_debt_form_bloc.dart';
 
 class InvoiceDebtFormRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: kStorageBucket);
   final storage = FlutterSecureStorage();
@@ -11,31 +11,31 @@ class InvoiceDebtFormRepository {
 
     final doc = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('suppliers')
         .orderBy('created_at', descending: true)
-        .getDocuments();
+        .get();
 
     List<Supplier> list =
-        doc.documents.map((e) => Supplier.fromMap(e.data)).toList();
+        doc.docs.map((e) => Supplier.fromMap(e.data())).toList();
     return list;
   }
 
   Future<bool> addSupplier(InvoiceDebtFormAddSupplier event) async {
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('stores').document(storeKey);
+    final doc = await _firestore.collection('stores').doc(storeKey);
     final collection = doc.collection('suppliers');
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
     final Supplier item = Supplier(
-      collection.document().documentID,
+      collection.doc().id,
       event.supplierName,
       createdAt: timestamp,
     );
 
-    await collection.document(item.docId).setData(item.toMap());
+    await collection.doc(item.docId).set(item.toMap());
     toastSuccess('Sukses menambahkan supplier');
     return true;
   }
@@ -52,15 +52,15 @@ class InvoiceDebtFormRepository {
 
       final collection = _firestore
           .collection('stores')
-          .document(storeKey)
+          .doc(storeKey)
           .collection('invoices_debt');
       final docSupplier =
-          await _firestore.collection('suppliers').document(supplier.docId);
+          await _firestore.collection('suppliers').doc(supplier.docId);
 
       final timestamp = DateTime.now().millisecondsSinceEpoch;
 
       final invoice = Invoice(
-        collection.document().documentID,
+        collection.doc().id,
         event.invoiceName,
         imageUrl,
         dueDate.millisecondsSinceEpoch,
@@ -71,13 +71,13 @@ class InvoiceDebtFormRepository {
         createdAt: timestamp,
       );
 
-      await collection.document(invoice.docId).setData(invoice.toMap());
+      await collection.doc(invoice.docId).set(invoice.toMap());
       try {
         await _firestore.runTransaction((transaction) async {
-          final ref = _firestore.collection('stores').document(storeKey);
+          final ref = _firestore.collection('stores').doc(storeKey);
           final freshsnap =
               await transaction.get(ref).catchError((err) => throw err);
-          final currentTotal = freshsnap.data['total_invoice_debt'] ?? 0;
+          final currentTotal = freshsnap.data()['total_invoice_debt'] ?? 0;
           await transaction.update(freshsnap.reference,
               {'total_invoice_debt': currentTotal + invoice.totalDebt});
         });

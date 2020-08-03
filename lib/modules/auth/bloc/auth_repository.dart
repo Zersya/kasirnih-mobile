@@ -2,7 +2,7 @@ part of 'auth_bloc.dart';
 
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<AuthResult> register(AuthEventRegister event) async {
     try {
@@ -24,9 +24,9 @@ class AuthRepository {
           .snapshots()
           .first;
 
-      final username = snapshotUsername.documents.isNotEmpty;
-      final email = snapshotEmail.documents.isNotEmpty;
-      final phone = snapshotPhone.documents.isNotEmpty;
+      final username = snapshotUsername.docs.isNotEmpty;
+      final email = snapshotEmail.docs.isNotEmpty;
+      final phone = snapshotPhone.docs.isNotEmpty;
 
       if (username) {
         toastError(
@@ -63,7 +63,7 @@ class AuthRepository {
           args: [event.username.capitalize()]));
 
       final storage = FlutterSecureStorage();
-      await storage.write(key: kUserDocIdKey, value: doc.documentID);
+      await storage.write(key: kUserDocIdKey, value: doc.id);
       await storage.write(key: kEmail, value: event.email);
       await storage.write(key: kOwner, value: kOwner);
       await storage.write(key: kUsername, value: event.username);
@@ -80,9 +80,9 @@ class AuthRepository {
       final snapshotEmail = await _firestore
           .collection('users')
           .where('username', isEqualTo: event.username)
-          .getDocuments();
+          .get();
 
-      final hasEmail = snapshotEmail.documents.isNotEmpty;
+      final hasEmail = snapshotEmail.docs.isNotEmpty;
 
       if (!hasEmail) {
         toastError(tr('auth_screen.msg_username_error_login',
@@ -92,10 +92,10 @@ class AuthRepository {
 
       return await _loginUser2Firestore(
           event,
-          snapshotEmail.documents.first.data['email'],
-          snapshotEmail.documents.first.documentID,
-          snapshotEmail.documents.first.data['credentials'],
-          snapshotEmail.documents.first.data['store']);
+          snapshotEmail.docs.first.data()['email'],
+          snapshotEmail.docs.first.id,
+          snapshotEmail.docs.first.data()['credentials'],
+          snapshotEmail.docs.first.data()['store']);
     } on SocketException {
       toastError(tr('error.no_connection'));
       return null;

@@ -1,7 +1,7 @@
 part of 'summary_bloc.dart';
 
 class SummaryRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Stream<String>> loadTrx() async {
@@ -9,9 +9,9 @@ class SummaryRepository {
 
     final snap = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .snapshots()
-        .map<String>((event) => event.data['latest_transaction_code']);
+        .map<String>((event) => event.data()['latest_transaction_code']);
 
     return snap;
   }

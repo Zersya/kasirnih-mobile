@@ -38,7 +38,7 @@ class CredentialsAccessCubit extends Cubit<CredentialsAccessState> {
     );
   }
 
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<bool> isHasStore() async {
     final storage = FlutterSecureStorage();
@@ -50,12 +50,11 @@ class CredentialsAccessCubit extends Cubit<CredentialsAccessState> {
     final docs = await _firestore
         .collection('stores')
         .where('store_owner_id', isEqualTo: userKey)
-        .getDocuments();
+        .get();
 
-    final isHasStore = docs.documents.isNotEmpty;
+    final isHasStore = docs.docs.isNotEmpty;
     if (isHasStore) {
-      await storage.write(
-          key: kDefaultStore, value: docs.documents.first.documentID);
+      await storage.write(key: kDefaultStore, value: docs.docs.first.id);
     }
     return isHasStore;
   }

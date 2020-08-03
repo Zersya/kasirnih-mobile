@@ -1,7 +1,7 @@
 part of 'store_form_bloc.dart';
 
 class StoreFormRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Store> loadStore() async {
@@ -10,10 +10,10 @@ class StoreFormRepository {
     final doc = await _firestore
         .collection('stores')
         .where('store_owner_id', isEqualTo: userKey)
-        .getDocuments();
+        .get();
 
-    if (doc.documents.isNotEmpty) {
-      Store store = Store.fromMap(doc.documents.first.data);
+    if (doc.docs.isNotEmpty) {
+      Store store = Store.fromMap(doc.docs.first.data());
       return store;
     } else {
       return null;
@@ -34,10 +34,10 @@ class StoreFormRepository {
 
     final doc = await _firestore
         .collection('users')
-        .document(userKey)
+        .doc(userKey)
         .collection('stores')
-        .getDocuments();
-    final ref = doc.documents.first.reference;
+        .get();
+    final ref = doc.docs.first.reference;
     final result = await _firestore.runTransaction((transaction) async {
       final freshsnap =
           await transaction.get(ref).catchError((err) => throw err);

@@ -1,7 +1,7 @@
 part of 'transaction_report_cubit.dart';
 
 class TransactionReportRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Stream<List<trx.Transaction>>> loadTransaction(
@@ -14,7 +14,7 @@ class TransactionReportRepository {
     if (keys.isNotEmpty) {
       items = await _firestore
           .collection('stores')
-          .document(storeKey)
+          .doc(storeKey)
           .collection('transactions')
           .where('payment_method', whereIn: keys)
           .orderBy('created_at', descending: true)
@@ -22,7 +22,7 @@ class TransactionReportRepository {
     } else {
       items = await _firestore
           .collection('stores')
-          .document(storeKey)
+          .doc(storeKey)
           .collection('transactions')
           .orderBy('created_at', descending: true)
           .limit(numberLimit);
@@ -40,9 +40,8 @@ class TransactionReportRepository {
 
     return items
         .snapshots()
-        .map((event) => event.documents
-            .map((e) => trx.Transaction.fromMap(e.data))
-            .toList())
+        .map((event) =>
+            event.docs.map((e) => trx.Transaction.fromMap(e.data())).toList())
         .asBroadcastStream();
   }
 
@@ -51,12 +50,12 @@ class TransactionReportRepository {
 
     final stream = await _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('payment_methods')
         .orderBy('created_at', descending: true)
         .snapshots()
         .map((event) =>
-            event.documents.map((e) => PaymentMethod.fromMap(e.data)).toList());
+            event.docs.map((e) => PaymentMethod.fromMap(e.data())).toList());
 
     return stream;
   }
@@ -68,7 +67,7 @@ class TransactionReportRepository {
     final startDate = start.millisecondsSinceEpoch;
     final endDate = end.millisecondsSinceEpoch;
 
-    final rmId = _firestore.collection('statements_mail').document().documentID;
+    final rmId = _firestore.collection('statements_mail').doc().id;
     await _firestore.collection('statements_mail').add({
       'rm_id': rmId,
       'email': email,

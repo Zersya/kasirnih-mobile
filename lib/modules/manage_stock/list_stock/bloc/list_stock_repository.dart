@@ -1,7 +1,7 @@
 part of 'list_stock_bloc.dart';
 
 class ListStockRepository {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final storage = FlutterSecureStorage();
 
   Future<Stream<List<Item>>> loadStock(
@@ -14,24 +14,24 @@ class ListStockRepository {
       case 0:
         final items = _firestore
             .collection('stores')
-            .document(storeKey)
+            .doc(storeKey)
             .collection('items')
             .where('total_stock', isGreaterThan: 0)
             .snapshots()
             .map((event) =>
-                event.documents.map((e) => Item.fromMap(e.data)).toList());
+                event.docs.map((e) => Item.fromMap(e.data())).toList());
 
         return items;
       case 1:
         final qs = await _firestore
             .collection('stores')
-            .document(storeKey)
+            .doc(storeKey)
             .collection('transactions')
             .where('created_at',
                 isGreaterThanOrEqualTo: dt.millisecondsSinceEpoch)
-            .getDocuments();
+            .get();
         final List<trx.Transaction> transactions =
-            qs.documents.map((e) => trx.Transaction.fromMap(e.data)).toList();
+            qs.docs.map((e) => trx.Transaction.fromMap(e.data())).toList();
 
         final List<Item> items = transactions
             .map((e) => e.items)
@@ -56,12 +56,12 @@ class ListStockRepository {
       case 2:
         final items = _firestore
             .collection('stores')
-            .document(storeKey)
+            .doc(storeKey)
             .collection('items')
             .where('total_stock', isEqualTo: 0)
             .snapshots()
             .map((event) =>
-                event.documents.map((e) => Item.fromMap(e.data)).toList());
+                event.docs.map((e) => Item.fromMap(e.data())).toList());
 
         return items;
       default:
@@ -75,14 +75,13 @@ class ListStockRepository {
 
     final items = _firestore
         .collection('stores')
-        .document(storeKey)
+        .doc(storeKey)
         .collection('items')
         .where('item_name',
             isGreaterThanOrEqualTo: event.name,
             isLessThanOrEqualTo: '${event.name}~')
         .snapshots()
-        .map((event) =>
-            event.documents.map((e) => Item.fromMap(e.data)).toList());
+        .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
 
     return items;
   }
@@ -90,8 +89,8 @@ class ListStockRepository {
   Future<bool> deleteItem(ListStockDelete event) async {
     final storeKey = await storage.read(key: kDefaultStore);
 
-    final doc = await _firestore.collection('stores').document(storeKey);
-    await doc.collection('items').document(event.docId).delete();
+    final doc = await _firestore.collection('stores').doc(storeKey);
+    await doc.collection('items').doc(event.docId).delete();
 
     toastSuccess('Sukses menghapus item');
     return true;
