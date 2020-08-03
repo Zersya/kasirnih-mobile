@@ -11,12 +11,14 @@ class RangePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(child: BlocBuilder<RangePickerCubit, RangePickerState>(
+    return BlocBuilder<RangePickerCubit, RangePickerState>(
       builder: (context, state) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RangePicker(
+              datePickerLayoutSettings:
+                  DatePickerLayoutSettings(contentPadding: EdgeInsets.all(8)),
               selectedPeriod: DatePeriod(state.props[0] ?? DateTime.now(),
                   state.props[1] ?? DateTime.now()),
               onChanged: (period) {
@@ -36,6 +38,6 @@ class RangePickerWidget extends StatelessWidget {
           ],
         );
       },
-    ));
+    );
   }
 }

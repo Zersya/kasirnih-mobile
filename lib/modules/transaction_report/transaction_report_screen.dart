@@ -89,6 +89,8 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                           context: context,
                           builder: (context) {
                             return Dialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0)),
                               child: BlocProvider.value(
                                 value: _rangePickerCubit,
                                 child: RangePickerWidget(),
