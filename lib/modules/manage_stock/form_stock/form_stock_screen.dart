@@ -390,8 +390,11 @@ class _FormStockScreenState extends State<FormStockScreen> {
   }
 
   _getImage(ImageSource source) async {
-    final pickedFile = await picker.getImage(source: source, imageQuality: 70);
-    _bloc.add(FormStockGetImage(pickedFile.path));
+    final pickedFile = await picker.getImage(
+        source: source, imageQuality: 70, maxHeight: 1500, maxWidth: 1500);
+    if (pickedFile != null) {
+      _bloc.add(FormStockGetImage(pickedFile.path));
+    }
   }
 
   _dialogChooseImage(context) {

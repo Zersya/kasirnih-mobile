@@ -195,28 +195,32 @@ class ItemListCard extends StatelessWidget {
                 : Colors.transparent,
             width: 2.0),
       ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(element.itemName.capitalize()),
-        subtitle: Text(
-          currencyFormatter.format(element.sellPrice),
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: element.totalStock == 0 ? Colors.red : Colors.green,
-              ),
-        ),
-        leading: element.urlImage.isEmpty
-            ? Container(
-                color: Colors.grey[200],
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[Icon(Icons.image), Text('No Image')],
+      child: Card(
+        child: ListTile(
+          contentPadding: EdgeInsets.zero,
+          onTap: onTap,
+          title: Text(element.itemName.capitalize()),
+          subtitle: Text(
+            currencyFormatter.format(element.sellPrice),
+            style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: element.totalStock == 0 ? Colors.red : Colors.green,
                 ),
-              )
-            : CachedNetworkImage(
-                imageUrl: element.urlImage,
-                fit: BoxFit.fitWidth,
-              ),
+          ),
+          leading: element.urlImage.isEmpty
+              ? Container(
+                  color: Colors.grey[200],
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[Icon(Icons.image), Text('No Image')],
+                  ),
+                )
+              : CachedNetworkImage(
+                  imageUrl: element.urlImage,
+                  fit: BoxFit.fitWidth,
+                ),
+        ),
       ),
     );
   }
