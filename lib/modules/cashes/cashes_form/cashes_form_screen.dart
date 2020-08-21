@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:ks_bike_mobile/modules/cashes/cashes_form/cubit/cashes_form_cubit.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
-import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+import 'package:kasirnih_mobile/modules/cashes/cashes_form/cubit/cashes_form_cubit.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/widgets/custom_text_field.dart';
+import 'package:kasirnih_mobile/widgets/raised_button_gradient.dart';
 
 class CashesFormScreen extends StatefulWidget {
   CashesFormScreen({Key key}) : super(key: key);
@@ -29,7 +29,7 @@ class _CashesFormScreenState extends State<CashesFormScreen> {
   final CashesFormCubit _cubit = CashesFormCubit();
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     final FirebaseAnalytics analytics = FirebaseAnalytics();
     analytics.setCurrentScreen(screenName: '/cashes_form');

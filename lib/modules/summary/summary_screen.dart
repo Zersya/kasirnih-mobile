@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/item.dart';
-import 'package:ks_bike_mobile/models/transaction.dart';
-import 'package:ks_bike_mobile/modules/summary/bloc/summary_bloc.dart';
-import 'package:ks_bike_mobile/utils/function.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/models/item.dart';
+import 'package:kasirnih_mobile/models/transaction.dart';
+import 'package:kasirnih_mobile/modules/summary/bloc/summary_bloc.dart';
+import 'package:kasirnih_mobile/utils/function.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/widgets/custom_text_field.dart';
 
 class SummaryScreen extends StatefulWidget {
   final List<Item> selectedItems;

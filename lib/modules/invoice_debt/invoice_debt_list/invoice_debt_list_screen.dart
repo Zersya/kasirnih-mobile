@@ -3,12 +3,12 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/invoice.dart';
-import 'package:ks_bike_mobile/utils/function.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/models/invoice.dart';
+import 'package:kasirnih_mobile/utils/function.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
 
 import 'bloc/invoice_debt_list_bloc.dart';
 import 'widgets/simple_chart.dart';

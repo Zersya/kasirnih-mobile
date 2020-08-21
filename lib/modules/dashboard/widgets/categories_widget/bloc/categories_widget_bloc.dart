@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/category.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/models/category.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
 
 part 'categories_widget_event.dart';
 part 'categories_widget_state.dart';

@@ -1,13 +1,13 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/new_item_facilities.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
-import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/models/new_item_facilities.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/widgets/custom_text_field.dart';
+import 'package:kasirnih_mobile/widgets/raised_button_gradient.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
 
 import './bloc/new_item_facilities_bloc.dart';
 
@@ -33,7 +33,8 @@ class _NewItemFacilitiesScreenState extends State<NewItemFacilitiesScreen> {
     super.initState();
 
     final FirebaseAnalytics analytics = FirebaseAnalytics();
-    analytics.setCurrentScreen(screenName: RouterHelper.kRouteNewItemFacilities);
+    analytics.setCurrentScreen(
+        screenName: RouterHelper.kRouteNewItemFacilities);
 
     _bloc.add(NewItemFacilitiesLoad());
   }

@@ -4,8 +4,8 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/modules/splashscreen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

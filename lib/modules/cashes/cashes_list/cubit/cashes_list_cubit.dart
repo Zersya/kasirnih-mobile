@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/cashes.dart';
+import 'package:kasirnih_mobile/models/cashes.dart';
 
-import 'package:ks_bike_mobile/models/transaction.dart' as trx;
-import 'package:ks_bike_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/models/transaction.dart' as trx;
+import 'package:kasirnih_mobile/utils/key.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'cashes_list_state.dart';

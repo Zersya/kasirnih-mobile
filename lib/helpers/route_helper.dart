@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:ks_bike_mobile/modules/auth/auth_screen.dart';
-import 'package:ks_bike_mobile/modules/cashes/cashes_form/cashes_form_screen.dart';
-import 'package:ks_bike_mobile/modules/cashes/cashes_list/cashes_list_screen.dart';
-import 'package:ks_bike_mobile/modules/manage_employee/employee_credential_form_screen/employee_credential_form_screen.dart';
-import 'package:ks_bike_mobile/modules/home/home_screen.dart';
-import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_form/invoice_debt_form_screen.dart';
-import 'package:ks_bike_mobile/modules/invoice_debt/invoice_debt_list/invoice_debt_list_screen.dart';
-import 'package:ks_bike_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
-import 'package:ks_bike_mobile/modules/payment/payment_screen.dart';
-import 'package:ks_bike_mobile/modules/payment_method/payment_method_screen.dart';
-import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
-import 'package:ks_bike_mobile/modules/store_form/store_form_screen.dart';
-import 'package:ks_bike_mobile/modules/manage_stock/form_stock/form_stock_screen.dart';
-import 'package:ks_bike_mobile/modules/summary/summary_screen.dart';
+import 'package:kasirnih_mobile/modules/auth/auth_screen.dart';
+import 'package:kasirnih_mobile/modules/cashes/cashes_form/cashes_form_screen.dart';
+import 'package:kasirnih_mobile/modules/cashes/cashes_list/cashes_list_screen.dart';
+import 'package:kasirnih_mobile/modules/manage_employee/employee_credential_form_screen/employee_credential_form_screen.dart';
+import 'package:kasirnih_mobile/modules/home/home_screen.dart';
+import 'package:kasirnih_mobile/modules/invoice_debt/invoice_debt_form/invoice_debt_form_screen.dart';
+import 'package:kasirnih_mobile/modules/invoice_debt/invoice_debt_list/invoice_debt_list_screen.dart';
+import 'package:kasirnih_mobile/modules/new_item_facilities/new_item_facilities_screen.dart';
+import 'package:kasirnih_mobile/modules/payment/payment_screen.dart';
+import 'package:kasirnih_mobile/modules/payment_method/payment_method_screen.dart';
+import 'package:kasirnih_mobile/modules/splashscreen/splash_screen.dart';
+import 'package:kasirnih_mobile/modules/store_form/store_form_screen.dart';
+import 'package:kasirnih_mobile/modules/manage_stock/form_stock/form_stock_screen.dart';
+import 'package:kasirnih_mobile/modules/summary/summary_screen.dart';
 
 class RouterHelper {
   static const String kRouteAuth = '/login';

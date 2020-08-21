@@ -7,10 +7,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/invoice.dart';
-import 'package:ks_bike_mobile/models/supplier.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/models/invoice.dart';
+import 'package:kasirnih_mobile/models/supplier.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 import 'package:uuid/uuid.dart';
 
 part 'invoice_debt_form_event.dart';

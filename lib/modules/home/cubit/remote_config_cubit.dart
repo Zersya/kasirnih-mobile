@@ -3,8 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 import 'package:package_info/package_info.dart';
 
 part 'remote_config_state.dart';
