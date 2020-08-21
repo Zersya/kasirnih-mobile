@@ -109,7 +109,7 @@ class _AuthScreenState extends State<AuthScreen>
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   child: Text(
-                    'KS',
+                    'KN',
                     style: GoogleFonts.roboto(
                         fontSize: 32,
                         color: Colors.white,
