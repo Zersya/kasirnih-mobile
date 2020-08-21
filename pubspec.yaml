@@ -24,10 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
   # cloud_firestore: 0.12.10+2 
-  cloud_firestore: ^0.14.0-dev.1
-  firebase_storage: ^4.0.0-dev.1
-  firebase_core: 0.5.0-dev.1
-  firebase_auth: ^0.17.0-dev.1
+  cloud_firestore: ^0.14.0+2
+  firebase_storage: ^4.0.0
+  firebase_core: 0.5.0
+  firebase_auth: ^0.18.0+1
   firebase_analytics: ^5.0.16
   firebase_remote_config: ^0.3.1+1
   equatable: ^1.2.0

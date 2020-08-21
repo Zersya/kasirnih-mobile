@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
   static const String kCompanyCode = "ks-bike";
 
   static final ColorScheme colorSchemeLight = ColorScheme.light(
-    primary: const Color(0xFF035AA6),
-    secondary: const Color(0xFF18a0fb),
+    primary: const Color(0xFF474787),
+    secondary: const Color(0xFF706fd3),
     surface: Colors.white,
     background: Colors.white,
     error: const Color(0xffb00020),
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'KSBike',
+      title: 'Kasirnih',
       theme: themeData,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

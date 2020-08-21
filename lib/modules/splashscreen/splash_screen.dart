@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Flexible(
                   flex: 2,
                   child: Text(
-                    'KSBike',
+                    'Kasirnih',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

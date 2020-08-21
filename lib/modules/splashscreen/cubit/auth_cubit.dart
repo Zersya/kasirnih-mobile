@@ -12,7 +12,7 @@ class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void checkAuth() async {
-    final curUser = await _auth.currentUser();
+    final curUser = await _auth.currentUser;
 
     final storage = FlutterSecureStorage();
     final String username =
