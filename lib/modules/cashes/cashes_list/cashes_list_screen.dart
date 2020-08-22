@@ -284,14 +284,17 @@ class _CashesListScreenState extends State<CashesListScreen> {
                                   return ListTile(
                                       onTap: () => buildShowDialogDetailTrx(
                                           context, trx),
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(trx.code),
-                                          Text(
-                                              '${trx.customerName.capitalize()}'),
-                                        ],
+                                      leading: SizedBox(
+                                        width: 80,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(trx.code),
+                                            Text(
+                                                '${trx.customerName.capitalize()}'),
+                                          ],
+                                        ),
                                       ),
                                       title: Text(
                                         currencyFormatter.format(trx.profit),

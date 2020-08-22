@@ -21,7 +21,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static const String kCompanyCode = "ks-bike";
+  static const String kCompanyCode = "kasirnih";
 
   static final ColorScheme colorSchemeLight = ColorScheme.light(
     primary: const Color(0xFF474787),

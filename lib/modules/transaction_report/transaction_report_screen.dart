@@ -219,13 +219,16 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                                   return ListTile(
                                       onTap: () => buildShowDialogDetailTrx(
                                           context, trx),
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(trx.code),
-                                          Text('${trx.customerName}'),
-                                        ],
+                                      leading: SizedBox(
+                                        width: 80,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(trx.code),
+                                            Text('${trx.customerName}'),
+                                          ],
+                                        ),
                                       ),
                                       title: Text(
                                         currencyFormatter.format(trx.profit),

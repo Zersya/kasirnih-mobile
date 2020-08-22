@@ -159,24 +159,31 @@ class FormStockRepository {
     } on SocketException {
       toastError(tr('error.no_connection'));
       return false;
+    } on PlatformException catch (e) {
+      toastError(e.message);
+      return false;
     }
   }
 
   Future<String> _uploadFile(String path) async {
-    if (path == null || path.isEmpty) return '';
-    final String uuid = Uuid().v1();
-    final File file = await File(path);
-    final StorageReference ref =
-        _storage.ref().child('images').child('items').child('$uuid.png');
-    final StorageUploadTask uploadTask = ref.putFile(
-      file,
-      StorageMetadata(
-        contentLanguage: 'en',
-        customMetadata: <String, String>{'activity': 'test'},
-      ),
-    );
+    try {
+      if (path == null || path.isEmpty) return '';
+      final String uuid = Uuid().v1();
+      final File file = await File(path);
+      final StorageReference ref =
+          _storage.ref().child('images').child('items').child('$uuid.png');
+      final StorageUploadTask uploadTask = ref.putFile(
+        file,
+        StorageMetadata(
+          contentLanguage: 'en',
+          customMetadata: <String, String>{'activity': 'test'},
+        ),
+      );
 
-    await uploadTask.onComplete;
-    return await ref.getDownloadURL();
+      await uploadTask.onComplete;
+      return await ref.getDownloadURL();
+    } catch (e) {
+      rethrow;
+    }
   }
 }

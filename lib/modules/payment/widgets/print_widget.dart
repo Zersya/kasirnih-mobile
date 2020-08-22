@@ -53,7 +53,11 @@ class _PrintWidgetState extends State<PrintWidget> {
     setState(() {
       _devices = [];
     });
-    printerManager.startScan(Duration(seconds: second));
+    try {
+      printerManager.startScan(Duration(seconds: second));
+    } catch (e) {
+      toastError(e.message);
+    }
   }
 
   void _stopScanDevices() {
