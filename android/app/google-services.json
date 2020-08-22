@@ -1,58 +1,51 @@
 {
   "project_info": {
-    "project_number": "508261210232",
-    "firebase_url": "https://ks-bike.firebaseio.com",
-    "project_id": "ks-bike",
-    "storage_bucket": "ks-bike.appspot.com"
+    "project_number": "825972920911",
+    "firebase_url": "https://kasirnih-mobile.firebaseio.com",
+    "project_id": "kasirnih-mobile",
+    "storage_bucket": "kasirnih-mobile.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:508261210232:android:ba167bff8acf849267b58d",
+        "mobilesdk_app_id": "1:825972920911:android:86de3d709c5200662e503a",
         "android_client_info": {
-          "package_name": "com.inersya.ks_bike_mobile"
+          "package_name": "com.indieapps.kasirnih_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "508261210232-k1l40q4hq36n9t1c52194qkhploqcuqh.apps.googleusercontent.com",
+          "client_id": "825972920911-p89qhrckcvbaai0fd3735attfae7aeqn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.inersya.ks_bike_mobile",
+            "package_name": "com.indieapps.kasirnih_mobile",
             "certificate_hash": "d941032746c1cfbdd79390e5886be555e7923c51"
           }
         },
         {
-          "client_id": "508261210232-9s4qvrdk0d3docsg8g4truh6ald8oei1.apps.googleusercontent.com",
+          "client_id": "825972920911-sect8bra0nhgq5bunq0c85pm0lbl5abg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.inersya.ks_bike_mobile",
+            "package_name": "com.indieapps.kasirnih_mobile",
             "certificate_hash": "23cc9b9a2d56da1d7acddecb182e305b01689802"
           }
         },
         {
-          "client_id": "508261210232-t0s66vhp8bvjm0apn4tfehf0mqgcjjhs.apps.googleusercontent.com",
+          "client_id": "825972920911-9pgrlaq750dj3c0n6qmq9p745jg9i56i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBpOncHLcBNq5FoBiI28xdRmLzKQH6AA0I"
+          "current_key": "AIzaSyD540fPr5zj2ixSrA3gBbEpZ9W6rDAaqD8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "508261210232-t0s66vhp8bvjm0apn4tfehf0mqgcjjhs.apps.googleusercontent.com",
+              "client_id": "825972920911-9pgrlaq750dj3c0n6qmq9p745jg9i56i.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "508261210232-onql526bvtqrg8rc3i7gursop7t53jke.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.inersya.ksbike"
-              }
             }
           ]
         }

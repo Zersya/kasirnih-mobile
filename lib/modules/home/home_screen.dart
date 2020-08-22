@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ks_bike_mobile/modules/dashboard/dashboard_screen.dart';
-import 'package:ks_bike_mobile/modules/home/cubit/remote_config_cubit.dart';
-import 'package:ks_bike_mobile/modules/profile/profile_screen.dart';
-import 'package:ks_bike_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
-import 'package:ks_bike_mobile/modules/transaction_report/transaction_report_screen.dart';
+import 'package:kasirnih_mobile/modules/dashboard/dashboard_screen.dart';
+import 'package:kasirnih_mobile/modules/home/cubit/remote_config_cubit.dart';
+import 'package:kasirnih_mobile/modules/profile/profile_screen.dart';
+import 'package:kasirnih_mobile/modules/manage_stock/list_stock/list_stock_screen.dart';
+import 'package:kasirnih_mobile/modules/transaction_report/transaction_report_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'cubit/credentials_access_cubit.dart';

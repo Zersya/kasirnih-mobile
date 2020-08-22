@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/invoice.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/models/invoice.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 
 part 'invoice_debt_list_event.dart';
 part 'invoice_debt_list_state.dart';

@@ -14,7 +14,7 @@ class ItemsWidget extends StatelessWidget {
     return BlocBuilder<ItemsWidgetBloc, ItemsWidgetState>(
       cubit: itemsWidgetBloc,
       builder: (context, state) {
-        final stream = itemsWidgetBloc.state.props[1];
+        final stream = state.props[1];
         return StreamBuilder<List<Item>>(
             stream: stream,
             initialData: [],
@@ -187,36 +187,41 @@ class ItemListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-            color: element.qty > 0
-                ? Theme.of(context).primaryColor
-                : Colors.transparent,
-            width: 2.0),
-      ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(element.itemName.capitalize()),
-        subtitle: Text(
-          currencyFormatter.format(element.sellPrice),
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: element.totalStock == 0 ? Colors.red : Colors.green,
-              ),
+    return Card(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+              color: element.qty > 0
+                  ? Theme.of(context).primaryColor
+                  : Colors.transparent,
+              width: 2.0),
         ),
-        leading: element.urlImage.isEmpty
-            ? Container(
-                color: Colors.grey[200],
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[Icon(Icons.image), Text('No Image')],
+        child: ListTile(
+          onTap: onTap,
+          title: Text(element.itemName.capitalize()),
+          subtitle: Text(
+            currencyFormatter.format(element.sellPrice),
+            style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: element.totalStock == 0 ? Colors.red : Colors.green,
                 ),
-              )
-            : CachedNetworkImage(
-                imageUrl: element.urlImage,
-                fit: BoxFit.fitWidth,
-              ),
+          ),
+          leading: SizedBox(
+            width: 80,
+            child: element.urlImage.isEmpty
+                ? Container(
+                    color: Colors.grey[200],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[Icon(Icons.image), Text('No Image')],
+                    ),
+                  )
+                : CachedNetworkImage(
+                    imageUrl: element.urlImage,
+                    fit: BoxFit.fitWidth,
+                  ),
+          ),
+        ),
       ),
     );
   }

@@ -13,7 +13,7 @@ class EmployeeCredentialFormRepository {
     return list;
   }
 
-  Future<AuthResult> register(String name, String username, String password,
+  Future<UserCredential> register(String name, String username, String password,
       List<String> credentials) async {
     final email = '$username@$kDomain';
 
@@ -46,7 +46,7 @@ class EmployeeCredentialFormRepository {
     }
   }
 
-  Future<AuthResult> _registerUser2Firestore(String name, String username,
+  Future<UserCredential> _registerUser2Firestore(String name, String username,
       String password, String email, List<String> credentials) async {
     try {
       final storeKey = await storage.read(key: kDefaultStore);

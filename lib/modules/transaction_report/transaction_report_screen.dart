@@ -5,12 +5,12 @@ import 'package:easy_localization/easy_localization.dart';
 import "package:collection/collection.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:ks_bike_mobile/models/payment_method.dart';
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
-import 'package:ks_bike_mobile/models/transaction.dart';
-import 'package:ks_bike_mobile/utils/function.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/models/payment_method.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/models/transaction.dart';
+import 'package:kasirnih_mobile/utils/function.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
 
 import 'widgets/range_picker_widget.dart';
 import 'widgets/list_checkbox_listtile_widget.dart';
@@ -219,13 +219,16 @@ class _TransactionReportScreenState extends State<TransactionReportScreen> {
                                   return ListTile(
                                       onTap: () => buildShowDialogDetailTrx(
                                           context, trx),
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(trx.code),
-                                          Text('${trx.customerName}'),
-                                        ],
+                                      leading: SizedBox(
+                                        width: 80,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(trx.code),
+                                            Text('${trx.customerName}'),
+                                          ],
+                                        ),
                                       ),
                                       title: Text(
                                         currencyFormatter.format(trx.profit),

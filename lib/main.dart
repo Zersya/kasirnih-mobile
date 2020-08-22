@@ -4,8 +4,8 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/modules/splashscreen/splash_screen.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/modules/splashscreen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +21,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static const String kCompanyCode = "ks-bike";
+  static const String kCompanyCode = "kasirnih";
 
   static final ColorScheme colorSchemeLight = ColorScheme.light(
-    primary: const Color(0xFF035AA6),
-    secondary: const Color(0xFF18a0fb),
+    primary: const Color(0xFF474787),
+    secondary: const Color(0xFF706fd3),
     surface: Colors.white,
     background: Colors.white,
     error: const Color(0xffb00020),
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'KSBike',
+      title: 'Kasirnih',
       theme: themeData,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

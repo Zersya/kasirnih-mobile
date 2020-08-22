@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/supplier.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
-import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/models/supplier.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/widgets/custom_text_field.dart';
+import 'package:kasirnih_mobile/widgets/raised_button_gradient.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
 
 import 'bloc/invoice_debt_form_bloc.dart';
 

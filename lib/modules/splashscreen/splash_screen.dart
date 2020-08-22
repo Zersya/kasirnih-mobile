@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
 
 import 'cubit/auth_cubit.dart';
 
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Flexible(
                   flex: 2,
                   child: Text(
-                    'KSBike',
+                    'Kasirnih',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

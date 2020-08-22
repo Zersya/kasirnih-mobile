@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:ks_bike_mobile/widgets/custom_text_field.dart';
-import 'package:ks_bike_mobile/widgets/raised_button_gradient.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/widgets/custom_text_field.dart';
+import 'package:kasirnih_mobile/widgets/raised_button_gradient.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'bloc/auth_bloc.dart';
@@ -109,7 +109,7 @@ class _AuthScreenState extends State<AuthScreen>
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   child: Text(
-                    'KS',
+                    'KN',
                     style: GoogleFonts.roboto(
                         fontSize: 32,
                         color: Colors.white,

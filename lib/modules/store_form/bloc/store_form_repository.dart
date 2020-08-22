@@ -24,7 +24,19 @@ class StoreFormRepository {
     final userKey = await storage.read(key: kUserDocIdKey);
 
     event.store.storeOwnerId = userKey;
-    await _firestore.collection('stores').add(event.store.toMapRegister());
+    final colStore = await _firestore.collection('stores');
+    final docStore = await colStore.add(event.store.toMapRegister());
+
+    final doc = await _firestore.collection('stores').doc(docStore.id);
+    final collection = doc.collection('payment_methods');
+
+    final createdAt = DateTime.now().millisecondsSinceEpoch;
+
+    final PaymentMethod item =
+        PaymentMethod(collection.doc().id, 'Tunai', createdAt);
+
+    await collection.doc(item.docId).set(item.toMap());
+
     toastSuccess(tr('store_registration_screen.success_register_store'));
     return true;
   }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart' hide Image;
 // import 'package:image/image.dart';
 
 import 'package:intl/intl.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 
 class PrintScreen extends StatefulWidget {
   PrintScreen({Key key}) : super(key: key);

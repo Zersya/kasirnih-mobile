@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/payment_method.dart';
+import 'package:kasirnih_mobile/models/payment_method.dart';
 
-import 'package:ks_bike_mobile/models/transaction.dart' as trx;
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/models/transaction.dart' as trx;
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 
 import 'transaction_selected_payment_cubit.dart';
 import 'range_picker_cubit.dart';

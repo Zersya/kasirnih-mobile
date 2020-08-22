@@ -4,7 +4,7 @@ class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<AuthResult> register(AuthEventRegister event) async {
+  Future<UserCredential> register(AuthEventRegister event) async {
     try {
       final snapshotUsername = await _firestore
           .collection('users')
@@ -47,7 +47,8 @@ class AuthRepository {
     }
   }
 
-  Future<AuthResult> _registerUser2Firestore(AuthEventRegister event) async {
+  Future<UserCredential> _registerUser2Firestore(
+      AuthEventRegister event) async {
     try {
       final result = await _auth.createUserWithEmailAndPassword(
           email: event.email, password: event.password);
@@ -75,7 +76,7 @@ class AuthRepository {
     }
   }
 
-  Future<AuthResult> login(AuthEventLogin event) async {
+  Future<UserCredential> login(AuthEventLogin event) async {
     try {
       final snapshotEmail = await _firestore
           .collection('users')
@@ -102,8 +103,8 @@ class AuthRepository {
     }
   }
 
-  Future<AuthResult> _loginUser2Firestore(AuthEventLogin event, String email,
-      String docId, List creds, String storeId) async {
+  Future<UserCredential> _loginUser2Firestore(AuthEventLogin event,
+      String email, String docId, List creds, String storeId) async {
     try {
       final result = await _auth.signInWithEmailAndPassword(
           email: email, password: event.password);

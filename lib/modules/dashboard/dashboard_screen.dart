@@ -2,18 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ks_bike_mobile/helpers/route_helper.dart';
-import 'package:ks_bike_mobile/models/category.dart';
-import 'package:ks_bike_mobile/models/item.dart';
+import 'package:kasirnih_mobile/helpers/route_helper.dart';
+import 'package:kasirnih_mobile/models/category.dart';
+import 'package:kasirnih_mobile/models/item.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ks_bike_mobile/modules/dashboard/widgets/items_widget/bloc/items_widget_bloc.dart';
-import 'package:ks_bike_mobile/modules/home/cubit/credentials_access_cubit.dart';
+import 'package:kasirnih_mobile/modules/dashboard/widgets/items_widget/bloc/items_widget_bloc.dart';
+import 'package:kasirnih_mobile/modules/home/cubit/credentials_access_cubit.dart';
 
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
-import 'package:ks_bike_mobile/utils/function.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:ks_bike_mobile/widgets/custom_loading.dart';
-import 'package:ks_bike_mobile/widgets/toggle_switch.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/utils/function.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/widgets/custom_loading.dart';
+import 'package:kasirnih_mobile/widgets/toggle_switch.dart';
 
 import 'widgets/categories_widget/bloc/categories_widget_bloc.dart';
 

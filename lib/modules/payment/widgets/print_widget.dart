@@ -8,11 +8,11 @@ import 'package:flutter/material.dart' hide Image;
 // import 'package:image/image.dart';
 
 import 'package:intl/intl.dart';
-import 'package:ks_bike_mobile/models/store.dart';
-import 'package:ks_bike_mobile/models/transaction.dart';
-import 'package:ks_bike_mobile/modules/payment/widgets/cubit/load_store_cubit.dart';
-import 'package:ks_bike_mobile/utils/function.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/models/store.dart';
+import 'package:kasirnih_mobile/models/transaction.dart';
+import 'package:kasirnih_mobile/modules/payment/widgets/cubit/load_store_cubit.dart';
+import 'package:kasirnih_mobile/utils/function.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
 
 class PrintWidget extends StatefulWidget {
   final Transaction transaction;
@@ -53,7 +53,11 @@ class _PrintWidgetState extends State<PrintWidget> {
     setState(() {
       _devices = [];
     });
-    printerManager.startScan(Duration(seconds: second));
+    try {
+      printerManager.startScan(Duration(seconds: second));
+    } catch (e) {
+      toastError(e.message);
+    }
   }
 
   void _stopScanDevices() {

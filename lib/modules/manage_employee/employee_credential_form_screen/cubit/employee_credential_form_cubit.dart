@@ -7,10 +7,10 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/credential.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:ks_bike_mobile/utils/extensions/string_extension.dart';
+import 'package:kasirnih_mobile/models/credential.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/utils/extensions/string_extension.dart';
 
 part 'employee_credential_form_state.dart';
 part 'employee_credential_form_repository.dart';

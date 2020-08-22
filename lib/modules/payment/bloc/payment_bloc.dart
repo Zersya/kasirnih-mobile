@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ks_bike_mobile/models/payment_method.dart';
-import 'package:ks_bike_mobile/utils/key.dart';
-import 'package:ks_bike_mobile/utils/toast.dart';
-import 'package:ks_bike_mobile/models/transaction.dart' as trx;
+import 'package:kasirnih_mobile/models/payment_method.dart';
+import 'package:kasirnih_mobile/utils/key.dart';
+import 'package:kasirnih_mobile/utils/toast.dart';
+import 'package:kasirnih_mobile/models/transaction.dart' as trx;
 
 part 'payment_event.dart';
 part 'payment_state.dart';
@@ -22,8 +22,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   Stream<PaymentState> mapEventToState(
     PaymentEvent event,
   ) async* {
-    yield PaymentLoading(
-        state.props[0], state.props[1], state.props[2], state.props[3],state.props[4]);
+    yield PaymentLoading(state.props[0], state.props[1], state.props[2],
+        state.props[3], state.props[4]);
     if (event is PaymentLoad) {
       final resultLatestCode = await _repo.loadTrx();
       final resultPaymentMethods = await _repo.loadListPaymentMethod();

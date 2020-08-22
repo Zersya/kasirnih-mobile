@@ -17,7 +17,9 @@ class ItemsWidgetRepository {
           .collection('items')
           .orderBy('created_at', descending: true)
           .snapshots()
-          .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
+          .map(
+              (event) => event.docs.map((e) => Item.fromMap(e.data())).toList())
+          .asBroadcastStream();
     } else {
       items = _firestore
           .collection('stores')
@@ -26,7 +28,9 @@ class ItemsWidgetRepository {
           .where('category_name', whereIn: names)
           .orderBy('created_at', descending: true)
           .snapshots()
-          .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
+          .map(
+              (event) => event.docs.map((e) => Item.fromMap(e.data())).toList())
+          .asBroadcastStream();
     }
     return items;
   }
@@ -44,7 +48,8 @@ class ItemsWidgetRepository {
             isLessThanOrEqualTo: '${event.name}~')
         .orderBy('created_at', descending: true)
         .snapshots()
-        .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList());
+        .map((event) => event.docs.map((e) => Item.fromMap(e.data())).toList())
+        .asBroadcastStream();
 
     return items;
   }
