@@ -22,11 +22,14 @@ class RemoteConfigCubit extends Cubit<RemoteConfigState> {
       await remoteConfig.setDefaults(<String, dynamic>{
         'limit_app_list': 100,
         'android_app_version': 0,
+        'url_update_app':
+            'https://play.google.com/store/apps/details?id=com.inersya.ks_bike_mobile',
       });
       await remoteConfig.activateFetched();
 
       final limitListValue = remoteConfig.getInt('limit_app_list');
       final versionCodeValue = remoteConfig.getInt('android_app_version');
+      final urlUpdateApp = remoteConfig.getString('url_update_app');
 
       await _storage.write(key: kLimitData, value: '$limitListValue');
 
@@ -34,7 +37,9 @@ class RemoteConfigCubit extends Cubit<RemoteConfigState> {
 
       final int localBuildNumber = int.parse(packageInfo.buildNumber);
 
-      emit(RemoteConfigInitial(isUpdate: localBuildNumber < versionCodeValue));
+      emit(RemoteConfigInitial(
+          isUpdate: localBuildNumber < versionCodeValue,
+          urlUpdateApp: urlUpdateApp));
     } catch (e) {
       toastError(e.message);
     }

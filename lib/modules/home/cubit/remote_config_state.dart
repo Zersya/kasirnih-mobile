@@ -6,8 +6,9 @@ abstract class RemoteConfigState extends Equatable {
 
 class RemoteConfigInitial extends RemoteConfigState {
   final bool isUpdate;
+  final String urlUpdateApp;
 
-  RemoteConfigInitial({this.isUpdate});
+  RemoteConfigInitial({this.isUpdate, this.urlUpdateApp});
   @override
-  List<Object> get props => [isUpdate];
+  List<Object> get props => [isUpdate, urlUpdateApp];
 }

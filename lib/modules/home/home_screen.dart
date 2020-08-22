@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _remoteConfig.listen((state) {
       if (state is RemoteConfigInitial) {
         if (state.isUpdate) {
-          _buildDialogUpdate();
+          _buildDialogUpdate(state.urlUpdateApp);
         }
       }
     });
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future _buildDialogUpdate() {
+  Future _buildDialogUpdate(String urlUpdateApp) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Update Baru',
+                    'Migrasi Aplikasi',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   Divider(
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       RaisedButton(
                         child: Text('Klik Disini'),
                         onPressed: () {
-                          _launchURL();
+                          _launchURL(urlUpdateApp);
                         },
                       ),
                     ],
@@ -125,13 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  _launchURL() async {
-    const url =
-        'https://play.google.com/store/apps/details?id=com.inersya.ks_bike_mobile';
-    if (await canLaunch(url)) {
-      await launch(url);
+  _launchURL(String urlUpdateApp) async {
+    if (await canLaunch(urlUpdateApp)) {
+      await launch(urlUpdateApp);
     } else {
-      throw 'Could not launch $url';
+      throw 'Could not launch $urlUpdateApp';
     }
   }
 
